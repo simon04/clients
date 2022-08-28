@@ -408,14 +408,8 @@
     </div>
   </ng-container>
   <div #form [appApiAction]="usernameGeneratingPromise">
-    <button
-      type="button"
-      class="btn btn-submit btn-primary"
-      (click)="regenerate()"
-      [disabled]="form.loading"
-    >
-      <i class="bwi bwi-spinner bwi-spin" title="{{ 'loading' | i18n }}" aria-hidden="true"></i>
-      <span>{{ "regenerateUsername" | i18n }}</span>
+    <button type="button" class="btn btn-primary" (click)="regenerate()">
+      {{ "regenerateUsername" | i18n }}
     </button>
     <button type="button" class="btn btn-outline-secondary" (click)="copy()">
       {{ "copyUsername" | i18n }}

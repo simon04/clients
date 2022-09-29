@@ -2,11 +2,8 @@ import { APP_INITIALIZER, LOCALE_ID, NgModule } from "@angular/core";
 
 import { LockGuard as BaseLockGuardService } from "@bitwarden/angular/guards/lock.guard";
 import { UnauthGuard as BaseUnauthGuardService } from "@bitwarden/angular/guards/unauth.guard";
-import {
-  JslibServicesModule,
-  MEMORY_STORAGE,
-  SECURE_STORAGE,
-} from "@bitwarden/angular/services/jslib-services.module";
+import { MEMORY_STORAGE, SECURE_STORAGE } from "@bitwarden/angular/services/injection-tokens";
+import { JslibServicesModule } from "@bitwarden/angular/services/jslib-services.module";
 import { ThemingService } from "@bitwarden/angular/services/theming/theming.service";
 import { AbstractThemingService } from "@bitwarden/angular/services/theming/theming.service.abstraction";
 import { ApiService } from "@bitwarden/common/abstractions/api.service";
@@ -29,7 +26,7 @@ import { KeyConnectorService } from "@bitwarden/common/abstractions/keyConnector
 import { LogService as LogServiceAbstraction } from "@bitwarden/common/abstractions/log.service";
 import { MessagingService } from "@bitwarden/common/abstractions/messaging.service";
 import { NotificationsService } from "@bitwarden/common/abstractions/notifications.service";
-import { OrganizationService } from "@bitwarden/common/abstractions/organization.service";
+import { OrganizationService } from "@bitwarden/common/abstractions/organization/organization.service.abstraction";
 import { PasswordGenerationService } from "@bitwarden/common/abstractions/passwordGeneration.service";
 import { PasswordRepromptService as PasswordRepromptServiceAbstraction } from "@bitwarden/common/abstractions/passwordReprompt.service";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";

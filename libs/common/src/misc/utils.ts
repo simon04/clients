@@ -99,6 +99,9 @@ export class Utils {
   }
 
   static fromByteStringToArray(str: string): Uint8Array {
+    if (str == null) {
+      return null;
+    }
     const arr = new Uint8Array(str.length);
     for (let i = 0; i < str.length; i++) {
       arr[i] = str.charCodeAt(i);
@@ -307,8 +310,11 @@ export class Utils {
     return map;
   }
 
-  static getSortFunction(i18nService: I18nService, prop: string) {
-    return (a: any, b: any) => {
+  static getSortFunction<T>(
+    i18nService: I18nService,
+    prop: { [K in keyof T]: T[K] extends string ? K : never }[keyof T]
+  ): (a: T, b: T) => number {
+    return (a, b) => {
       if (a[prop] == null && b[prop] != null) {
         return -1;
       }
@@ -319,9 +325,10 @@ export class Utils {
         return 0;
       }
 
+      // The `as unknown as string` here is unfortunate because typescript doesn't property understand that the return of T[prop] will be a string
       return i18nService.collator
-        ? i18nService.collator.compare(a[prop], b[prop])
-        : a[prop].localeCompare(b[prop]);
+        ? i18nService.collator.compare(a[prop] as unknown as string, b[prop] as unknown as string)
+        : (a[prop] as unknown as string).localeCompare(b[prop] as unknown as string);
     };
   }
 
@@ -368,6 +375,39 @@ export class Utils {
 
   static camelToPascalCase(s: string) {
     return s.charAt(0).toUpperCase() + s.slice(1);
+  }
+
+  /**
+   * There are a few ways to calculate text color for contrast, this one seems to fit accessibility guidelines best.
+   * https://stackoverflow.com/a/3943023/6869691
+   *
+   * @param {string} bgColor
+   * @param {number} [threshold] see stackoverflow link above
+   * @param {boolean} [svgTextFill]
+   * Indicates if this method is performed on an SVG <text> 'fill' attribute (e.g. <text fill="black"></text>).
+   * This check is necessary because the '!important' tag cannot be used in a 'fill' attribute.
+   */
+  static pickTextColorBasedOnBgColor(bgColor: string, threshold = 186, svgTextFill = false) {
+    const bgColorHexNums = bgColor.charAt(0) === "#" ? bgColor.substring(1, 7) : bgColor;
+    const r = parseInt(bgColorHexNums.substring(0, 2), 16); // hexToR
+    const g = parseInt(bgColorHexNums.substring(2, 4), 16); // hexToG
+    const b = parseInt(bgColorHexNums.substring(4, 6), 16); // hexToB
+    const blackColor = svgTextFill ? "black" : "black !important";
+    const whiteColor = svgTextFill ? "white" : "white !important";
+    return r * 0.299 + g * 0.587 + b * 0.114 > threshold ? blackColor : whiteColor;
+  }
+
+  static stringToColor(str: string): string {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    let color = "#";
+    for (let i = 0; i < 3; i++) {
+      const value = (hash >> (i * 8)) & 0xff;
+      color += ("00" + value.toString(16)).substr(-2);
+    }
+    return color;
   }
 
   /**

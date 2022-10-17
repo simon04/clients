@@ -26,6 +26,7 @@
             <input
               id="masterPassword"
               type="{{ showPassword ? 'text' : 'password' }}"
+              aria-describedby="masterPasswordHelp"
               class="monospaced"
               formControlName="masterPassword"
               appInputVerbatim
@@ -53,7 +54,7 @@
         </div>
       </div>
     </div>
-    <p class="text-center text-muted" *ngIf="selfHostedDomain">
+    <p id="masterPasswordHelp" class="text-center text-muted" *ngIf="selfHostedDomain">
       {{ "loggingInTo" | i18n: selfHostedDomain }}
     </p>
     <p class="text-center">

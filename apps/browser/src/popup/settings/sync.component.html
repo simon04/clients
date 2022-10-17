@@ -15,6 +15,7 @@
     <button
       type="button"
       class="btn block primary"
+      aria-describedby="lastSyncHint"
       (click)="sync()"
       #syncBtn
       [disabled]="syncBtn.loading"
@@ -23,6 +24,8 @@
       <span [hidden]="syncBtn.loading">{{ "syncVaultNow" | i18n }}</span>
       <i class="bwi bwi-spinner bwi-lg bwi-spin" [hidden]="!syncBtn.loading" aria-hidden="true"></i>
     </button>
-    <p class="text-center text-muted small">{{ "lastSync" | i18n }} {{ lastSync }}</p>
+    <p id="lastSyncHint" class="text-center text-muted small">
+      {{ "lastSync" | i18n }} {{ lastSync }}
+    </p>
   </div>
 </main>

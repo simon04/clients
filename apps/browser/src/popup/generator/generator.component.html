@@ -306,13 +306,16 @@
               [(ngModel)]="usernameOptions.type"
               name="UsernameType"
               id="type_{{ o.value }}"
+              aria-describedby="type_{{ o.value }}_Help"
               [value]="o.value"
               (change)="saveUsernameOptions()"
               [checked]="usernameOptions.type === o.value"
             />
             <label for="type_{{ o.value }}">
               {{ o.name }}
-              <div class="small text-muted" *ngIf="o.desc">{{ o.desc }}</div>
+              <div id="type_{{ o.value }}_Help" class="small text-muted" *ngIf="o.desc">
+                {{ o.desc }}
+              </div>
             </label>
           </div>
         </div>

@@ -36,13 +36,14 @@
             id="baseUrl"
             type="text"
             name="BaseUrl"
+            aria-describedby="baseUrlHelp"
             [(ngModel)]="baseUrl"
             placeholder="ex. https://bitwarden.company.com"
             appInputVerbatim
           />
         </div>
       </div>
-      <div class="box-footer">
+      <div id="baseUrlHelp" class="box-footer">
         {{ "selfHostedEnvironmentFooter" | i18n }}
       </div>
     </div>

@@ -111,7 +111,6 @@
 ./libs/common/src/types/twoFactorResponse.ts
 ./libs/common/src/types/authResponse.ts
 ./libs/common/src/types/syncEventArgs.ts
-./libs/common/src/importers/enpassJsonImporter.ts
 ./libs/common/src/importers/firefoxCsvImporter.ts
 ./libs/common/src/importers/rememBearCsvImporter.ts
 ./libs/common/src/importers/ascendoCsvImporter.ts
@@ -138,7 +137,6 @@
 ./libs/common/src/importers/avastJsonImporter.ts
 ./libs/common/src/importers/blurCsvImporter.ts
 ./libs/common/src/importers/safeInCloudXmlImporter.ts
-./libs/common/src/importers/enpassCsvImporter.ts
 ./libs/common/src/importers/saferpassCsvImport.ts
 ./libs/common/src/importers/keeperImporters/types/keeperJsonTypes.ts
 ./libs/common/src/importers/keeperImporters/keeperCsvImporter.ts

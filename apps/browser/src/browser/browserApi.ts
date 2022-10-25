@@ -102,6 +102,15 @@ export class BrowserApi {
     chrome.tabs.sendMessage<TabMessage, T>(tabId, message, responseCallback);
   }
 
+  static sendTabsMessageOptions<T = never>(
+    tabId: number,
+    message: TabMessage,
+    options: chrome.tabs.MessageSendOptions,
+    responseCallback?: (response: T) => void
+  ) {
+    chrome.tabs.sendMessage<TabMessage, T>(tabId, message, options, responseCallback);
+  }
+
   static async getPrivateModeWindows(): Promise<browser.windows.Window[]> {
     return (await browser.windows.getAll()).filter((win) => win.incognito);
   }

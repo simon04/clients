@@ -9,10 +9,19 @@ import { GlobalState } from "@bitwarden/common/models/domain/global-state";
 import { ContainerService } from "@bitwarden/common/services/container.service";
 
 import IconDetails from "../background/models/iconDetails";
-import { authServiceFactory } from "../background/service_factories/auth-service.factory";
-import { cipherServiceFactory } from "../background/service_factories/cipher-service.factory";
+import {
+  authServiceFactory,
+  AuthServiceInitOptions,
+} from "../background/service_factories/auth-service.factory";
+import {
+  cipherServiceFactory,
+  CipherServiceInitOptions,
+} from "../background/service_factories/cipher-service.factory";
 import { searchServiceFactory } from "../background/service_factories/search-service.factory";
-import { stateServiceFactory } from "../background/service_factories/state-service.factory";
+import {
+  stateServiceFactory,
+  StateServiceInitOptions,
+} from "../background/service_factories/state-service.factory";
 import { BrowserApi } from "../browser/browserApi";
 import { Account } from "../models/account";
 import { StateService } from "../services/abstractions/state.service";
@@ -43,27 +52,39 @@ export class UpdateBadge {
     "deletedCipher",
   ];
 
-  static async tabsOnActivatedListener(activeInfo: chrome.tabs.TabActiveInfo) {
-    await new UpdateBadge(self).run({ tabId: activeInfo.tabId });
+  static async tabsOnActivatedListener(
+    activeInfo: chrome.tabs.TabActiveInfo,
+    serviceCache: Record<string, unknown>
+  ) {
+    await new UpdateBadge(self).run({ tabId: activeInfo.tabId, existingServices: serviceCache });
   }
 
-  static async tabsOnReplacedListener(addedTabId: number, removedTabId: number) {
-    await new UpdateBadge(self).run({ tabId: addedTabId });
+  static async tabsOnReplacedListener(
+    addedTabId: number,
+    removedTabId: number,
+    serviceCache: Record<string, unknown>
+  ) {
+    await new UpdateBadge(self).run({ tabId: addedTabId, existingServices: serviceCache });
   }
 
-  static async tabsOnUpdatedListener(tabId: number) {
-    await new UpdateBadge(self).run({ tabId });
+  static async tabsOnUpdatedListener(
+    tabId: number,
+    changeInfo: chrome.tabs.TabChangeInfo,
+    tab: chrome.tabs.Tab,
+    serviceCache: Record<string, unknown>
+  ) {
+    await new UpdateBadge(self).run({ tabId, existingServices: serviceCache });
   }
 
   static async messageListener(
-    serviceCache: Record<string, unknown>,
-    message: { command: string; tabId: number }
+    message: { command: string; tabId: number },
+    serviceCache: Record<string, unknown>
   ) {
     if (!UpdateBadge.listenedToCommands.includes(message.command)) {
       return;
     }
 
-    await new UpdateBadge(self).run();
+    await new UpdateBadge(self).run({ existingServices: serviceCache });
   }
 
   constructor(win: Window & typeof globalThis) {
@@ -220,7 +241,7 @@ export class UpdateBadge {
     }
 
     const serviceCache: Record<string, unknown> = existingServiceCache || {};
-    const opts = {
+    const opts: StateServiceInitOptions & AuthServiceInitOptions & CipherServiceInitOptions = {
       cryptoFunctionServiceOptions: { win: self },
       encryptServiceOptions: { logMacFailures: false },
       logServiceOptions: { isDev: false },
@@ -244,6 +265,9 @@ export class UpdateBadge {
       },
       i18nServiceOptions: {
         systemLanguage: BrowserApi.getUILanguage(self),
+      },
+      cipherServiceOptions: {
+        searchServiceFactory: () => searchService,
       },
     };
     this.stateService = await stateServiceFactory(serviceCache, opts);

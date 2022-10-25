@@ -1,14 +1,13 @@
 import MainBackground from "./background/main.background";
 import { BrowserApi } from "./browser/browserApi";
+import { CipherContextMenuHandler } from "./browser/cipher-context-menu-handler";
+import { ContextMenuClickedHandler } from "./browser/context-menu-clicked-handler";
 import { ClearClipboard } from "./clipboard";
+import { combine } from "./listeners/combine";
 import { onCommandListener } from "./listeners/onCommandListener";
 import { onInstallListener } from "./listeners/onInstallListener";
 import { UpdateBadge } from "./listeners/update-badge";
 
-const manifestV3MessageListeners: ((
-  serviceCache: Record<string, unknown>,
-  message: { command: string }
-) => void | Promise<void>)[] = [UpdateBadge.messageListener];
 type AlarmAction = (executionTime: Date, serviceCache: Record<string, unknown>) => void;
 
 const AlarmActions: AlarmAction[] = [ClearClipboard.run];
@@ -16,16 +15,24 @@ const AlarmActions: AlarmAction[] = [ClearClipboard.run];
 if (BrowserApi.manifestVersion === 3) {
   chrome.commands.onCommand.addListener(onCommandListener);
   chrome.runtime.onInstalled.addListener(onInstallListener);
-  chrome.tabs.onActivated.addListener(UpdateBadge.tabsOnActivatedListener);
-  chrome.tabs.onReplaced.addListener(UpdateBadge.tabsOnReplacedListener);
-  chrome.tabs.onUpdated.addListener(UpdateBadge.tabsOnUpdatedListener);
-  BrowserApi.messageListener("runtime.background", (message) => {
-    const serviceCache = {};
-
-    manifestV3MessageListeners.forEach((listener) => {
-      listener(serviceCache, message);
-    });
-  });
+  chrome.tabs.onActivated.addListener(
+    combine([UpdateBadge.tabsOnActivatedListener, CipherContextMenuHandler.tabsOnActivatedListener])
+  );
+  chrome.tabs.onReplaced.addListener(
+    combine([UpdateBadge.tabsOnReplacedListener, CipherContextMenuHandler.tabsOnReplacedListener])
+  );
+  chrome.tabs.onUpdated.addListener(
+    combine([UpdateBadge.tabsOnUpdatedListener, CipherContextMenuHandler.tabsOnUpdatedListener])
+  );
+  chrome.contextMenus.onClicked.addListener(ContextMenuClickedHandler.onClickedListener);
+  BrowserApi.messageListener(
+    "runtime.background",
+    combine([
+      UpdateBadge.messageListener,
+      CipherContextMenuHandler.messageListener,
+      ContextMenuClickedHandler.messageListener,
+    ])
+  );
   chrome.alarms.onAlarm.addListener((_alarm) => {
     const executionTime = new Date();
     const serviceCache = {};

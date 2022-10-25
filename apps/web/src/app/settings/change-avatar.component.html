@@ -44,18 +44,24 @@
                   customColorSelected
               }"
               (click)="showCustomPicker()"
-              class="tw-outline-solid tw-bg-white tw-inline-block tw-flex tw-h-24 tw-w-24 tw-cursor-pointer tw-place-content-center tw-content-center tw-justify-center tw-rounded-full tw-border tw-border-solid tw-border-secondary-500 tw-outline tw-outline-0 tw-outline-offset-1 hover:tw-outline-1 hover:tw-outline-primary-300 focus:tw-outline-2 focus:tw-outline-primary-500"
+              class="tw-outline-solid tw-bg-white tw-relative tw-inline-block tw-flex tw-h-24 tw-w-24 tw-cursor-pointer tw-place-content-center tw-content-center tw-justify-center tw-rounded-full tw-border tw-border-solid tw-border-secondary-500 tw-outline tw-outline-0 tw-outline-offset-1 hover:tw-outline-1 hover:tw-outline-primary-300 focus:tw-outline-2 focus:tw-outline-primary-500"
               [style.background-color]="customColor$ | async"
             >
               <i
                 [style.color]="customTextColor$ | async"
                 class="bwi bwi-pencil tw-m-auto tw-text-3xl"
               ></i>
+              <input
+                tabindex="-1"
+                class="tw-absolute tw-right-0 tw-bottom-0 tw-h-px tw-w-px tw-border-none tw-bg-transparent tw-opacity-0"
+                #colorPicker
+                type="color"
+                [ngModel]="customColor$ | async"
+                (ngModelChange)="customColor$.next($event)"
+              />
             </span>
           </span>
         </div>
-
-        <div [hidden]="!customColorSelected" class="color-picker-parent tw-mt-8 tw-flex"></div>
       </div>
       <div class="modal-footer">
         <button

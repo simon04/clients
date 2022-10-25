@@ -1,7 +1,6 @@
 import { Subject } from "rxjs";
 
-import { ProfileResponse } from "../../models/response/profileResponse";
-
+import { ProfileResponse } from "../../models/response/profile.response";
 export abstract class AvatarUpdateService {
   avatarUpdated$ = new Subject<string | null>();
   abstract pushUpdate(color: string): Promise<ProfileResponse | void>;

@@ -3,7 +3,7 @@ import { Subject } from "rxjs";
 import { ApiService } from "../../abstractions/api.service";
 import { StateService } from "../../abstractions/state.service";
 import { UpdateAvatarRequest } from "../../models/request/updateAvatarRequest";
-import { ProfileResponse } from "../../models/response/profileResponse";
+import { ProfileResponse } from "../../models/response/profile.response";
 
 export class AvatarUpdateService {
   avatarUpdated$ = new Subject<string | null>();

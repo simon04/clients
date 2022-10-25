@@ -1,39 +1,35 @@
 import {
   Component,
+  ElementRef,
   EventEmitter,
   Input,
   OnDestroy,
   OnInit,
   Output,
+  ViewChild,
   ViewEncapsulation,
 } from "@angular/core";
-import { BehaviorSubject, Subject, takeUntil } from "rxjs";
+import { BehaviorSubject, debounceTime, Subject, takeUntil } from "rxjs";
 
 import { AvatarUpdateService } from "@bitwarden/common/abstractions/account/avatar-update.service";
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { LogService } from "@bitwarden/common/abstractions/log.service";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { Utils } from "@bitwarden/common/misc/utils";
-import { ProfileResponse } from "@bitwarden/common/models/response/profileResponse";
+import { ProfileResponse } from "@bitwarden/common/models/response/profile.response";
 
 @Component({
   selector: "app-change-avatar",
   templateUrl: "change-avatar.component.html",
   encapsulation: ViewEncapsulation.None,
-  styles: [
-    ".color-picker-parent chrome-picker { margin: auto; width: 100%; display: flex; box-shadow: none;  }",
-    "chrome-picker saturation-component { display: flex; width: 50%; border-radius: 4px;  }",
-    "chrome-picker .controls { width: 50%; padding-top: 0!important; padding-bottom: 0!important; display: flex; flex-direction: column; align-content: space-between; flex-flow: row wrap;  }",
-    "chrome-picker .controls .column hue-component { height: 24px; border-radius: 4px; }",
-    "chrome-picker .controls .column hue-component .pointer { width: 24px; height: 24px; top: 0px;  }",
-    "chrome-picker .controls .hue-alpha .column:first-child { display: none; }",
-  ],
 })
 export class ChangeAvatarComponent implements OnInit, OnDestroy {
   @Input() profile: ProfileResponse;
 
   @Output() changeColor: EventEmitter<string | null> = new EventEmitter();
   @Output() onSaved = new EventEmitter();
+
+  @ViewChild("colorPicker") colorPickerElement: ElementRef<HTMLElement>;
 
   loading = false;
   error: string;
@@ -60,34 +56,29 @@ export class ChangeAvatarComponent implements OnInit, OnDestroy {
     private platformUtilsService: PlatformUtilsService,
     private logService: LogService,
     private accountUpdateService: AvatarUpdateService
-  ) {
-    this.setupCustomPicker();
-  }
+  ) {}
 
   async ngOnInit() {
-    //localise the default colours
+    //localize the default colors
     this.defaultColorPalette.forEach((c) => (c.name = this.i18nService.t(c.name)));
 
-    this.customColor$.pipe(takeUntil(this.destroy$)).subscribe((color: string | null) => {
-      if (color == null) {
-        return;
-      }
-      this.customTextColor$.next(Utils.pickTextColorBasedOnBgColor(color));
-      this.customColorSelected = true;
-      // this.colorPickerControl.setValueFrom(color);
-      this.currentSelection = color;
-    });
+    this.customColor$
+      .pipe(debounceTime(200), takeUntil(this.destroy$))
+      .subscribe((color: string | null) => {
+        if (color == null) {
+          return;
+        }
+        this.customTextColor$.next(Utils.pickTextColorBasedOnBgColor(color));
+        this.customColorSelected = true;
+        this.currentSelection = color;
+      });
 
     this.setSelection(await this.accountUpdateService.loadColorFromState());
   }
 
-  async setupCustomPicker() {
-    //do this
-  }
-
   async showCustomPicker() {
     this.customColorSelected = true;
-    // this.colorPickerControl.setValueFrom("#ffffff");
+    this.colorPickerElement.nativeElement.click();
     this.setSelection(this.customColor$.value);
   }
 

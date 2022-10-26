@@ -625,7 +625,8 @@ export default class MainBackground {
 
     const tab = await BrowserApi.getTabFromCurrentWindow();
     if (tab) {
-      this.cipherContextMenuHandler.update(tab.url);
+      await this.cipherContextMenuHandler.update(tab.url);
+      this.onUpdatedRan = this.onReplacedRan = false;
     }
   }
 
@@ -658,7 +659,7 @@ export default class MainBackground {
       BrowserApi.sendMessage("updateBadge");
     }
     await this.refreshBadge();
-    this.mainContextMenuHandler.noAccess();
+    await this.mainContextMenuHandler.noAccess();
     await this.reseedStorage();
     this.notificationsService.updateConnection(false);
     await this.systemService.clearPendingClipboard();

@@ -91,9 +91,13 @@ describe("ContextMenuClickedHandler", () => {
 
   describe("run", () => {
     it("can generate password", async () => {
-      await sut.run(createData(GENERATE_PASSWORD_ID));
+      await sut.run(createData(GENERATE_PASSWORD_ID), { id: 5 } as any);
 
       expect(generatePasswordToClipboardCommand.generatePasswordToClipboard).toBeCalledTimes(1);
+
+      expect(generatePasswordToClipboardCommand.generatePasswordToClipboard).toBeCalledWith({
+        id: 5,
+      });
     });
 
     it("attempts to autofill the correct cipher", async () => {

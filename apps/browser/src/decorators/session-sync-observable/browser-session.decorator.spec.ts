@@ -1,6 +1,6 @@
 import { BehaviorSubject } from "rxjs";
 
-import { StateService } from "../../services/state.service";
+import { BrowserStateServiceImpl } from "../../services/browser-state.service.impl";
 
 import { browserSession } from "./browser-session.decorator";
 import { SessionStorable } from "./session-storable";
@@ -22,25 +22,25 @@ describe("browserSession decorator", () => {
   });
 
   it("should create if StateService is a constructor argument", () => {
-    const stateService = Object.create(StateService.prototype, {});
+    const stateService = Object.create(BrowserStateServiceImpl.prototype, {});
 
     @browserSession
     class TestClass {
-      constructor(private stateService: StateService) {}
+      constructor(private stateService: BrowserStateServiceImpl) {}
     }
 
     expect(new TestClass(stateService)).toBeDefined();
   });
 
   describe("interaction with @sessionSync decorator", () => {
-    let stateService: StateService;
+    let stateService: BrowserStateServiceImpl;
 
     @browserSession
     class TestClass {
       @sessionSync({ initializer: (s: string) => s })
       behaviorSubject = new BehaviorSubject("");
 
-      constructor(private stateService: StateService) {}
+      constructor(private stateService: BrowserStateServiceImpl) {}
 
       fromJSON(json: any) {
         this.behaviorSubject.next(json);
@@ -48,7 +48,10 @@ describe("browserSession decorator", () => {
     }
 
     beforeEach(() => {
-      stateService = Object.create(StateService.prototype, {}) as StateService;
+      stateService = Object.create(
+        BrowserStateServiceImpl.prototype,
+        {}
+      ) as BrowserStateServiceImpl;
     });
 
     it("should create a session syncer", () => {

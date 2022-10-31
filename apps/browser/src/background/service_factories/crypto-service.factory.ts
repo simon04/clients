@@ -1,6 +1,6 @@
 import { CryptoService as AbstractCryptoService } from "@bitwarden/common/abstractions/crypto.service";
 
-import { BrowserCryptoService } from "../../services/browserCrypto.service";
+import { BrowserCryptoService } from "../../services/browser-crypto.service";
 
 import {
   cryptoFunctionServiceFactory,

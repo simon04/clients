@@ -1,5 +1,5 @@
-import { FileUploadService as AbstractFileUploadService } from "@bitwarden/common/abstractions/fileUpload.service";
-import { FileUploadService } from "@bitwarden/common/services/fileUpload.service";
+import { FileUploadService } from "@bitwarden/common/abstractions/fileUpload.service";
+import { FileUploadServiceImpl } from "@bitwarden/common/services/file-upload.service.impl";
 
 import { apiServiceFactory, ApiServiceInitOptions } from "./api-service.factory";
 import { FactoryOptions, CachedServices, factory } from "./factory-options";
@@ -12,15 +12,15 @@ export type FileUploadServiceInitOptions = FileUploadServiceFactoyOptions &
   ApiServiceInitOptions;
 
 export function fileUploadServiceFactory(
-  cache: { fileUploadService?: AbstractFileUploadService } & CachedServices,
+  cache: { fileUploadService?: FileUploadService } & CachedServices,
   opts: FileUploadServiceInitOptions
-): Promise<AbstractFileUploadService> {
+): Promise<FileUploadService> {
   return factory(
     cache,
     "fileUploadService",
     opts,
     async () =>
-      new FileUploadService(
+      new FileUploadServiceImpl(
         await logServiceFactory(cache, opts),
         await apiServiceFactory(cache, opts)
       )

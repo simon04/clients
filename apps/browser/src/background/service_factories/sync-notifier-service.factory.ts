@@ -1,5 +1,5 @@
-import { SyncNotifierService as AbstractSyncNotifierService } from "@bitwarden/common/abstractions/sync/syncNotifier.service.abstraction";
-import { SyncNotifierService } from "@bitwarden/common/services/sync/syncNotifier.service";
+import { SyncNotifierService } from "@bitwarden/common/abstractions/sync/syncNotifier.service.abstraction";
+import { SyncNotifierServiceImpl } from "@bitwarden/common/services/sync/sync-notifier.service.impl";
 
 import { FactoryOptions, CachedServices, factory } from "./factory-options";
 
@@ -8,10 +8,10 @@ type SyncNotifierServiceFactoryOptions = FactoryOptions;
 export type SyncNotifierServiceInitOptions = SyncNotifierServiceFactoryOptions;
 
 export function syncNotifierServiceFactory(
-  cache: { syncNotifierService?: AbstractSyncNotifierService } & CachedServices,
+  cache: { syncNotifierService?: SyncNotifierService } & CachedServices,
   opts: SyncNotifierServiceInitOptions
-): Promise<AbstractSyncNotifierService> {
+): Promise<SyncNotifierService> {
   return factory(cache, "syncNotifierService", opts, () =>
-    Promise.resolve(new SyncNotifierService())
+    Promise.resolve(new SyncNotifierServiceImpl())
   );
 }

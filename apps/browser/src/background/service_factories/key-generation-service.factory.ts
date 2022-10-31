@@ -1,4 +1,4 @@
-import { KeyGenerationService } from "../../services/keyGeneration.service";
+import { KeyGenerationServiceImpl } from "../../services/key-generation.service.impl";
 
 import {
   cryptoFunctionServiceFactory,
@@ -12,13 +12,13 @@ export type KeyGenerationServiceInitOptions = KeyGenerationServiceFactoryOptions
   CryptoFunctionServiceInitOptions;
 
 export function keyGenerationServiceFactory(
-  cache: { keyGenerationService?: KeyGenerationService } & CachedServices,
+  cache: { keyGenerationService?: KeyGenerationServiceImpl } & CachedServices,
   opts: KeyGenerationServiceInitOptions
-): Promise<KeyGenerationService> {
+): Promise<KeyGenerationServiceImpl> {
   return factory(
     cache,
     "keyGenerationService",
     opts,
-    async () => new KeyGenerationService(await cryptoFunctionServiceFactory(cache, opts))
+    async () => new KeyGenerationServiceImpl(await cryptoFunctionServiceFactory(cache, opts))
   );
 }

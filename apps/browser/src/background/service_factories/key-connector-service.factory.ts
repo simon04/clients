@@ -1,5 +1,5 @@
-import { KeyConnectorService as AbstractKeyConnectorService } from "@bitwarden/common/abstractions/keyConnector.service";
-import { KeyConnectorService } from "@bitwarden/common/services/keyConnector.service";
+import { KeyConnectorService } from "@bitwarden/common/abstractions/keyConnector.service";
+import { KeyConnectorServiceImpl } from "@bitwarden/common/services/key-connector.service.impl";
 
 import { apiServiceFactory, ApiServiceInitOptions } from "./api-service.factory";
 import {
@@ -32,15 +32,15 @@ export type KeyConnectorServiceInitOptions = KeyConnectorServiceFactoryOptions &
   CryptoFunctionServiceInitOptions;
 
 export function keyConnectorServiceFactory(
-  cache: { keyConnectorService?: AbstractKeyConnectorService } & CachedServices,
+  cache: { keyConnectorService?: KeyConnectorService } & CachedServices,
   opts: KeyConnectorServiceInitOptions
-): Promise<AbstractKeyConnectorService> {
+): Promise<KeyConnectorService> {
   return factory(
     cache,
     "keyConnectorService",
     opts,
     async () =>
-      new KeyConnectorService(
+      new KeyConnectorServiceImpl(
         await stateServiceFactory(cache, opts),
         await cryptoServiceFactory(cache, opts),
         await apiServiceFactory(cache, opts),

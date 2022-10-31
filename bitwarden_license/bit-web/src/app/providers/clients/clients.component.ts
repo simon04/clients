@@ -17,7 +17,7 @@ import { ProviderUserType } from "@bitwarden/common/enums/providerUserType";
 import { Organization } from "@bitwarden/common/models/domain/organization";
 import { ProviderOrganizationOrganizationDetailsResponse } from "@bitwarden/common/models/response/provider/provider-organization.response";
 
-import { WebProviderService } from "../services/webProvider.service";
+import { WebProviderService } from "../services/web-provider.service";
 
 import { AddOrganizationComponent } from "./add-organization.component";
 

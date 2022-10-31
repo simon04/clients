@@ -5,11 +5,11 @@ import { StateService } from "@bitwarden/common/abstractions/state.service";
 import { SyncNotifierService } from "@bitwarden/common/abstractions/sync/syncNotifier.service.abstraction";
 import { OrganizationData } from "@bitwarden/common/models/data/organization.data";
 import { SyncResponse } from "@bitwarden/common/models/response/sync.response";
-import { OrganizationService } from "@bitwarden/common/services/organization/organization.service";
+import { OrganizationServiceImpl } from "@bitwarden/common/services/organization/organization.service.impl";
 import { SyncEventArgs } from "@bitwarden/common/types/syncEventArgs";
 
 describe("Organization Service", () => {
-  let organizationService: OrganizationService;
+  let organizationService: OrganizationServiceImpl;
 
   let stateService: MockProxy<StateService>;
   let activeAccount: BehaviorSubject<string>;
@@ -25,7 +25,7 @@ describe("Organization Service", () => {
     stateService.activeAccount$ = activeAccount;
     stateService.activeAccountUnlocked$ = activeAccountUnlocked;
     customizeStateService(stateService);
-    organizationService = new OrganizationService(stateService, syncNotifierService);
+    organizationService = new OrganizationServiceImpl(stateService, syncNotifierService);
     await new Promise((r) => setTimeout(r, 50));
   };
 
@@ -46,7 +46,7 @@ describe("Organization Service", () => {
     syncNotifierService = mock<SyncNotifierService>();
     syncNotifierService.sync$ = sync;
 
-    organizationService = new OrganizationService(stateService, syncNotifierService);
+    organizationService = new OrganizationServiceImpl(stateService, syncNotifierService);
   });
 
   afterEach(() => {

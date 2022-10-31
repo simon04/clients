@@ -15,8 +15,8 @@ import { searchServiceFactory } from "../background/service_factories/search-ser
 import { stateServiceFactory } from "../background/service_factories/state-service.factory";
 import { BrowserApi } from "../browser/browserApi";
 import { Account } from "../models/account";
-import { StateService } from "../services/abstractions/state.service";
-import BrowserPlatformUtilsService from "../services/browserPlatformUtils.service";
+import { BrowserStateService } from "../services/abstractions/browser-state.service";
+import BrowserPlatformUtilsService from "../services/browser-platform-utils.service";
 
 export type BadgeOptions = {
   tab?: chrome.tabs.Tab;
@@ -25,7 +25,7 @@ export type BadgeOptions = {
 
 export class UpdateBadge {
   private authService: AuthService;
-  private stateService: StateService;
+  private stateService: BrowserStateService;
   private cipherService: CipherService;
   private badgeAction: typeof chrome.action;
   private sidebarAction: OperaSidebarAction | FirefoxSidebarAction;

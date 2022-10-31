@@ -47,25 +47,25 @@ import { UserVerificationService } from "@bitwarden/common/abstractions/userVeri
 import { UsernameGenerationService } from "@bitwarden/common/abstractions/usernameGeneration.service";
 import { VaultTimeoutService } from "@bitwarden/common/abstractions/vaultTimeout/vaultTimeout.service";
 import { VaultTimeoutSettingsService } from "@bitwarden/common/abstractions/vaultTimeout/vaultTimeoutSettings.service";
-import { AuthService } from "@bitwarden/common/services/auth.service";
-import { ConsoleLogService } from "@bitwarden/common/services/consoleLog.service";
-import { LoginService } from "@bitwarden/common/services/login.service";
-import { SearchService } from "@bitwarden/common/services/search.service";
+import { AuthServiceImpl } from "@bitwarden/common/services/auth.service.impl";
+import { ConsoleLogService } from "@bitwarden/common/services/console-log.service";
+import { LoginServiceImpl } from "@bitwarden/common/services/login.service.impl";
+import { SearchServiceImpl } from "@bitwarden/common/services/search.service.impl";
 
 import MainBackground from "../../background/main.background";
 import { BrowserApi } from "../../browser/browserApi";
 import { AutofillService } from "../../services/abstractions/autofill.service";
-import { StateService as StateServiceAbstraction } from "../../services/abstractions/state.service";
+import { BrowserStateService as StateServiceAbstraction } from "../../services/abstractions/browser-state.service";
 import { BrowserEnvironmentService } from "../../services/browser-environment.service";
-import { BrowserFileDownloadService } from "../../services/browserFileDownloadService";
-import BrowserMessagingService from "../../services/browserMessaging.service";
-import BrowserMessagingPrivateModePopupService from "../../services/browserMessagingPrivateModePopup.service";
-import { VaultFilterService } from "../../services/vaultFilter.service";
+import { BrowserFileDownloadService } from "../../services/browser-file-download-service";
+import BrowserMessagingPrivateModePopupService from "../../services/browser-messaging-private-mode-popup.service";
+import BrowserMessagingService from "../../services/browser-messaging.service";
+import { BrowserVaultFilterService } from "../../services/browser-vault-filter.service";
 
-import { DebounceNavigationService } from "./debounceNavigationService";
+import { BrowserPasswordRepromptService } from "./browser-password-reprompt.service";
+import { DebounceNavigationService } from "./debounce-navigation.service";
 import { InitService } from "./init.service";
 import { LockGuardService } from "./lock-guard.service";
-import { PasswordRepromptService } from "./password-reprompt.service";
 import { PopupSearchService } from "./popup-search.service";
 import { PopupUtilsService } from "./popup-utils.service";
 import { UnauthGuardService } from "./unauth-guard.service";
@@ -123,7 +123,7 @@ function getBgService<T>(service: keyof MainBackground) {
     },
     {
       provide: AuthServiceAbstraction,
-      useFactory: getBgService<AuthService>("authService"),
+      useFactory: getBgService<AuthServiceImpl>("authService"),
       deps: [],
     },
     {
@@ -134,7 +134,7 @@ function getBgService<T>(service: keyof MainBackground) {
         i18nService: I18nService
       ) => {
         return new PopupSearchService(
-          getBgService<SearchService>("searchService")(),
+          getBgService<SearchServiceImpl>("searchService")(),
           cipherService,
           logService,
           i18nService
@@ -258,16 +258,16 @@ function getBgService<T>(service: keyof MainBackground) {
       useFactory: getBgService<ConsoleLogService>("logService"),
       deps: [],
     },
-    { provide: PasswordRepromptServiceAbstraction, useClass: PasswordRepromptService },
+    { provide: PasswordRepromptServiceAbstraction, useClass: BrowserPasswordRepromptService },
     {
       provide: OrganizationService,
       useFactory: getBgService<OrganizationService>("organizationService"),
       deps: [],
     },
     {
-      provide: VaultFilterService,
+      provide: BrowserVaultFilterService,
       useFactory: () => {
-        return new VaultFilterService(
+        return new BrowserVaultFilterService(
           getBgService<StateServiceAbstraction>("stateService")(),
           getBgService<OrganizationService>("organizationService")(),
           getBgService<FolderService>("folderService")(),
@@ -313,7 +313,7 @@ function getBgService<T>(service: keyof MainBackground) {
     },
     {
       provide: LoginServiceAbstraction,
-      useClass: LoginService,
+      useClass: LoginServiceImpl,
     },
     {
       provide: AbstractThemingService,

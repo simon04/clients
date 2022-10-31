@@ -21,22 +21,22 @@ import { StateService as BaseStateServiceAbstraction } from "@bitwarden/common/a
 import { StateMigrationService as StateMigrationServiceAbstraction } from "@bitwarden/common/abstractions/stateMigration.service";
 import { AbstractStorageService } from "@bitwarden/common/abstractions/storage.service";
 import { StateFactory } from "@bitwarden/common/factories/stateFactory";
-import { LoginService } from "@bitwarden/common/services/login.service";
-import { MemoryStorageService } from "@bitwarden/common/services/memoryStorage.service";
+import { LoginServiceImpl } from "@bitwarden/common/services/login.service.impl";
+import { MemoryStorageService } from "@bitwarden/common/services/memory-storage.service";
 
 import { BroadcasterMessagingService } from "./broadcaster-messaging.service";
 import { EventService } from "./event.service";
 import { HtmlStorageService } from "./html-storage.service";
-import { I18nService } from "./i18n.service";
 import { InitService } from "./init.service";
-import { ModalService } from "./modal.service";
-import { PasswordRepromptService } from "./password-reprompt.service";
 import { PolicyListService } from "./policy-list.service";
 import { RouterService } from "./router.service";
-import { Account, GlobalState, StateService } from "./state";
-import { StateMigrationService } from "./state-migration.service";
+import { Account, GlobalState, WebStateService } from "./state";
 import { WebFileDownloadService } from "./web-file-download.service";
+import { WebI18nService } from "./web-i18n.service";
+import { WebModalService } from "./web-modal.service";
+import { WebPasswordRepromptService } from "./web-password-reprompt.service";
 import { WebPlatformUtilsService } from "./web-platform-utils.service";
+import { WebStateMigrationService } from "./web-state-migration.service";
 
 @NgModule({
   declarations: [],
@@ -62,7 +62,7 @@ import { WebPlatformUtilsService } from "./web-platform-utils.service";
     },
     {
       provide: I18nServiceAbstraction,
-      useClass: I18nService,
+      useClass: WebI18nService,
       deps: [SYSTEM_LANGUAGE, LOCALES_DIRECTORY],
     },
     { provide: AbstractStorageService, useClass: HtmlStorageService },
@@ -81,20 +81,20 @@ import { WebPlatformUtilsService } from "./web-platform-utils.service";
       useClass: WebPlatformUtilsService,
     },
     { provide: MessagingServiceAbstraction, useClass: BroadcasterMessagingService },
-    { provide: ModalServiceAbstraction, useClass: ModalService },
+    { provide: ModalServiceAbstraction, useClass: WebModalService },
     {
       provide: StateMigrationServiceAbstraction,
-      useClass: StateMigrationService,
+      useClass: WebStateMigrationService,
       deps: [AbstractStorageService, SECURE_STORAGE, STATE_FACTORY],
     },
-    StateService,
+    WebStateService,
     {
       provide: BaseStateServiceAbstraction,
-      useExisting: StateService,
+      useExisting: WebStateService,
     },
     {
       provide: PasswordRepromptServiceAbstraction,
-      useClass: PasswordRepromptService,
+      useClass: WebPasswordRepromptService,
     },
     {
       provide: FileDownloadService,
@@ -102,7 +102,7 @@ import { WebPlatformUtilsService } from "./web-platform-utils.service";
     },
     {
       provide: LoginServiceAbstraction,
-      useClass: LoginService,
+      useClass: LoginServiceImpl,
     },
   ],
 })

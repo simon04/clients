@@ -1,6 +1,6 @@
 import { VaultTimeoutService as AbstractVaultTimeoutService } from "@bitwarden/common/abstractions/vaultTimeout/vaultTimeout.service";
 
-import VaultTimeoutService from "../../services/vaultTimeout/vaultTimeout.service";
+import BrowserVaultTimeoutService from "../../services/vault-timeout/browser-vault-timeout.service";
 
 import { authServiceFactory, AuthServiceInitOptions } from "./auth-service.factory";
 import { cipherServiceFactory, CipherServiceInitOptions } from "./cipher-service.factory";
@@ -59,7 +59,7 @@ export function vaultTimeoutServiceFactory(
     "vaultTimeoutService",
     opts,
     async () =>
-      new VaultTimeoutService(
+      new BrowserVaultTimeoutService(
         await cipherServiceFactory(cache, opts),
         await folderServiceFactory(cache, opts),
         await collectionServiceFactory(cache, opts),

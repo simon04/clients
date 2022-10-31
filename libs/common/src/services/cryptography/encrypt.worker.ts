@@ -2,17 +2,17 @@ import { Jsonify } from "type-fest";
 
 import { Decryptable } from "../../interfaces/decryptable.interface";
 import { SymmetricCryptoKey } from "../../models/domain/symmetric-crypto-key";
-import { ConsoleLogService } from "../../services/consoleLog.service";
-import { ContainerService } from "../../services/container.service";
-import { WebCryptoFunctionService } from "../../services/webCryptoFunction.service";
+import { ConsoleLogService } from "../console-log.service";
+import { ContainerService } from "../container.service";
+import { WebCryptoFunctionService } from "../web-crypto-function.service";
 
-import { EncryptServiceImplementation } from "./encrypt.service.implementation";
+import { EncryptServiceImpl } from "./encrypt.service.impl";
 import { getClassInitializer } from "./get-class-initializer";
 
 const workerApi: Worker = self as any;
 
 let inited = false;
-let encryptService: EncryptServiceImplementation;
+let encryptService: EncryptServiceImpl;
 
 /**
  * Bootstrap the worker environment with services required for decryption
@@ -20,7 +20,7 @@ let encryptService: EncryptServiceImplementation;
 export function init() {
   const cryptoFunctionService = new WebCryptoFunctionService(self);
   const logService = new ConsoleLogService(false);
-  encryptService = new EncryptServiceImplementation(cryptoFunctionService, logService, true);
+  encryptService = new EncryptServiceImpl(cryptoFunctionService, logService, true);
 
   const bitwardenContainerService = new ContainerService(null, encryptService);
   bitwardenContainerService.attachToGlobal(self);

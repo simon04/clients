@@ -8,7 +8,7 @@ import { Utils } from "@bitwarden/common/misc/utils";
 import { BrowserApi } from "../browser/browserApi";
 import { AutofillService } from "../services/abstractions/autofill.service";
 import { BrowserEnvironmentService } from "../services/browser-environment.service";
-import BrowserPlatformUtilsService from "../services/browserPlatformUtils.service";
+import BrowserPlatformUtilsService from "../services/browser-platform-utils.service";
 
 import MainBackground from "./main.background";
 import LockedVaultPendingNotificationsItem from "./models/lockedVaultPendingNotificationsItem";

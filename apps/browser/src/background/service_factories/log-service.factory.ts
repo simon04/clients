@@ -1,6 +1,6 @@
 import { LogService } from "@bitwarden/common/abstractions/log.service";
 import { LogLevelType } from "@bitwarden/common/enums/logLevelType";
-import { ConsoleLogService } from "@bitwarden/common/services/consoleLog.service";
+import { ConsoleLogService } from "@bitwarden/common/services/console-log.service";
 
 import { CachedServices, factory, FactoryOptions } from "./factory-options";
 

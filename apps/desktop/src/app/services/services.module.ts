@@ -11,53 +11,50 @@ import {
 } from "@bitwarden/angular/services/injection-tokens";
 import { JslibServicesModule } from "@bitwarden/angular/services/jslib-services.module";
 import { AbstractThemingService } from "@bitwarden/angular/services/theming/theming.service.abstraction";
-import { AuthService as AuthServiceAbstraction } from "@bitwarden/common/abstractions/auth.service";
-import { BroadcasterService as BroadcasterServiceAbstraction } from "@bitwarden/common/abstractions/broadcaster.service";
-import { CipherService as CipherServiceAbstraction } from "@bitwarden/common/abstractions/cipher.service";
-import { CryptoService as CryptoServiceAbstraction } from "@bitwarden/common/abstractions/crypto.service";
-import { CryptoFunctionService as CryptoFunctionServiceAbstraction } from "@bitwarden/common/abstractions/cryptoFunction.service";
+import { AuthService } from "@bitwarden/common/abstractions/auth.service";
+import { BroadcasterService } from "@bitwarden/common/abstractions/broadcaster.service";
+import { CipherService } from "@bitwarden/common/abstractions/cipher.service";
+import { CryptoService } from "@bitwarden/common/abstractions/crypto.service";
+import { CryptoFunctionService } from "@bitwarden/common/abstractions/cryptoFunction.service";
 import { EncryptService } from "@bitwarden/common/abstractions/encrypt.service";
 import { FileDownloadService } from "@bitwarden/common/abstractions/fileDownload/fileDownload.service";
-import { I18nService as I18nServiceAbstraction } from "@bitwarden/common/abstractions/i18n.service";
-import {
-  LogService,
-  LogService as LogServiceAbstraction,
-} from "@bitwarden/common/abstractions/log.service";
-import { LoginService as LoginServiceAbstraction } from "@bitwarden/common/abstractions/login.service";
-import { MessagingService as MessagingServiceAbstraction } from "@bitwarden/common/abstractions/messaging.service";
-import { PasswordGenerationService as PasswordGenerationServiceAbstraction } from "@bitwarden/common/abstractions/passwordGeneration.service";
-import { PasswordRepromptService as PasswordRepromptServiceAbstraction } from "@bitwarden/common/abstractions/passwordReprompt.service";
-import { PlatformUtilsService as PlatformUtilsServiceAbstraction } from "@bitwarden/common/abstractions/platformUtils.service";
-import { PolicyService as PolicyServiceAbstraction } from "@bitwarden/common/abstractions/policy/policy.service.abstraction";
-import { StateService as StateServiceAbstraction } from "@bitwarden/common/abstractions/state.service";
-import { StateMigrationService as StateMigrationServiceAbstraction } from "@bitwarden/common/abstractions/stateMigration.service";
+import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
+import { LogService } from "@bitwarden/common/abstractions/log.service";
+import { LoginService } from "@bitwarden/common/abstractions/login.service";
+import { MessagingService } from "@bitwarden/common/abstractions/messaging.service";
+import { PasswordGenerationService } from "@bitwarden/common/abstractions/passwordGeneration.service";
+import { PasswordRepromptService } from "@bitwarden/common/abstractions/passwordReprompt.service";
+import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
+import { PolicyService } from "@bitwarden/common/abstractions/policy/policy.service.abstraction";
+import { StateService } from "@bitwarden/common/abstractions/state.service";
+import { StateMigrationService } from "@bitwarden/common/abstractions/stateMigration.service";
 import { AbstractStorageService } from "@bitwarden/common/abstractions/storage.service";
-import { SystemService as SystemServiceAbstraction } from "@bitwarden/common/abstractions/system.service";
+import { SystemService } from "@bitwarden/common/abstractions/system.service";
 import { ClientType } from "@bitwarden/common/enums/clientType";
 import { StateFactory } from "@bitwarden/common/factories/stateFactory";
 import { GlobalState } from "@bitwarden/common/models/domain/global-state";
-import { LoginService } from "@bitwarden/common/services/login.service";
-import { MemoryStorageService } from "@bitwarden/common/services/memoryStorage.service";
-import { SystemService } from "@bitwarden/common/services/system.service";
-import { ElectronCryptoService } from "@bitwarden/electron/services/electronCrypto.service";
-import { ElectronLogService } from "@bitwarden/electron/services/electronLog.service";
-import { ElectronPlatformUtilsService } from "@bitwarden/electron/services/electronPlatformUtils.service";
-import { ElectronRendererMessagingService } from "@bitwarden/electron/services/electronRendererMessaging.service";
-import { ElectronRendererSecureStorageService } from "@bitwarden/electron/services/electronRendererSecureStorage.service";
-import { ElectronRendererStorageService } from "@bitwarden/electron/services/electronRendererStorage.service";
+import { LoginServiceImpl } from "@bitwarden/common/services/login.service.impl";
+import { MemoryStorageService } from "@bitwarden/common/services/memory-storage.service";
+import { SystemServiceImpl } from "@bitwarden/common/services/system.service.impl";
+import { ElectronCryptoService } from "@bitwarden/electron/services/electron-crypto.service";
+import { ElectronLogService } from "@bitwarden/electron/services/electron-log.service";
+import { ElectronPlatformUtilsService } from "@bitwarden/electron/services/electron-platform-utils.service";
+import { ElectronRendererMessagingService } from "@bitwarden/electron/services/electron-renderer-messaging.service";
+import { ElectronRendererSecureStorageService } from "@bitwarden/electron/services/electron-renderer-secure-storage.service";
+import { ElectronRendererStorageService } from "@bitwarden/electron/services/electron-renderer-storage.service";
 
 import { Account } from "../../models/account";
-import { EncryptedMessageHandlerService } from "../../services/encryptedMessageHandlerService";
-import { I18nService } from "../../services/i18n.service";
-import { NativeMessageHandlerService } from "../../services/nativeMessageHandler.service";
-import { NativeMessagingService } from "../../services/nativeMessaging.service";
-import { PasswordRepromptService } from "../../services/passwordReprompt.service";
-import { StateService } from "../../services/state.service";
+import { DesktopI18nService } from "../../services/desktop-i18n.service";
+import { DesktopPasswordRepromptService } from "../../services/desktop-password-reprompt.service";
+import { DesktopStateService } from "../../services/desktop-state.service";
+import { EncryptedMessageHandlerService } from "../../services/encrypted-message-handler.service";
+import { NativeMessageHandlerService } from "../../services/native-message-handler.service";
+import { NativeMessagingService } from "../../services/native-messaging.service";
 import { LoginGuard } from "../guards/login.guard";
 import { SearchBarService } from "../layout/search/search-bar.service";
 
+import { DesktopFileDownloadService } from "./desktop-file-download.service";
 import { DesktopThemingService } from "./desktop-theming.service";
-import { DesktopFileDownloadService } from "./desktopFileDownloadService";
 import { InitService } from "./init.service";
 
 const RELOAD_CALLBACK = new InjectionToken<() => any>("RELOAD_CALLBACK");
@@ -88,61 +85,45 @@ const RELOAD_CALLBACK = new InjectionToken<() => any>("RELOAD_CALLBACK");
       provide: RELOAD_CALLBACK,
       useValue: null,
     },
-    { provide: LogServiceAbstraction, useClass: ElectronLogService, deps: [] },
+    { provide: LogService, useClass: ElectronLogService, deps: [] },
     {
-      provide: PlatformUtilsServiceAbstraction,
+      provide: PlatformUtilsService,
       useClass: ElectronPlatformUtilsService,
-      deps: [
-        I18nServiceAbstraction,
-        MessagingServiceAbstraction,
-        CLIENT_TYPE,
-        StateServiceAbstraction,
-      ],
+      deps: [I18nService, MessagingService, CLIENT_TYPE, StateService],
     },
     {
-      provide: I18nServiceAbstraction,
-      useClass: I18nService,
+      provide: I18nService,
+      useClass: DesktopI18nService,
       deps: [SYSTEM_LANGUAGE, LOCALES_DIRECTORY],
     },
     {
-      provide: MessagingServiceAbstraction,
+      provide: MessagingService,
       useClass: ElectronRendererMessagingService,
-      deps: [BroadcasterServiceAbstraction],
+      deps: [BroadcasterService],
     },
     { provide: AbstractStorageService, useClass: ElectronRendererStorageService },
     { provide: SECURE_STORAGE, useClass: ElectronRendererSecureStorageService },
     { provide: MEMORY_STORAGE, useClass: MemoryStorageService },
     {
-      provide: CryptoServiceAbstraction,
+      provide: CryptoService,
       useClass: ElectronCryptoService,
-      deps: [
-        CryptoFunctionServiceAbstraction,
-        EncryptService,
-        PlatformUtilsServiceAbstraction,
-        LogServiceAbstraction,
-        StateServiceAbstraction,
-      ],
+      deps: [CryptoFunctionService, EncryptService, PlatformUtilsService, LogService, StateService],
     },
     {
-      provide: SystemServiceAbstraction,
-      useClass: SystemService,
-      deps: [
-        MessagingServiceAbstraction,
-        PlatformUtilsServiceAbstraction,
-        RELOAD_CALLBACK,
-        StateServiceAbstraction,
-      ],
+      provide: SystemService,
+      useClass: SystemServiceImpl,
+      deps: [MessagingService, PlatformUtilsService, RELOAD_CALLBACK, StateService],
     },
-    { provide: PasswordRepromptServiceAbstraction, useClass: PasswordRepromptService },
+    { provide: PasswordRepromptService, useClass: DesktopPasswordRepromptService },
     {
-      provide: StateServiceAbstraction,
-      useClass: StateService,
+      provide: StateService,
+      useClass: DesktopStateService,
       deps: [
         AbstractStorageService,
         SECURE_STORAGE,
         MEMORY_STORAGE,
         LogService,
-        StateMigrationServiceAbstraction,
+        StateMigrationService,
         STATE_FACTORY,
         STATE_SERVICE_USE_CACHE,
       ],
@@ -158,28 +139,28 @@ const RELOAD_CALLBACK = new InjectionToken<() => any>("RELOAD_CALLBACK");
     {
       provide: EncryptedMessageHandlerService,
       deps: [
-        StateServiceAbstraction,
-        AuthServiceAbstraction,
-        CipherServiceAbstraction,
-        PolicyServiceAbstraction,
-        MessagingServiceAbstraction,
-        PasswordGenerationServiceAbstraction,
+        StateService,
+        AuthService,
+        CipherService,
+        PolicyService,
+        MessagingService,
+        PasswordGenerationService,
       ],
     },
     {
       provide: NativeMessageHandlerService,
       deps: [
-        StateServiceAbstraction,
-        CryptoServiceAbstraction,
-        CryptoFunctionServiceAbstraction,
-        MessagingServiceAbstraction,
-        I18nServiceAbstraction,
+        StateService,
+        CryptoService,
+        CryptoFunctionService,
+        MessagingService,
+        I18nService,
         EncryptedMessageHandlerService,
       ],
     },
     {
-      provide: LoginServiceAbstraction,
-      useClass: LoginService,
+      provide: LoginService,
+      useClass: LoginServiceImpl,
     },
   ],
 })

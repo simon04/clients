@@ -5,10 +5,10 @@ import { EncryptService } from "@bitwarden/common/abstractions/encrypt.service";
 import { LogService } from "@bitwarden/common/abstractions/log.service";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { StateService } from "@bitwarden/common/abstractions/state.service";
-import { CryptoService } from "@bitwarden/common/services/crypto.service";
+import { CryptoServiceImpl } from "@bitwarden/common/services/crypto.service.impl";
 
 describe("cryptoService", () => {
-  let cryptoService: CryptoService;
+  let cryptoService: CryptoServiceImpl;
 
   const cryptoFunctionService = mock<CryptoFunctionService>();
   const encryptService = mock<EncryptService>();
@@ -23,7 +23,7 @@ describe("cryptoService", () => {
     mockReset(logService);
     mockReset(stateService);
 
-    cryptoService = new CryptoService(
+    cryptoService = new CryptoServiceImpl(
       cryptoFunctionService,
       encryptService,
       platformUtilService,

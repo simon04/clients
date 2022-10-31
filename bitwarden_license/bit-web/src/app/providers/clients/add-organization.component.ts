@@ -7,7 +7,7 @@ import { ValidationService } from "@bitwarden/common/abstractions/validation.ser
 import { Organization } from "@bitwarden/common/models/domain/organization";
 import { Provider } from "@bitwarden/common/models/domain/provider";
 
-import { WebProviderService } from "../services/webProvider.service";
+import { WebProviderService } from "../services/web-provider.service";
 
 @Component({
   selector: "provider-add-organization",

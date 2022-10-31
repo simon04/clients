@@ -1,3 +1,3 @@
 export * from "./account";
 export * from "./global-state";
-export * from "./state.service";
+export * from "./web-state.service";

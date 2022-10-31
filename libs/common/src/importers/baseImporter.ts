@@ -13,7 +13,7 @@ import { FolderView } from "../models/view/folder.view";
 import { LoginUriView } from "../models/view/login-uri.view";
 import { LoginView } from "../models/view/login.view";
 import { SecureNoteView } from "../models/view/secure-note.view";
-import { ConsoleLogService } from "../services/consoleLog.service";
+import { ConsoleLogService } from "../services/console-log.service";
 
 export abstract class BaseImporter {
   organizationId: string = null;

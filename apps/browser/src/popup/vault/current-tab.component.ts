@@ -19,7 +19,7 @@ import { CipherView } from "@bitwarden/common/models/view/cipher.view";
 
 import { BrowserApi } from "../../browser/browserApi";
 import { AutofillService } from "../../services/abstractions/autofill.service";
-import { VaultFilterService } from "../../services/vaultFilter.service";
+import { BrowserVaultFilterService } from "../../services/browser-vault-filter.service";
 import { PopupUtilsService } from "../services/popup-utils.service";
 
 const BroadcasterSubscriptionId = "CurrentTabComponent";
@@ -65,7 +65,7 @@ export class CurrentTabComponent implements OnInit, OnDestroy {
     private stateService: StateService,
     private passwordRepromptService: PasswordRepromptService,
     private organizationService: OrganizationService,
-    private vaultFilterService: VaultFilterService
+    private vaultFilterService: BrowserVaultFilterService
   ) {}
 
   async ngOnInit() {

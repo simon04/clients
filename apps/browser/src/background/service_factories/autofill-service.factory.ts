@@ -1,5 +1,5 @@
 import { AutofillService as AbstractAutoFillService } from "../../services/abstractions/autofill.service";
-import AutofillService from "../../services/autofill.service";
+import AutofillServiceImpl from "../../services/autofill.service.impl";
 
 import { cipherServiceFactory, CipherServiceInitOptions } from "./cipher-service.factory";
 import { EventServiceInitOptions, eventServiceFactory } from "./event-service.factory";
@@ -26,7 +26,7 @@ export function autofillServiceFactory(
     "autofillService",
     opts,
     async () =>
-      new AutofillService(
+      new AutofillServiceImpl(
         await cipherServiceFactory(cache, opts),
         await stateServiceFactory(cache, opts),
         await totpServiceFactory(cache, opts),

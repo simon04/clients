@@ -1,5 +1,5 @@
-import { VaultTimeoutSettingsService as AbstractVaultTimeoutSettingsService } from "@bitwarden/common/abstractions/vaultTimeout/vaultTimeoutSettings.service";
-import { VaultTimeoutSettingsService } from "@bitwarden/common/services/vaultTimeout/vaultTimeoutSettings.service";
+import { VaultTimeoutSettingsService } from "@bitwarden/common/abstractions/vaultTimeout/vaultTimeoutSettings.service";
+import { VaultTimeoutSettingsServiceImpl } from "@bitwarden/common/services/vault-timeout/vault-timeout-settings.service.impl";
 
 import { cryptoServiceFactory, CryptoServiceInitOptions } from "./crypto-service.factory";
 import { CachedServices, factory, FactoryOptions } from "./factory-options";
@@ -19,15 +19,15 @@ export type VaultTimeoutSettingsServiceInitOptions = VaultTimeoutSettingsService
   StateServiceInitOptions;
 
 export function vaultTimeoutSettingsServiceFactory(
-  cache: { vaultTimeoutSettingsService?: AbstractVaultTimeoutSettingsService } & CachedServices,
+  cache: { vaultTimeoutSettingsService?: VaultTimeoutSettingsService } & CachedServices,
   opts: VaultTimeoutSettingsServiceInitOptions
-): Promise<AbstractVaultTimeoutSettingsService> {
+): Promise<VaultTimeoutSettingsService> {
   return factory(
     cache,
     "vaultTimeoutSettingsService",
     opts,
     async () =>
-      new VaultTimeoutSettingsService(
+      new VaultTimeoutSettingsServiceImpl(
         await cryptoServiceFactory(cache, opts),
         await tokenServiceFactory(cache, opts),
         await policyServiceFactory(cache, opts),

@@ -1,5 +1,5 @@
 import { CryptoFunctionService } from "@bitwarden/common/abstractions/cryptoFunction.service";
-import { WebCryptoFunctionService } from "@bitwarden/common/services/webCryptoFunction.service";
+import { WebCryptoFunctionService } from "@bitwarden/common/services/web-crypto-function.service";
 
 import { CachedServices, factory, FactoryOptions } from "./factory-options";
 

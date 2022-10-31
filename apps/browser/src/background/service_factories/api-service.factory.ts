@@ -1,5 +1,5 @@
 import { ApiService as AbstractApiService } from "@bitwarden/common/abstractions/api.service";
-import { ApiService } from "@bitwarden/common/services/api.service";
+import { ApiServiceImpl } from "@bitwarden/common/services/api.service.impl";
 
 import { AppIdServiceInitOptions, appIdServiceFactory } from "./app-id-service.factory";
 import {
@@ -35,7 +35,7 @@ export function apiServiceFactory(
     "apiService",
     opts,
     async () =>
-      new ApiService(
+      new ApiServiceImpl(
         await tokenServiceFactory(cache, opts),
         await platformUtilsServiceFactory(cache, opts),
         await environmentServiceFactory(cache, opts),

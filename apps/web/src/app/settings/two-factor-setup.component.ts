@@ -9,7 +9,7 @@ import { PolicyService } from "@bitwarden/common/abstractions/policy/policy.serv
 import { StateService } from "@bitwarden/common/abstractions/state.service";
 import { PolicyType } from "@bitwarden/common/enums/policyType";
 import { TwoFactorProviderType } from "@bitwarden/common/enums/twoFactorProviderType";
-import { TwoFactorProviders } from "@bitwarden/common/services/twoFactor.service";
+import { TwoFactorProviders } from "@bitwarden/common/services/two-factor.service.impl";
 
 import { TwoFactorAuthenticatorComponent } from "./two-factor-authenticator.component";
 import { TwoFactorDuoComponent } from "./two-factor-duo.component";

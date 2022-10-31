@@ -14,11 +14,11 @@ import { SyncService as SyncServiceAbstraction } from "@bitwarden/common/abstrac
 import { TwoFactorService as TwoFactorServiceAbstraction } from "@bitwarden/common/abstractions/twoFactor.service";
 import { VaultTimeoutService as VaultTimeoutServiceAbstraction } from "@bitwarden/common/abstractions/vaultTimeout/vaultTimeout.service";
 import { ContainerService } from "@bitwarden/common/services/container.service";
-import { EventService } from "@bitwarden/common/services/event.service";
-import { VaultTimeoutService } from "@bitwarden/common/services/vaultTimeout/vaultTimeout.service";
+import { EventServiceImpl } from "@bitwarden/common/services/event.service.impl";
+import { VaultTimeoutServiceImpl } from "@bitwarden/common/services/vault-timeout/vault-timeout.service.impl";
 
-import { I18nService } from "../../services/i18n.service";
-import { NativeMessagingService } from "../../services/nativeMessaging.service";
+import { DesktopI18nService } from "../../services/desktop-i18n.service";
+import { NativeMessagingService } from "../../services/native-messaging.service";
 
 @Injectable()
 export class InitService {
@@ -45,10 +45,10 @@ export class InitService {
       await this.stateService.init();
       await this.environmentService.setUrlsFromStorage();
       this.syncService.fullSync(true);
-      (this.vaultTimeoutService as VaultTimeoutService).init(true);
+      (this.vaultTimeoutService as VaultTimeoutServiceImpl).init(true);
       const locale = await this.stateService.getLocale();
-      await (this.i18nService as I18nService).init(locale);
-      (this.eventService as EventService).init(true);
+      await (this.i18nService as DesktopI18nService).init(locale);
+      (this.eventService as EventServiceImpl).init(true);
       this.twoFactorService.init();
       setTimeout(() => this.notificationsService.init(), 3000);
       const htmlEl = this.win.document.documentElement;

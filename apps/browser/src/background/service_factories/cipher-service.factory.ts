@@ -1,6 +1,6 @@
 import { CipherService as AbstractCipherService } from "@bitwarden/common/abstractions/cipher.service";
 import { SearchService } from "@bitwarden/common/abstractions/search.service";
-import { CipherService } from "@bitwarden/common/services/cipher.service";
+import { CipherServiceImpl } from "@bitwarden/common/services/cipher.service.impl";
 
 import { apiServiceFactory, ApiServiceInitOptions } from "./api-service.factory";
 import { cryptoServiceFactory, CryptoServiceInitOptions } from "./crypto-service.factory";
@@ -40,7 +40,7 @@ export function cipherServiceFactory(
     "cipherService",
     opts,
     async () =>
-      new CipherService(
+      new CipherServiceImpl(
         await cryptoServiceFactory(cache, opts),
         await settingsServiceFactory(cache, opts),
         await apiServiceFactory(cache, opts),

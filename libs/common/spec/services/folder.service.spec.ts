@@ -10,17 +10,17 @@ import { FolderData } from "@bitwarden/common/models/data/folder.data";
 import { EncString } from "@bitwarden/common/models/domain/enc-string";
 import { FolderView } from "@bitwarden/common/models/view/folder.view";
 import { ContainerService } from "@bitwarden/common/services/container.service";
-import { FolderService } from "@bitwarden/common/services/folder/folder.service";
-import { StateService } from "@bitwarden/common/services/state.service";
+import { FolderServiceImpl } from "@bitwarden/common/services/folder/folder.service.impl";
+import { StateServiceImpl } from "@bitwarden/common/services/state.service.impl";
 
 describe("Folder Service", () => {
-  let folderService: FolderService;
+  let folderService: FolderServiceImpl;
 
   let cryptoService: SubstituteOf<CryptoService>;
   let encryptService: SubstituteOf<EncryptService>;
   let i18nService: SubstituteOf<I18nService>;
   let cipherService: SubstituteOf<CipherService>;
-  let stateService: SubstituteOf<StateService>;
+  let stateService: SubstituteOf<StateServiceImpl>;
   let activeAccount: BehaviorSubject<string>;
   let activeAccountUnlocked: BehaviorSubject<boolean>;
 
@@ -40,7 +40,7 @@ describe("Folder Service", () => {
     stateService.activeAccountUnlocked$.returns(activeAccountUnlocked);
     (window as any).bitwardenContainerService = new ContainerService(cryptoService, encryptService);
 
-    folderService = new FolderService(cryptoService, i18nService, cipherService, stateService);
+    folderService = new FolderServiceImpl(cryptoService, i18nService, cipherService, stateService);
   });
 
   it("encrypt", async () => {

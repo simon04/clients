@@ -1,5 +1,5 @@
-import { OrganizationService as AbstractOrganizationService } from "@bitwarden/common/abstractions/organization/organization.service.abstraction";
-import { OrganizationService } from "@bitwarden/common/services/organization/organization.service";
+import { OrganizationService } from "@bitwarden/common/abstractions/organization/organization.service.abstraction";
+import { OrganizationServiceImpl } from "@bitwarden/common/services/organization/organization.service.impl";
 
 import { FactoryOptions, CachedServices, factory } from "./factory-options";
 import { stateServiceFactory, StateServiceInitOptions } from "./state-service.factory";
@@ -15,15 +15,15 @@ export type OrganizationServiceInitOptions = OrganizationServiceFactoryOptions &
   StateServiceInitOptions;
 
 export function organizationServiceFactory(
-  cache: { organizationService?: AbstractOrganizationService } & CachedServices,
+  cache: { organizationService?: OrganizationService } & CachedServices,
   opts: OrganizationServiceInitOptions
-): Promise<AbstractOrganizationService> {
+): Promise<OrganizationService> {
   return factory(
     cache,
     "organizationService",
     opts,
     async () =>
-      new OrganizationService(
+      new OrganizationServiceImpl(
         await stateServiceFactory(cache, opts),
         await syncNotifierServiceFactory(cache, opts)
       )

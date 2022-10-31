@@ -2,7 +2,7 @@ import { mock, MockProxy } from "jest-mock-extended";
 import { BehaviorSubject } from "rxjs";
 
 import { BrowserApi } from "../../browser/browserApi";
-import { StateService } from "../../services/abstractions/state.service";
+import { BrowserStateService } from "../../services/abstractions/browser-state.service";
 
 import { SessionSyncer } from "./session-syncer";
 import { SyncedItemMetadata } from "./sync-item-metadata";
@@ -11,7 +11,7 @@ describe("session syncer", () => {
   const propertyKey = "behaviorSubject";
   const sessionKey = "Test__" + propertyKey;
   const metaData = { propertyKey, sessionKey, initializer: (s: string) => s };
-  let stateService: MockProxy<StateService>;
+  let stateService: MockProxy<BrowserStateService>;
   let sut: SessionSyncer;
   let behaviorSubject: BehaviorSubject<string>;
 
@@ -23,7 +23,7 @@ describe("session syncer", () => {
       manifest_version: 3,
     });
 
-    stateService = mock<StateService>();
+    stateService = mock<BrowserStateService>();
     sut = new SessionSyncer(behaviorSubject, stateService, metaData);
   });
 

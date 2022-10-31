@@ -10,10 +10,10 @@ import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { BitwardenPasswordProtectedImporter } from "@bitwarden/common/importers/bitwardenPasswordProtectedImporter";
 import { Importer } from "@bitwarden/common/importers/importer";
 import { Utils } from "@bitwarden/common/misc/utils";
-import { ImportService } from "@bitwarden/common/services/import.service";
+import { ImportServiceImpl } from "@bitwarden/common/services/import.service.impl";
 
 describe("ImportService", () => {
-  let importService: ImportService;
+  let importService: ImportServiceImpl;
   let cipherService: SubstituteOf<CipherService>;
   let folderService: SubstituteOf<FolderService>;
   let apiService: SubstituteOf<ApiService>;
@@ -29,7 +29,7 @@ describe("ImportService", () => {
     collectionService = Substitute.for<CollectionService>();
     cryptoService = Substitute.for<CryptoService>();
 
-    importService = new ImportService(
+    importService = new ImportServiceImpl(
       cipherService,
       folderService,
       apiService,

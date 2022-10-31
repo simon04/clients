@@ -14,7 +14,7 @@ import { Cipher } from "@bitwarden/common/models/domain/cipher";
 import { EncArrayBuffer } from "@bitwarden/common/models/domain/enc-array-buffer";
 import { EncString } from "@bitwarden/common/models/domain/enc-string";
 import { SymmetricCryptoKey } from "@bitwarden/common/models/domain/symmetric-crypto-key";
-import { CipherService } from "@bitwarden/common/services/cipher.service";
+import { CipherServiceImpl } from "@bitwarden/common/services/cipher.service.impl";
 
 const ENCRYPTED_TEXT = "This data has been encrypted";
 const ENCRYPTED_BYTES = Substitute.for<EncArrayBuffer>();
@@ -30,7 +30,7 @@ describe("Cipher Service", () => {
   let logService: SubstituteOf<LogService>;
   let encryptService: SubstituteOf<EncryptService>;
 
-  let cipherService: CipherService;
+  let cipherService: CipherServiceImpl;
 
   beforeEach(() => {
     cryptoService = Substitute.for<CryptoService>();
@@ -46,7 +46,7 @@ describe("Cipher Service", () => {
     cryptoService.encryptToBytes(Arg.any(), Arg.any()).resolves(ENCRYPTED_BYTES);
     cryptoService.encrypt(Arg.any(), Arg.any()).resolves(new EncString(ENCRYPTED_TEXT));
 
-    cipherService = new CipherService(
+    cipherService = new CipherServiceImpl(
       cryptoService,
       settingsService,
       apiService,

@@ -22,7 +22,7 @@ import { PasswordGeneratorHistoryComponent } from "./generator/password-generato
 import { SendAddEditComponent } from "./send/send-add-edit.component";
 import { SendGroupingsComponent } from "./send/send-groupings.component";
 import { SendTypeComponent } from "./send/send-type.component";
-import { DebounceNavigationService } from "./services/debounceNavigationService";
+import { DebounceNavigationService } from "./services/debounce-navigation.service";
 import { ExcludedDomainsComponent } from "./settings/excluded-domains.component";
 import { ExportComponent } from "./settings/export.component";
 import { FolderAddEditComponent } from "./settings/folder-add-edit.component";

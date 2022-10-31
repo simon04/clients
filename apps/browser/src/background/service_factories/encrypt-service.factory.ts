@@ -1,5 +1,5 @@
-import { EncryptServiceImplementation } from "@bitwarden/common/services/cryptography/encrypt.service.implementation";
-import { MultithreadEncryptServiceImplementation } from "@bitwarden/common/services/cryptography/multithread-encrypt.service.implementation";
+import { EncryptServiceImpl } from "@bitwarden/common/services/cryptography/encrypt.service.impl";
+import { MultithreadEncryptServiceImpl } from "@bitwarden/common/services/cryptography/multithread-encrypt.service.impl";
 
 import { flagEnabled } from "../../flags";
 
@@ -21,17 +21,17 @@ export type EncryptServiceInitOptions = EncryptServiceFactoryOptions &
   LogServiceInitOptions;
 
 export function encryptServiceFactory(
-  cache: { encryptService?: EncryptServiceImplementation } & CachedServices,
+  cache: { encryptService?: EncryptServiceImpl } & CachedServices,
   opts: EncryptServiceInitOptions
-): Promise<EncryptServiceImplementation> {
+): Promise<EncryptServiceImpl> {
   return factory(cache, "encryptService", opts, async () =>
     flagEnabled("multithreadDecryption")
-      ? new MultithreadEncryptServiceImplementation(
+      ? new MultithreadEncryptServiceImpl(
           await cryptoFunctionServiceFactory(cache, opts),
           await logServiceFactory(cache, opts),
           opts.encryptServiceOptions.logMacFailures
         )
-      : new EncryptServiceImplementation(
+      : new EncryptServiceImpl(
           await cryptoFunctionServiceFactory(cache, opts),
           await logServiceFactory(cache, opts),
           opts.encryptServiceOptions.logMacFailures

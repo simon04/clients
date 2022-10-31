@@ -18,7 +18,7 @@ import { WebAuthnIFrame } from "@bitwarden/common/misc/webauthn_iframe";
 import { AuthResult } from "@bitwarden/common/models/domain/auth-result";
 import { TokenTwoFactorRequest } from "@bitwarden/common/models/request/identity-token/token-two-factor.request";
 import { TwoFactorEmailRequest } from "@bitwarden/common/models/request/two-factor-email.request";
-import { TwoFactorProviders } from "@bitwarden/common/services/twoFactor.service";
+import { TwoFactorProviders } from "@bitwarden/common/services/two-factor.service.impl";
 
 import { CaptchaProtectedComponent } from "./captchaProtected.component";
 

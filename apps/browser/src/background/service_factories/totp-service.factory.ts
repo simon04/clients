@@ -1,5 +1,5 @@
-import { TotpService as AbstractTotpService } from "@bitwarden/common/abstractions/totp.service";
-import { TotpService } from "@bitwarden/common/services/totp.service";
+import { TotpService } from "@bitwarden/common/abstractions/totp.service";
+import { TotpServiceImpl } from "@bitwarden/common/services/totp.service.impl";
 
 import {
   cryptoFunctionServiceFactory,
@@ -15,15 +15,15 @@ export type TotpServiceInitOptions = TotpServiceOptions &
   LogServiceInitOptions;
 
 export function totpServiceFactory(
-  cache: { totpService?: AbstractTotpService } & CachedServices,
+  cache: { totpService?: TotpService } & CachedServices,
   opts: TotpServiceInitOptions
-): Promise<AbstractTotpService> {
+): Promise<TotpService> {
   return factory(
     cache,
     "totpService",
     opts,
     async () =>
-      new TotpService(
+      new TotpServiceImpl(
         await cryptoFunctionServiceFactory(cache, opts),
         await logServiceFactory(cache, opts)
       )

@@ -1,7 +1,7 @@
 import { I18nService as AbstractI18nService } from "@bitwarden/common/abstractions/i18n.service";
-import { I18nService as BaseI18nService } from "@bitwarden/common/services/i18n.service";
+import { I18nServiceImpl } from "@bitwarden/common/services/i18n.service.impl";
 
-import I18nService from "../../services/i18n.service";
+import BrowserI18nService from "../../services/browser-i18n.service";
 
 import { FactoryOptions, CachedServices, factory } from "./factory-options";
 
@@ -21,10 +21,10 @@ export async function i18nServiceFactory(
     cache,
     "i18nService",
     opts,
-    () => new I18nService(opts.i18nServiceOptions.systemLanguage)
+    () => new BrowserI18nService(opts.i18nServiceOptions.systemLanguage)
   );
-  if (!(service as BaseI18nService as any).inited) {
-    await (service as BaseI18nService).init();
+  if (!(service as I18nServiceImpl as any).inited) {
+    await (service as I18nServiceImpl).init();
   }
   return service;
 }

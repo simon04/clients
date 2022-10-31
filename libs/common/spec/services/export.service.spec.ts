@@ -16,7 +16,7 @@ import { Login } from "@bitwarden/common/models/domain/login";
 import { CipherWithIdExport as CipherExport } from "@bitwarden/common/models/export/cipher-with-ids.export";
 import { CipherView } from "@bitwarden/common/models/view/cipher.view";
 import { LoginView } from "@bitwarden/common/models/view/login.view";
-import { ExportService } from "@bitwarden/common/services/export.service";
+import { ExportServiceImpl } from "@bitwarden/common/services/export.service.impl";
 
 import { BuildTestObject, GetUniqueString } from "../utils";
 
@@ -85,7 +85,7 @@ function expectEqualCiphers(ciphers: CipherView[] | Cipher[], jsonResult: string
 }
 
 describe("ExportService", () => {
-  let exportService: ExportService;
+  let exportService: ExportServiceImpl;
   let apiService: SubstituteOf<ApiService>;
   let cryptoFunctionService: SubstituteOf<CryptoFunctionService>;
   let cipherService: SubstituteOf<CipherService>;
@@ -102,7 +102,7 @@ describe("ExportService", () => {
     folderService.folderViews$.returns(new BehaviorSubject([]));
     folderService.folders$.returns(new BehaviorSubject([]));
 
-    exportService = new ExportService(
+    exportService = new ExportServiceImpl(
       folderService,
       cipherService,
       apiService,

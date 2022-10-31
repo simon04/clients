@@ -1,5 +1,5 @@
-import { SearchService as AbstractSearchService } from "@bitwarden/common/abstractions/search.service";
-import { SearchService } from "@bitwarden/common/services/search.service";
+import { SearchService } from "@bitwarden/common/abstractions/search.service";
+import { SearchServiceImpl } from "@bitwarden/common/services/search.service.impl";
 
 import { cipherServiceFactory, CipherServiceInitOptions } from "./cipher-service.factory";
 import { CachedServices, factory, FactoryOptions } from "./factory-options";
@@ -14,15 +14,15 @@ export type SearchServiceInitOptions = SearchServiceFactoryOptions &
   I18nServiceInitOptions;
 
 export function searchServiceFactory(
-  cache: { searchService?: AbstractSearchService } & CachedServices,
+  cache: { searchService?: SearchService } & CachedServices,
   opts: SearchServiceInitOptions
-): Promise<AbstractSearchService> {
+): Promise<SearchService> {
   return factory(
     cache,
     "searchService",
     opts,
     async () =>
-      new SearchService(
+      new SearchServiceImpl(
         await cipherServiceFactory(cache, opts),
         await logServiceFactory(cache, opts),
         await i18nServiceFactory(cache, opts)

@@ -1,5 +1,5 @@
-import { TwoFactorService as AbstractTwoFactorService } from "@bitwarden/common/abstractions/twoFactor.service";
-import { TwoFactorService } from "@bitwarden/common/services/twoFactor.service";
+import { TwoFactorService } from "@bitwarden/common/abstractions/twoFactor.service";
+import { TwoFactorServiceImpl } from "@bitwarden/common/services/two-factor.service.impl";
 
 import { FactoryOptions, CachedServices, factory } from "./factory-options";
 import { I18nServiceInitOptions, i18nServiceFactory } from "./i18n-service.factory";
@@ -15,15 +15,15 @@ export type TwoFactorServiceInitOptions = TwoFactorServiceFactoryOptions &
   PlatformUtilsServiceInitOptions;
 
 export async function twoFactorServiceFactory(
-  cache: { twoFactorService?: AbstractTwoFactorService } & CachedServices,
+  cache: { twoFactorService?: TwoFactorService } & CachedServices,
   opts: TwoFactorServiceInitOptions
-): Promise<AbstractTwoFactorService> {
+): Promise<TwoFactorService> {
   const service = await factory(
     cache,
     "twoFactorService",
     opts,
     async () =>
-      new TwoFactorService(
+      new TwoFactorServiceImpl(
         await i18nServiceFactory(cache, opts),
         await platformUtilsServiceFactory(cache, opts)
       )

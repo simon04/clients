@@ -17,14 +17,14 @@ import { ResetPasswordPolicyOptions } from "@bitwarden/common/models/domain/rese
 import { ListResponse } from "@bitwarden/common/models/response/list.response";
 import { PolicyResponse } from "@bitwarden/common/models/response/policy.response";
 import { ContainerService } from "@bitwarden/common/services/container.service";
-import { PolicyService } from "@bitwarden/common/services/policy/policy.service";
-import { StateService } from "@bitwarden/common/services/state.service";
+import { PolicyServiceImpl } from "@bitwarden/common/services/policy/policy.service.impl";
+import { StateServiceImpl } from "@bitwarden/common/services/state.service.impl";
 
 describe("PolicyService", () => {
-  let policyService: PolicyService;
+  let policyService: PolicyServiceImpl;
 
   let cryptoService: SubstituteOf<CryptoService>;
-  let stateService: SubstituteOf<StateService>;
+  let stateService: SubstituteOf<StateServiceImpl>;
   let organizationService: SubstituteOf<OrganizationService>;
   let encryptService: SubstituteOf<EncryptService>;
   let activeAccount: BehaviorSubject<string>;
@@ -60,7 +60,7 @@ describe("PolicyService", () => {
     stateService.getUserId().resolves("user");
     (window as any).bitwardenContainerService = new ContainerService(cryptoService, encryptService);
 
-    policyService = new PolicyService(stateService, organizationService);
+    policyService = new PolicyServiceImpl(stateService, organizationService);
   });
 
   afterEach(() => {

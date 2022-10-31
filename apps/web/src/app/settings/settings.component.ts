@@ -6,7 +6,7 @@ import { OrganizationService } from "@bitwarden/common/abstractions/organization
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { TokenService } from "@bitwarden/common/abstractions/token.service";
 
-import { StateService } from "../core";
+import { WebStateService } from "../core";
 
 const BroadcasterSubscriptionId = "SettingsComponent";
 
@@ -26,7 +26,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
     private ngZone: NgZone,
     private platformUtilsService: PlatformUtilsService,
     private organizationService: OrganizationService,
-    private stateService: StateService,
+    private stateService: WebStateService,
     private apiService: ApiService
   ) {}
 

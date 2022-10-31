@@ -7,7 +7,7 @@ import { CryptoService } from "@bitwarden/common/abstractions/crypto.service";
 import { FolderService } from "@bitwarden/common/abstractions/folder/folder.service.abstraction";
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { ImportService as ImportServiceAbstraction } from "@bitwarden/common/abstractions/import.service";
-import { ImportService } from "@bitwarden/common/services/import.service";
+import { ImportServiceImpl } from "@bitwarden/common/services/import.service.impl";
 
 import { LooseComponentsModule, SharedModule } from "../../shared";
 
@@ -22,7 +22,7 @@ import { ImportComponent } from "./import.component";
   providers: [
     {
       provide: ImportServiceAbstraction,
-      useClass: ImportService,
+      useClass: ImportServiceImpl,
       deps: [
         CipherService,
         FolderService,

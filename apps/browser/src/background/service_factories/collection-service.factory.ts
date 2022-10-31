@@ -1,5 +1,5 @@
 import { CollectionService as AbstractCollectionService } from "@bitwarden/common/abstractions/collection.service";
-import { CollectionService } from "@bitwarden/common/services/collection.service";
+import { CollectionServiceImpl } from "@bitwarden/common/services/collection.service.impl";
 
 import { cryptoServiceFactory, CryptoServiceInitOptions } from "./crypto-service.factory";
 import { CachedServices, factory, FactoryOptions } from "./factory-options";
@@ -25,7 +25,7 @@ export function collectionServiceFactory(
     "collectionService",
     opts,
     async () =>
-      new CollectionService(
+      new CollectionServiceImpl(
         await cryptoServiceFactory(cache, opts),
         await i18nServiceFactory(cache, opts),
         await stateServiceFactory(cache, opts)

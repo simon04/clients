@@ -21,7 +21,7 @@ import { OrganizationService } from "@bitwarden/common/abstractions/organization
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { Organization } from "@bitwarden/common/models/domain/organization";
 
-import { VaultFilterService } from "../../services/vaultFilter.service";
+import { BrowserVaultFilterService } from "../../services/browser-vault-filter.service";
 
 @Component({
   selector: "app-vault-select",
@@ -83,7 +83,7 @@ export class VaultSelectComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    private vaultFilterService: VaultFilterService,
+    private vaultFilterService: BrowserVaultFilterService,
     private i18nService: I18nService,
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef,

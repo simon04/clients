@@ -21,8 +21,8 @@ import { FolderView } from "@bitwarden/common/models/view/folder.view";
 
 import { BrowserApi } from "../../browser/browserApi";
 import { BrowserComponentState } from "../../models/browserComponentState";
-import { StateService } from "../../services/abstractions/state.service";
-import { VaultFilterService } from "../../services/vaultFilter.service";
+import { BrowserStateService } from "../../services/abstractions/browser-state.service";
+import { BrowserVaultFilterService } from "../../services/browser-vault-filter.service";
 import { PopupUtilsService } from "../services/popup-utils.service";
 
 const ComponentId = "CiphersComponent";
@@ -60,14 +60,14 @@ export class CiphersComponent extends BaseCiphersComponent implements OnInit, On
     private ngZone: NgZone,
     private broadcasterService: BroadcasterService,
     private changeDetectorRef: ChangeDetectorRef,
-    private stateService: StateService,
+    private stateService: BrowserStateService,
     private popupUtils: PopupUtilsService,
     private i18nService: I18nService,
     private folderService: FolderService,
     private collectionService: CollectionService,
     private platformUtilsService: PlatformUtilsService,
     private cipherService: CipherService,
-    private vaultFilterService: VaultFilterService
+    private vaultFilterService: BrowserVaultFilterService
   ) {
     super(searchService);
     this.applySavedState =

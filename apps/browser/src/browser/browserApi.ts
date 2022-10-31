@@ -1,4 +1,4 @@
-import BrowserPlatformUtilsService from "../services/browserPlatformUtils.service";
+import BrowserPlatformUtilsService from "../services/browser-platform-utils.service";
 import { TabMessage } from "../types/tab-messages";
 
 export class BrowserApi {

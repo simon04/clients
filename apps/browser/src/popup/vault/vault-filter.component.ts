@@ -18,8 +18,8 @@ import { FolderView } from "@bitwarden/common/models/view/folder.view";
 
 import { BrowserApi } from "../../browser/browserApi";
 import { BrowserGroupingsComponentState } from "../../models/browserGroupingsComponentState";
-import { StateService } from "../../services/abstractions/state.service";
-import { VaultFilterService } from "../../services/vaultFilter.service";
+import { BrowserStateService } from "../../services/abstractions/browser-state.service";
+import { BrowserVaultFilterService } from "../../services/browser-vault-filter.service";
 import { PopupUtilsService } from "../services/popup-utils.service";
 
 const ComponentId = "VaultComponent";
@@ -83,8 +83,8 @@ export class VaultFilterComponent implements OnInit, OnDestroy {
     private platformUtilsService: PlatformUtilsService,
     private searchService: SearchService,
     private location: Location,
-    private browserStateService: StateService,
-    private vaultFilterService: VaultFilterService
+    private browserStateService: BrowserStateService,
+    private vaultFilterService: BrowserVaultFilterService
   ) {
     this.noFolderListSize = 100;
   }

@@ -26,7 +26,7 @@ import { ListResponse } from "@bitwarden/common/models/response/list.response";
 import { PolicyResponse } from "@bitwarden/common/models/response/policy.response";
 
 import { flagEnabled } from "../../../utils/flags";
-import { RouterService, StateService } from "../../core";
+import { RouterService, WebStateService } from "../../core";
 
 @Component({
   selector: "app-login",
@@ -55,7 +55,7 @@ export class LoginComponent extends BaseLoginComponent implements OnInit, OnDest
     private policyService: InternalPolicyService,
     logService: LogService,
     ngZone: NgZone,
-    protected stateService: StateService,
+    protected stateService: WebStateService,
     private messagingService: MessagingService,
     private routerService: RouterService,
     formBuilder: FormBuilder,

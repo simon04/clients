@@ -5,15 +5,15 @@ import { BehaviorSubject, firstValueFrom } from "rxjs";
 import { CryptoService } from "@bitwarden/common/abstractions/crypto.service";
 import { EncryptService } from "@bitwarden/common/abstractions/encrypt.service";
 import { ContainerService } from "@bitwarden/common/services/container.service";
-import { SettingsService } from "@bitwarden/common/services/settings.service";
-import { StateService } from "@bitwarden/common/services/state.service";
+import { SettingsServiceImpl } from "@bitwarden/common/services/settings.service.impl";
+import { StateServiceImpl } from "@bitwarden/common/services/state.service.impl";
 
 describe("SettingsService", () => {
-  let settingsService: SettingsService;
+  let settingsService: SettingsServiceImpl;
 
   let cryptoService: SubstituteOf<CryptoService>;
   let encryptService: SubstituteOf<EncryptService>;
-  let stateService: SubstituteOf<StateService>;
+  let stateService: SubstituteOf<StateServiceImpl>;
   let activeAccount: BehaviorSubject<string>;
   let activeAccountUnlocked: BehaviorSubject<boolean>;
 
@@ -29,7 +29,7 @@ describe("SettingsService", () => {
     stateService.activeAccountUnlocked$.returns(activeAccountUnlocked);
     (window as any).bitwardenContainerService = new ContainerService(cryptoService, encryptService);
 
-    settingsService = new SettingsService(stateService);
+    settingsService = new SettingsServiceImpl(stateService);
   });
 
   afterEach(() => {

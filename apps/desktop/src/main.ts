@@ -2,13 +2,14 @@ import * as path from "path";
 
 import { app } from "electron";
 
+import { StateService } from "@bitwarden/common/abstractions/state.service";
 import { StateFactory } from "@bitwarden/common/factories/stateFactory";
 import { GlobalState } from "@bitwarden/common/models/domain/global-state";
-import { MemoryStorageService } from "@bitwarden/common/services/memoryStorage.service";
-import { StateService } from "@bitwarden/common/services/state.service";
-import { ElectronLogService } from "@bitwarden/electron/services/electronLog.service";
-import { ElectronMainMessagingService } from "@bitwarden/electron/services/electronMainMessaging.service";
-import { ElectronStorageService } from "@bitwarden/electron/services/electronStorage.service";
+import { MemoryStorageService } from "@bitwarden/common/services/memory-storage.service";
+import { StateServiceImpl } from "@bitwarden/common/services/state.service.impl";
+import { ElectronLogService } from "@bitwarden/electron/services/electron-log.service";
+import { ElectronMainMessagingService } from "@bitwarden/electron/services/electron-main-messaging.service";
+import { ElectronStorageService } from "@bitwarden/electron/services/electron-storage.service";
 import { TrayMain } from "@bitwarden/electron/tray.main";
 import { UpdaterMain } from "@bitwarden/electron/updater.main";
 import { WindowMain } from "@bitwarden/electron/window.main";
@@ -20,11 +21,11 @@ import { MessagingMain } from "./main/messaging.main";
 import { NativeMessagingMain } from "./main/nativeMessaging.main";
 import { PowerMonitorMain } from "./main/powerMonitor.main";
 import { Account } from "./models/account";
-import { I18nService } from "./services/i18n.service";
+import { DesktopI18nService } from "./services/desktop-i18n.service";
 
 export class Main {
   logService: ElectronLogService;
-  i18nService: I18nService;
+  i18nService: DesktopI18nService;
   storageService: ElectronStorageService;
   memoryStorageService: MemoryStorageService;
   messagingService: ElectronMainMessagingService;
@@ -69,7 +70,7 @@ export class Main {
     }
 
     this.logService = new ElectronLogService(null, app.getPath("userData"));
-    this.i18nService = new I18nService("en", "./locales/");
+    this.i18nService = new DesktopI18nService("en", "./locales/");
 
     const storageDefaults: any = {};
     // Default vault timeout to "on restart", and action to "lock"
@@ -81,7 +82,7 @@ export class Main {
     // TODO: this state service will have access to on disk storage, but not in memory storage.
     // If we could get this to work using the stateService singleton that the rest of the app uses we could save
     // ourselves from some hacks, like having to manually update the app menu vs. the menu subscribing to events.
-    this.stateService = new StateService(
+    this.stateService = new StateServiceImpl(
       this.storageService,
       null,
       this.memoryStorageService,

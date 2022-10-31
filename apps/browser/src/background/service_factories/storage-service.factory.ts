@@ -1,9 +1,9 @@
 import { AbstractStorageService } from "@bitwarden/common/abstractions/storage.service";
-import { MemoryStorageService } from "@bitwarden/common/services/memoryStorage.service";
+import { MemoryStorageService } from "@bitwarden/common/services/memory-storage.service";
 
 import { BrowserApi } from "../../browser/browserApi";
-import BrowserLocalStorageService from "../../services/browserLocalStorage.service";
-import { LocalBackedSessionStorageService } from "../../services/localBackedSessionStorage.service";
+import BrowserLocalStorageService from "../../services/browser-local-storage.service";
+import { LocalBackedSessionStorageService } from "../../services/local-backed-session-storage.service";
 
 import { encryptServiceFactory, EncryptServiceInitOptions } from "./encrypt-service.factory";
 import { CachedServices, factory, FactoryOptions } from "./factory-options";

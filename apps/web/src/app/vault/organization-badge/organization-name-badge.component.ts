@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 
+import { AvatarUpdateService } from "@bitwarden/common/abstractions/account/avatar-update.service";
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { Utils } from "@bitwarden/common/misc/utils";
 
@@ -16,12 +17,12 @@ export class OrganizationNameBadgeComponent implements OnInit {
   color: string;
   textColor: string;
 
-  constructor(private i18nService: I18nService) {}
+  constructor(private i18nService: I18nService, private avatarService: AvatarUpdateService) {}
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     if (this.organizationName == null || this.organizationName === "") {
       this.organizationName = this.i18nService.t("me");
-      this.color = Utils.stringToColor(this.profileName.toUpperCase());
+      this.color = await this.avatarService.loadColorFromState();
     }
     if (this.color == null) {
       this.color = Utils.stringToColor(this.organizationName.toUpperCase());

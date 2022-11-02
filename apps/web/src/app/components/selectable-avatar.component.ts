@@ -18,7 +18,6 @@ import { Component, EventEmitter, Input, Output } from "@angular/core";
       [color]="color"
       [border]="false"
       [id]="id"
-      [icon]="icon"
       [border]="border"
       [title]="title"
     >
@@ -28,7 +27,6 @@ import { Component, EventEmitter, Input, Output } from "@angular/core";
 export class SelectableAvatarComponent {
   @Input() id: number;
   @Input() text: string;
-  @Input() icon: string;
   @Input() title: string;
   @Input() color: string;
   @Input() border = false;

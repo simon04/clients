@@ -13,7 +13,6 @@ type SizeTypes = "xlarge" | "large" | "default" | "small";
       [color]="color"
       [border]="border"
       [id]="id"
-      [icon]="icon"
       [title]="title"
     >
     </bit-avatar>
@@ -23,7 +22,6 @@ export class DynamicAvatarComponent implements OnInit, OnDestroy {
   @Input() border = false;
   @Input() id: number;
   @Input() text: string;
-  @Input() icon: string;
   @Input() title: string;
   @Input() size: SizeTypes = "default";
   color: string | null;

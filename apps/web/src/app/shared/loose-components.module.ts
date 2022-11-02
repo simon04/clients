@@ -19,10 +19,12 @@ import { UpdatePasswordComponent } from "../accounts/update-password.component";
 import { UpdateTempPasswordComponent } from "../accounts/update-temp-password.component";
 import { VerifyEmailTokenComponent } from "../accounts/verify-email-token.component";
 import { VerifyRecoverDeleteComponent } from "../accounts/verify-recover-delete.component";
+import { DynamicAvatarComponent } from "../components/dynamic-avatar.component";
 import { NestedCheckboxComponent } from "../components/nested-checkbox.component";
 import { OrganizationSwitcherComponent } from "../components/organization-switcher.component";
 import { PasswordRepromptComponent } from "../components/password-reprompt.component";
 import { PremiumBadgeComponent } from "../components/premium-badge.component";
+import { SelectableAvatarComponent } from "../components/selectable-avatar.component";
 import { UserVerificationPromptComponent } from "../components/user-verification-prompt.component";
 import { FooterComponent } from "../layouts/footer.component";
 import { FrontendLayoutComponent } from "../layouts/frontend-layout.component";
@@ -197,6 +199,7 @@ import { SharedModule } from ".";
     DisableSendPolicyComponent,
     DomainRulesComponent,
     DownloadLicenseComponent,
+    DynamicAvatarComponent,
     EmergencyAccessAddEditComponent,
     EmergencyAccessAttachmentsComponent,
     EmergencyAccessComponent,
@@ -272,6 +275,7 @@ import { SharedModule } from ".";
     ResetPasswordPolicyComponent,
     SecurityComponent,
     SecurityKeysComponent,
+    SelectableAvatarComponent,
     SendAddEditComponent,
     SendComponent,
     SendEffluxDatesComponent,
@@ -342,6 +346,7 @@ import { SharedModule } from ".";
     DisableSendPolicyComponent,
     DomainRulesComponent,
     DownloadLicenseComponent,
+    DynamicAvatarComponent,
     EmergencyAccessAddEditComponent,
     EmergencyAccessAttachmentsComponent,
     EmergencyAccessComponent,
@@ -415,6 +420,7 @@ import { SharedModule } from ".";
     ResetPasswordPolicyComponent,
     SecurityComponent,
     SecurityKeysComponent,
+    SelectableAvatarComponent,
     SendAddEditComponent,
     SendComponent,
     SendEffluxDatesComponent,

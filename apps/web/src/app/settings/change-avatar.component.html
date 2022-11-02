@@ -23,24 +23,21 @@
         <p class="tw-text-lg">{{ "pickAnAvatarColor" | i18n }}</p>
         <div class="tw-flex tw-flex-wrap tw-justify-center tw-gap-8 tw-gap-y-8">
           <ng-container *ngFor="let c of defaultColorPalette">
-            <bit-avatar
+            <selectable-avatar
               appStopClick
               (select)="setSelection(c.color)"
               [selected]="c.selected"
               [title]="c.name"
-              [listenForUpdates]="false"
-              [clickable]="true"
               text="{{ profile | userName }}"
-              size="xlarge"
               [color]="c.color"
               [border]="true"
             >
-            </bit-avatar>
+            </selectable-avatar>
           </ng-container>
           <span>
             <span
               [ngClass]="{
-                'tw-outline-[3px] tw-outline-primary-500 hover:tw-outline-[3px] hover:tw-outline-primary-500':
+                '!tw-outline-[3px] tw-outline-primary-500 hover:tw-outline-[3px] hover:tw-outline-primary-500':
                   customColorSelected
               }"
               (click)="showCustomPicker()"

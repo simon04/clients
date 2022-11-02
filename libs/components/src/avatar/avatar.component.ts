@@ -1,16 +1,6 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  Output,
-} from "@angular/core";
+import { Component, Input, OnChanges, OnInit } from "@angular/core";
 import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
-import { Subject, takeUntil } from "rxjs";
 
-import { AvatarUpdateService } from "@bitwarden/common/abstractions/account/avatar-update.service";
 import { Utils } from "@bitwarden/common/misc/utils";
 
 type SizeTypes = "xlarge" | "large" | "default" | "small";
@@ -24,54 +14,28 @@ const SizeClasses: Record<SizeTypes, string[]> = {
 
 @Component({
   selector: "bit-avatar",
-  template: `<img
-    *ngIf="src"
-    [src]="src"
-    title="{{ title || text }}"
-    appStopClick
-    (click)="onFire()"
-    (keyup.enter)="onFire()"
-    (keyup.space)="onFire()"
-    [attr.tabindex]="clickable ? '0' : null"
-    [ngClass]="classList"
-  />`,
+  template: `<img *ngIf="src" [src]="src" title="{{ title || text }}" [ngClass]="classList" />`,
 })
-export class AvatarComponent implements OnInit, OnChanges, OnDestroy {
+export class AvatarComponent implements OnInit, OnChanges {
   @Input() border = false;
-  // When a color is not provided, attempt to retrieve it from the user profile.
   @Input() color: string | null;
   @Input() id: number;
   @Input() text: string;
   @Input() icon: string;
   @Input() title: string;
   @Input() size: SizeTypes = "default";
-  @Input() selected = false;
-  @Input() clickable = false;
-  @Input() listenForUpdates = true;
 
   private svgCharCount = 2;
   private svgFontSize = 20;
   private svgFontWeight = 300;
   private svgSize = 48;
-  private destroy$ = new Subject<void>();
-  @Output() select = new EventEmitter<string>();
 
   src: SafeResourceUrl;
 
-  constructor(public sanitizer: DomSanitizer, private accountUpdateService: AvatarUpdateService) {}
+  constructor(public sanitizer: DomSanitizer) {}
 
   async ngOnInit() {
-    if (this.listenForUpdates) {
-      this.accountUpdateService.avatarUpdated$.pipe(takeUntil(this.destroy$)).subscribe((color) => {
-        this.color = color;
-        this.generate();
-      });
-    }
-  }
-
-  async ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
+    this.generate();
   }
 
   ngOnChanges() {
@@ -81,28 +45,7 @@ export class AvatarComponent implements OnInit, OnChanges, OnDestroy {
   get classList() {
     return ["tw-rounded-full"]
       .concat(SizeClasses[this.size] ?? [])
-      .concat(
-        this.clickable
-          ? ["tw-cursor-pointer", "tw-outline", "tw-outline-solid", "tw-outline-offset-1"]
-          : []
-      )
-      .concat(
-        this.clickable && !this.selected
-          ? [
-              "tw-outline-0",
-              "hover:tw-outline-1",
-              "hover:tw-outline-primary-300",
-              "focus:tw-outline-2",
-              "focus:tw-outline-primary-500",
-            ]
-          : []
-      )
-      .concat(this.clickable && this.selected ? ["tw-outline-[3px]", "tw-outline-primary-500"] : [])
       .concat(this.border ? ["tw-border", "tw-border-solid", "tw-border-secondary-500"] : []);
-  }
-
-  onFire() {
-    this.select.emit(this.color);
   }
 
   private async generate() {
@@ -126,12 +69,7 @@ export class AvatarComponent implements OnInit, OnChanges, OnDestroy {
     if (this.color) {
       hexColor = this.color;
     } else {
-      const stateColor = await this.accountUpdateService.loadColorFromState();
-      if (stateColor) {
-        hexColor = stateColor;
-      } else {
-        hexColor = Utils.stringToColor(upperCaseText);
-      }
+      hexColor = Utils.stringToColor(upperCaseText);
     }
     const svg: HTMLElement = this.createSvgElement(this.svgSize, hexColor);
     const charObj = this.createTextElement(chars, hexColor);

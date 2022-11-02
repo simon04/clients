@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit } from "@angular/core";
+import { Component, Input, OnChanges } from "@angular/core";
 import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
 
 import { Utils } from "@bitwarden/common/misc/utils";
@@ -16,12 +16,11 @@ const SizeClasses: Record<SizeTypes, string[]> = {
   selector: "bit-avatar",
   template: `<img *ngIf="src" [src]="src" title="{{ title || text }}" [ngClass]="classList" />`,
 })
-export class AvatarComponent implements OnInit, OnChanges {
+export class AvatarComponent implements OnChanges {
   @Input() border = false;
   @Input() color: string | null;
   @Input() id: number;
   @Input() text: string;
-  @Input() icon: string;
   @Input() title: string;
   @Input() size: SizeTypes = "default";
 
@@ -45,7 +44,7 @@ export class AvatarComponent implements OnInit, OnChanges {
 
   private generate() {
     let chars: string = null;
-    const upperCaseText = this.text?.toUpperCase();
+    const upperCaseText = this.text.toUpperCase();
 
     chars = this.getFirstLetters(upperCaseText, this.svgCharCount);
 

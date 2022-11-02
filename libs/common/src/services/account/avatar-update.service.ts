@@ -2,7 +2,7 @@ import { Subject } from "rxjs";
 
 import { ApiService } from "../../abstractions/api.service";
 import { StateService } from "../../abstractions/state.service";
-import { UpdateAvatarRequest } from "../../models/request/updateAvatarRequest";
+import { UpdateAvatarRequest } from "../../models/request/update-avatar.request";
 import { ProfileResponse } from "../../models/response/profile.response";
 
 export class AvatarUpdateService {

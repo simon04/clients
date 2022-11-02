@@ -78,6 +78,7 @@ import { TaxInfoUpdateRequest } from "../models/request/tax-info-update.request"
 import { TwoFactorEmailRequest } from "../models/request/two-factor-email.request";
 import { TwoFactorProviderRequest } from "../models/request/two-factor-provider.request";
 import { TwoFactorRecoveryRequest } from "../models/request/two-factor-recovery.request";
+import { UpdateAvatarRequest } from "../models/request/update-avatar.request";
 import { UpdateDomainsRequest } from "../models/request/update-domains.request";
 import { UpdateKeyRequest } from "../models/request/update-key.request";
 import { UpdateProfileRequest } from "../models/request/update-profile.request";
@@ -88,7 +89,6 @@ import { UpdateTwoFactorEmailRequest } from "../models/request/update-two-factor
 import { UpdateTwoFactorWebAuthnDeleteRequest } from "../models/request/update-two-factor-web-authn-delete.request";
 import { UpdateTwoFactorWebAuthnRequest } from "../models/request/update-two-factor-web-authn.request";
 import { UpdateTwoFactorYubioOtpRequest } from "../models/request/update-two-factor-yubio-otp.request";
-import { UpdateAvatarRequest } from "../models/request/updateAvatarRequest";
 import { VerifyDeleteRecoverRequest } from "../models/request/verify-delete-recover.request";
 import { VerifyEmailRequest } from "../models/request/verify-email.request";
 import { ApiKeyResponse } from "../models/response/api-key.response";

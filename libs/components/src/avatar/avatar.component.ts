@@ -29,14 +29,9 @@ export class AvatarComponent implements OnInit, OnChanges {
   private svgFontSize = 20;
   private svgFontWeight = 300;
   private svgSize = 48;
-
   src: SafeResourceUrl;
 
   constructor(public sanitizer: DomSanitizer) {}
-
-  async ngOnInit() {
-    this.generate();
-  }
 
   ngOnChanges() {
     this.generate();
@@ -48,7 +43,7 @@ export class AvatarComponent implements OnInit, OnChanges {
       .concat(this.border ? ["tw-border", "tw-border-solid", "tw-border-secondary-500"] : []);
   }
 
-  private async generate() {
+  private generate() {
     let chars: string = null;
     const upperCaseText = this.text?.toUpperCase();
 
@@ -63,15 +58,19 @@ export class AvatarComponent implements OnInit, OnChanges {
       chars = chars.match(Utils.regexpEmojiPresentation)[0];
     }
 
-    let hexColor: string;
+    let svg: HTMLElement;
+    let hexColor = this.color;
 
-    //Color takes priority as such: input color, state color, generated color
-    if (this.color) {
-      hexColor = this.color;
+    if (this.color != null) {
+      svg = this.createSvgElement(this.svgSize, hexColor);
+    } else if (this.id != null) {
+      hexColor = Utils.stringToColor(this.id.toString());
+      svg = this.createSvgElement(this.svgSize, hexColor);
     } else {
       hexColor = Utils.stringToColor(upperCaseText);
+      svg = this.createSvgElement(this.svgSize, hexColor);
     }
-    const svg: HTMLElement = this.createSvgElement(this.svgSize, hexColor);
+
     const charObj = this.createTextElement(chars, hexColor);
     svg.appendChild(charObj);
     const html = window.document.createElement("div").appendChild(svg).outerHTML;
@@ -82,8 +81,8 @@ export class AvatarComponent implements OnInit, OnChanges {
   }
 
   private getFirstLetters(data: string, count: number): string {
-    const parts = data?.split(" ");
-    if (parts?.length > 1) {
+    const parts = data.split(" ");
+    if (parts.length > 1) {
       let text = "";
       for (let i = 0; i < count; i++) {
         text += this.unicodeSafeSubstring(parts[i], 1);
@@ -106,42 +105,26 @@ export class AvatarComponent implements OnInit, OnChanges {
   }
 
   private createTextElement(character: string, color: string): HTMLElement {
-    if (this.icon) {
-      const iconTag = window.document.createElement("text");
-      iconTag.setAttribute("text-anchor", "middle");
-      iconTag.setAttribute("y", "50%");
-      iconTag.setAttribute("x", "50%");
-      iconTag.setAttribute("dy", "0.35em");
-      iconTag.setAttribute("pointer-events", "auto");
-      iconTag.setAttribute("fill", "#000000");
-      iconTag.setAttribute("font-family", "btw-font");
-      iconTag.textContent = character;
-      iconTag.classList.add("bwi", this.icon);
-      iconTag.style.fontWeight = this.svgFontWeight.toString();
-      iconTag.style.fontSize = this.svgFontSize + "px";
-      return iconTag;
-    } else {
-      const textTag = window.document.createElement("text");
-      textTag.setAttribute("text-anchor", "middle");
-      textTag.setAttribute("y", "50%");
-      textTag.setAttribute("x", "50%");
-      textTag.setAttribute("dy", "0.35em");
-      textTag.setAttribute("pointer-events", "auto");
-      textTag.setAttribute("fill", Utils.pickTextColorBasedOnBgColor(color, 135, true));
-      textTag.setAttribute(
-        "font-family",
-        '"Open Sans","Helvetica Neue",Helvetica,Arial,' +
-          'sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"'
-      );
-      textTag.textContent = character;
-      textTag.style.fontWeight = this.svgFontWeight.toString();
-      textTag.style.fontSize = this.svgFontSize + "px";
-      return textTag;
-    }
+    const textTag = window.document.createElement("text");
+    textTag.setAttribute("text-anchor", "middle");
+    textTag.setAttribute("y", "50%");
+    textTag.setAttribute("x", "50%");
+    textTag.setAttribute("dy", "0.35em");
+    textTag.setAttribute("pointer-events", "auto");
+    textTag.setAttribute("fill", Utils.pickTextColorBasedOnBgColor(color, 135, true));
+    textTag.setAttribute(
+      "font-family",
+      '"Open Sans","Helvetica Neue",Helvetica,Arial,' +
+        'sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"'
+    );
+    textTag.textContent = character;
+    textTag.style.fontWeight = this.svgFontWeight.toString();
+    textTag.style.fontSize = this.svgFontSize + "px";
+    return textTag;
   }
 
   private unicodeSafeSubstring(str: string, count: number) {
-    const characters = str?.match(/./gu);
+    const characters = str.match(/./gu);
     return characters != null ? characters.slice(0, count).join("") : "";
   }
 }

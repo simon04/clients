@@ -53,7 +53,6 @@ import "./locales";
     TableModule,
     AvatarModule,
     IconButtonModule,
-    AvatarModule,
   ],
   exports: [
     CommonModule,

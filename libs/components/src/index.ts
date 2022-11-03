@@ -14,5 +14,4 @@ export * from "./multi-select";
 export * from "./tabs";
 export * from "./table";
 export * from "./toggle-group";
-export * from "./avatar";
 export * from "./utils/i18n-mock.service";

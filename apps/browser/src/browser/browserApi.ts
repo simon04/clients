@@ -102,7 +102,7 @@ export class BrowserApi {
     chrome.tabs.sendMessage<TabMessage, T>(tabId, message, responseCallback);
   }
 
-  static sendTabsMessageOptions<T = never>(
+  static sendTabsMessageOptions<T>(
     tabId: number,
     message: TabMessage,
     options: chrome.tabs.MessageSendOptions,

@@ -1,4 +1,4 @@
-import { Subject } from "rxjs";
+import { EventEmitter } from "@angular/core";
 
 import { ApiService } from "../../abstractions/api.service";
 import { StateService } from "../../abstractions/state.service";
@@ -6,7 +6,7 @@ import { UpdateAvatarRequest } from "../../models/request/update-avatar.request"
 import { ProfileResponse } from "../../models/response/profile.response";
 
 export class AvatarUpdateService {
-  avatarUpdated$ = new Subject<string | null>();
+  avatarUpdated$ = new EventEmitter<string | null>();
 
   constructor(private apiService: ApiService, private stateService: StateService) {}
 

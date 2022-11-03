@@ -47,8 +47,8 @@ export class ChangeAvatarComponent implements OnInit, OnDestroy {
   customColorSelected = false;
   currentSelection: string;
 
-  private customColor$ = new BehaviorSubject<string | null>(null);
-  private customTextColor$ = new BehaviorSubject<string>("#000000");
+  protected customColor$ = new BehaviorSubject<string | null>(null);
+  protected customTextColor$ = new BehaviorSubject<string>("#000000");
   private destroy$ = new Subject<void>();
 
   constructor(

@@ -2296,7 +2296,7 @@ export class StateService<
     )?.settings?.serverConfig;
   }
 
-  async getAvatarColor(options?: StorageOptions): Promise<string> {
+  async getAvatarColor(options?: StorageOptions): Promise<string | null | undefined> {
     return (
       await this.getAccount(this.reconcileOptions(options, await this.defaultOnDiskLocalOptions()))
     )?.settings?.avatarColor;

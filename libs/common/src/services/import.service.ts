@@ -16,7 +16,7 @@ import { AscendoCsvImporter } from "../importers/ascendo-csv-importer";
 import { AvastCsvImporter } from "../importers/avast-csv-importer";
 import { AvastJsonImporter } from "../importers/avast-json-importer";
 import { AviraCsvImporter } from "../importers/avira-csv-importer";
-import { BitwardenCsvImporter } from "../importers/bitwarden-csvimporter";
+import { BitwardenCsvImporter } from "../importers/bitwarden-csv-importer";
 import { BitwardenJsonImporter } from "../importers/bitwarden-json-importer";
 import { BitwardenPasswordProtectedImporter } from "../importers/bitwarden-password-protected-importer";
 import { BlackBerryCsvImporter } from "../importers/blackberry-csv-importer";

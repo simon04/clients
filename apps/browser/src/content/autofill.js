@@ -50,11 +50,7 @@
       // END MODIFICATION
 
       document.elementsByOPID = {};
-      document.addEventListener('input', function (inputevent) {
-          inputevent.a !== false &&
-              inputevent.target.tagName.toLowerCase() === 'input' &&
-              (inputevent.target.dataset['com.bitwarden.browser.userEdited'] = 'yes');
-      }, true);
+
 
       function getPageDetails(theDoc, oneShotId) {
           // start helpers
@@ -279,7 +275,7 @@
               addProp(field, 'title', getElementAttrValue(el, 'title'));
 
               // START MODIFICATION
-              addProp(field, 'userEdited', !!el.dataset['com.browser.browser.userEdited']);
+            //   addProp(field, 'userEdited', !!el.dataset['com.browser.browser.userEdited']);
 
               var elTagName = el.tagName.toLowerCase();
               addProp(field, 'tagName', elTagName);

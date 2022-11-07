@@ -2,9 +2,9 @@ import { CipherType } from "@bitwarden/common/enums/cipherType";
 import { OnePasswordMacCsvImporter as Importer } from "@bitwarden/common/importers/onepasswordImporters/onepassword-mac-csv-importer";
 import { CipherView } from "@bitwarden/common/models/view/cipher.view";
 
-import { data as creditCardData } from "./testData/onePasswordCsv/credit-card.mac.csv";
-import { data as identityData } from "./testData/onePasswordCsv/identity.mac.csv";
-import { data as multiTypeData } from "./testData/onePasswordCsv/multiple-items.mac.csv";
+import { data as creditCardData } from "./test-data/onePassword-csv/credit-card.mac.csv";
+import { data as identityData } from "./test-data/onePassword-csv/identity.mac.csv";
+import { data as multiTypeData } from "./test-data/onePassword-csv/multiple-items.mac.csv";
 
 function expectIdentity(cipher: CipherView) {
   expect(cipher.type).toBe(CipherType.Identity);

@@ -1,12 +1,12 @@
 import { CipherType } from "@bitwarden/common/enums/cipherType";
 import { DashlaneCsvImporter as Importer } from "@bitwarden/common/importers/dashlaneImporters/dashlane-csv-importer";
 
-import { credentialsData } from "./testData/dashlaneCsv/credentials.csv";
-import { identityData } from "./testData/dashlaneCsv/id.csv";
-import { multiplePersonalInfoData } from "./testData/dashlaneCsv/multiple-personal-info.csv";
-import { paymentsData } from "./testData/dashlaneCsv/payments.csv";
-import { personalInfoData } from "./testData/dashlaneCsv/personal-info.csv";
-import { secureNoteData } from "./testData/dashlaneCsv/securenotes.csv";
+import { credentialsData } from "./test-data/dashlane-csv/credentials.csv";
+import { identityData } from "./test-data/dashlane-csv/id.csv";
+import { multiplePersonalInfoData } from "./test-data/dashlane-csv/multiple-personal-info.csv";
+import { paymentsData } from "./test-data/dashlane-csv/payments.csv";
+import { personalInfoData } from "./test-data/dashlane-csv/personal-info.csv";
+import { secureNoteData } from "./test-data/dashlane-csv/securenotes.csv";
 
 describe("Dashlane CSV Importer", () => {
   let importer: Importer;

@@ -1,7 +1,7 @@
 import { KeeperJsonImporter as Importer } from "@bitwarden/common/importers/keeperImporters/keeper-json-importer";
 import { Utils } from "@bitwarden/common/misc/utils";
 
-import { testData as TestData } from "./testData/keeperJson/testdata.json";
+import { testData as TestData } from "./test-data/keeper-json/testdata.json";
 
 describe("Keeper Json Importer", () => {
   const testDataJson = JSON.stringify(TestData);

@@ -5,7 +5,7 @@ import { CryptoService } from "@bitwarden/common/abstractions/crypto.service";
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { BitwardenJsonImporter } from "@bitwarden/common/importers/bitwarden-json-importer";
 
-import { data as passwordProtectedData } from "./testData/bitwardenJson/password-protected.json";
+import { data as passwordProtectedData } from "./test-data/bitwarden-json/password-protected.json";
 
 describe("bitwarden json importer", () => {
   let sut: BitwardenJsonImporter;

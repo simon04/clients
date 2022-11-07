@@ -2,12 +2,12 @@ import { CipherType } from "@bitwarden/common/enums/cipherType";
 import { MykiCsvImporter as Importer } from "@bitwarden/common/importers/myki-csv-importer";
 import { CipherView } from "@bitwarden/common/models/view/cipher.view";
 
-import { userAccountData } from "./testData/mykiCsv/user-account.csv";
-import { userCreditCardData } from "./testData/mykiCsv/user-credit-card.csv";
-import { userIdCardData } from "./testData/mykiCsv/user-id-card.csv";
-import { userIdentityData } from "./testData/mykiCsv/user-identity.csv";
-import { userNoteData } from "./testData/mykiCsv/user-note.csv";
-import { userTwoFaData } from "./testData/mykiCsv/user-twofa.csv";
+import { userAccountData } from "./test-data/myki-csv/user-account.csv";
+import { userCreditCardData } from "./test-data/myki-csv/user-credit-card.csv";
+import { userIdCardData } from "./test-data/myki-csv/user-id-card.csv";
+import { userIdentityData } from "./test-data/myki-csv/user-identity.csv";
+import { userNoteData } from "./test-data/myki-csv/user-note.csv";
+import { userTwoFaData } from "./test-data/myki-csv/user-twofa.csv";
 
 function expectDriversLicense(cipher: CipherView) {
   expect(cipher.type).toBe(CipherType.Identity);

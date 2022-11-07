@@ -8,7 +8,7 @@ import { BitwardenPasswordProtectedImporter } from "@bitwarden/common/importers/
 import { Utils } from "@bitwarden/common/misc/utils";
 import { ImportResult } from "@bitwarden/common/models/domain/import-result";
 
-import { data as emptyDecryptedData } from "./testData/bitwardenJson/empty.json";
+import { data as emptyDecryptedData } from "./test-data/bitwarden-json/empty.json";
 
 describe("BitwardenPasswordProtectedImporter", () => {
   let importer: BitwardenPasswordProtectedImporter;

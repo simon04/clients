@@ -4,10 +4,10 @@ import { NordPassCsvImporter as Importer } from "@bitwarden/common/importers/nor
 import { CipherView } from "@bitwarden/common/models/view/cipher.view";
 import { IdentityView } from "@bitwarden/common/models/view/identity.view";
 
-import { data as creditCardData } from "./testData/nordpassCsv/nordpass.card.csv";
-import { data as identityData } from "./testData/nordpassCsv/nordpass.identity.csv";
-import { data as loginData } from "./testData/nordpassCsv/nordpass.login.csv";
-import { data as secureNoteData } from "./testData/nordpassCsv/nordpass.secure-note.csv";
+import { data as creditCardData } from "./test-data/nordpass-csv/nordpass.card.csv";
+import { data as identityData } from "./test-data/nordpass-csv/nordpass.identity.csv";
+import { data as loginData } from "./test-data/nordpass-csv/nordpass.login.csv";
+import { data as secureNoteData } from "./test-data/nordpass-csv/nordpass.secure-note.csv";
 
 const namesTestData = [
   {

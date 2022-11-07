@@ -3,8 +3,8 @@ import { CipherView } from "@bitwarden/common/models/view/cipher.view";
 import { LoginUriView } from "@bitwarden/common/models/view/login-uri.view";
 import { LoginView } from "@bitwarden/common/models/view/login.view";
 
-import { data as firefoxAccountsData } from "./testData/firefoxCsv/firefox-accounts-data.csv";
-import { data as simplePasswordData } from "./testData/firefoxCsv/simple-password-data.csv";
+import { data as firefoxAccountsData } from "./test-data/firefox-csv/firefox-accounts-data.csv";
+import { data as simplePasswordData } from "./test-data/firefox-csv/simple-password-data.csv";
 
 const CipherData = [
   {

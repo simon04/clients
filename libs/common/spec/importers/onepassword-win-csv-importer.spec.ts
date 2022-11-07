@@ -4,9 +4,9 @@ import { OnePasswordWinCsvImporter as Importer } from "@bitwarden/common/importe
 import { CipherView } from "@bitwarden/common/models/view/cipher.view";
 import { FieldView } from "@bitwarden/common/models/view/field.view";
 
-import { data as creditCardData } from "./test-data/onePassword-csv/credit-card.windows.csv";
-import { data as identityData } from "./test-data/onePassword-csv/identity.windows.csv";
-import { data as multiTypeData } from "./test-data/onePassword-csv/multiple-items.windows.csv";
+import { data as creditCardData } from "./test-data/onepassword-csv/credit-card.windows.csv";
+import { data as identityData } from "./test-data/onepassword-csv/identity.windows.csv";
+import { data as multiTypeData } from "./test-data/onepassword-csv/multiple-items.windows.csv";
 
 function expectIdentity(cipher: CipherView) {
   expect(cipher.type).toBe(CipherType.Identity);

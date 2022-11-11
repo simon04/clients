@@ -3,7 +3,7 @@ import { SecureNoteType } from "../../enums/secureNoteType";
 import { ImportResult } from "../../models/domain/import-result";
 import { CardView } from "../../models/view/card.view";
 import { SecureNoteView } from "../../models/view/secure-note.view";
-import { BaseImporter } from "../baseImporter";
+import { BaseImporter } from "../base-importer";
 import { Importer } from "../importer";
 
 export class EnpassCsvImporter extends BaseImporter implements Importer {

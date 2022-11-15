@@ -20,7 +20,7 @@ import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUti
 import { StateService } from "@bitwarden/common/abstractions/state.service";
 import { SyncService } from "@bitwarden/common/abstractions/sync/sync.service.abstraction";
 
-import { EnvironmentComponent } from "./environment.component";
+import { EnvironmentComponent } from "../environment.component";
 
 const BroadcasterSubscriptionId = "LoginComponent";
 

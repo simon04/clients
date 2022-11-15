@@ -28,6 +28,9 @@ export class DynamicAvatarComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   constructor(private accountUpdateService: AvatarUpdateService) {
+    if (this.text) {
+      this.text = this.text.toUpperCase();
+    }
     this.accountUpdateService.avatarUpdated$.pipe(takeUntil(this.destroy$)).subscribe((color) => {
       this.color = color;
     });

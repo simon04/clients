@@ -12,7 +12,6 @@ import { LogLevelType } from "@bitwarden/common/enums/logLevelType";
 import { StateFactory } from "@bitwarden/common/factories/stateFactory";
 import { Account } from "@bitwarden/common/models/domain/account";
 import { GlobalState } from "@bitwarden/common/models/domain/global-state";
-import { AvatarUpdateService } from "@bitwarden/common/services/account/avatar-update.service";
 import { AppIdService } from "@bitwarden/common/services/appId.service";
 import { AuditService } from "@bitwarden/common/services/audit.service";
 import { AuthService } from "@bitwarden/common/services/auth.service";
@@ -116,7 +115,6 @@ export class Main {
   userVerificationApiService: UserVerificationApiService;
   organizationApiService: OrganizationApiServiceAbstraction;
   syncNotifierService: SyncNotifierService;
-  avatarService: AvatarUpdateService;
 
   constructor() {
     let p = null;
@@ -325,7 +323,6 @@ export class Main {
       this.providerService,
       this.folderApiService,
       this.syncNotifierService,
-      this.avatarService,
       async (expired: boolean) => await this.logout()
     );
 
@@ -365,8 +362,6 @@ export class Main {
       this.i18nService,
       this.userVerificationApiService
     );
-
-    this.avatarService = new AvatarUpdateService(this.apiService, this.stateService);
   }
 
   async run() {

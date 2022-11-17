@@ -3,11 +3,12 @@ import { NgModule } from "@angular/core";
 
 import { CellDirective } from "./cell.directive";
 import { RowDirective } from "./row.directive";
+import { SortableComponent } from "./sortable.component";
 import { TableComponent } from "./table.component";
 
 @NgModule({
   imports: [CommonModule],
-  declarations: [TableComponent, CellDirective, RowDirective],
-  exports: [TableComponent, CellDirective, RowDirective],
+  declarations: [TableComponent, CellDirective, RowDirective, SortableComponent],
+  exports: [TableComponent, CellDirective, RowDirective, SortableComponent],
 })
 export class TableModule {}

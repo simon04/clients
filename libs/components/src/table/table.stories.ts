@@ -1,5 +1,6 @@
 import { Meta, moduleMetadata, Story } from "@storybook/angular";
 
+import { TableDataSource } from "./table-data-source";
 import { TableModule } from "./table.module";
 
 export default {
@@ -60,3 +61,39 @@ export const Default = Template.bind({});
 Default.args = {
   alignRowContent: "baseline",
 };
+
+const data = new TableDataSource<{ id: number; name: string; other: string }>();
+const c = data.connect();
+
+data.data = [...Array(10).keys()].map((i) => ({
+  id: i,
+  name: `name-${i}`,
+  other: `other-${i}`,
+}));
+
+const SortableTemplate: Story = (args) => ({
+  props: {
+    dataSource: data,
+    data: c,
+  },
+  template: `
+    <bit-table [dataSource]="dataSource">
+      <ng-container header>
+        <tr>
+          <th bitCell bitSortable="id">Id</th>
+          <th bitCell bitSortable="name">Name</th>
+          <th bitCell bitSortable="other">Other</th>
+        </tr>
+      </ng-container>
+      <ng-container body>
+        <tr bitRow *ngFor="let r of data | async">
+          <td bitCell>{{ r.id }}</td>
+          <td bitCell>{{ r.name }}</td>
+          <td bitCell>{{ r.other }}</td>
+        </tr>
+      </ng-container>
+    </bit-table>
+    `,
+});
+
+export const Sortable = SortableTemplate.bind({});

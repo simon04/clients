@@ -23,6 +23,8 @@ export class ElectronRendererSecureStorageService implements AbstractStorageServ
   }
 
   async save(key: string, obj: any, options?: StorageOptions): Promise<any> {
+    // eslint-disable-next-line
+    console.log("Saving secure key: ", key);
     await ipcRenderer.invoke("keytar", {
       action: "setPassword",
       key: key,

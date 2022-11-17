@@ -84,6 +84,8 @@ export class NativeMessageHandlerService {
 
         return;
       }
+      // eslint-disable-next-line
+      console.log("1: Get confirmation from user");
 
       // Ask for confirmation from user
       this.messagingService.send("setFocus");
@@ -111,19 +113,30 @@ export class NativeMessageHandlerService {
         });
         return;
       }
-
+      // eslint-disable-next-line
+      console.log("2: Generating secret");
       const secret = await this.cryptoFunctionService.randomBytes(64);
+      // eslint-disable-next-line
+      console.log("3: Creating symmetric crypto key");
       this.ddgSharedSecret = new SymmetricCryptoKey(secret);
+      // eslint-disable-next-line
+      console.log("4: Getting b64 string");
       const sharedKeyB64 = new SymmetricCryptoKey(secret).toJSON().keyB64;
 
+      // eslint-disable-next-line
+      console.log("5: Setting key in state service");
       await this.stateService.setDuckDuckGoSharedKey(sharedKeyB64);
 
+      // eslint-disable-next-line
+      console.log("6: Encrypting secret");
       const encryptedSecret = await this.cryptoFunctionService.rsaEncrypt(
         secret,
         remotePublicKey,
         EncryptionAlgorithm
       );
 
+      // eslint-disable-next-line
+      console.log("7: Sending response");
       this.sendResponse({
         messageId: messageId,
         version: NativeMessagingVersion.Latest,
@@ -133,6 +146,8 @@ export class NativeMessageHandlerService {
         },
       });
     } catch (error) {
+      // eslint-disable-next-line
+      console.log("Something went wrong");
       this.sendResponse({
         messageId: messageId,
         version: NativeMessagingVersion.Latest,

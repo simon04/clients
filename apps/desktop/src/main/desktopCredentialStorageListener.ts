@@ -31,7 +31,15 @@ export class DesktopCredentialStorageListener {
             const result = await this.getPassword(serviceName, message.key);
             val = result != null;
           } else if (message.action === "setPassword" && message.value) {
+            // eslint-disable-next-line
+            console.log("++++++++++++++++++++++++++++++++++++++++++++++");
+            // eslint-disable-next-line
+            console.log("keytar setting password...");
             await passwords.setPassword(serviceName, message.key, message.value);
+            // eslint-disable-next-line
+            console.log("keytar set password");
+            // eslint-disable-next-line
+            console.log("++++++++++++++++++++++++++++++++++++++++++++++");
           } else if (message.action === "deletePassword") {
             await passwords.deletePassword(serviceName, message.key);
           }

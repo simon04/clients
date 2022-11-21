@@ -1,5 +1,5 @@
-import { Component, Input, OnDestroy, OnInit } from "@angular/core";
-import { Subject, takeUntil } from "rxjs";
+import { Component, Input, OnDestroy } from "@angular/core";
+import { Observable, Subject } from "rxjs";
 
 import { AvatarUpdateService } from "@bitwarden/common/abstractions/account/avatar-update.service";
 type SizeTypes = "xlarge" | "large" | "default" | "small";
@@ -10,7 +10,7 @@ type SizeTypes = "xlarge" | "large" | "default" | "small";
       appStopClick
       [text]="text"
       [size]="size"
-      [color]="color"
+      [color]="color$ | async"
       [border]="border"
       [id]="id"
       [title]="title"
@@ -18,27 +18,20 @@ type SizeTypes = "xlarge" | "large" | "default" | "small";
     </bit-avatar>
   </span>`,
 })
-export class DynamicAvatarComponent implements OnInit, OnDestroy {
+export class DynamicAvatarComponent implements OnDestroy {
   @Input() border = false;
   @Input() id: number;
   @Input() text: string;
   @Input() title: string;
   @Input() size: SizeTypes = "default";
-  color: string | null;
+  color$: Observable<string | null>;
   private destroy$ = new Subject<void>();
 
   constructor(private accountUpdateService: AvatarUpdateService) {
     if (this.text) {
       this.text = this.text.toUpperCase();
     }
-    this.accountUpdateService.avatarUpdated$.pipe(takeUntil(this.destroy$)).subscribe((color) => {
-      this.color = color;
-    });
-  }
-
-  async ngOnInit() {
-    const stateColor = await this.accountUpdateService.loadColorFromState();
-    this.color = stateColor;
+    this.color$ = this.accountUpdateService.avatarUpdate$;
   }
 
   async ngOnDestroy() {

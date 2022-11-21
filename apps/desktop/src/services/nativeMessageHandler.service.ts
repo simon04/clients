@@ -121,7 +121,7 @@ export class NativeMessageHandlerService {
       this.ddgSharedSecret = new SymmetricCryptoKey(secret);
       // eslint-disable-next-line
       console.log("4: Getting b64 string");
-      const sharedKeyB64 = new SymmetricCryptoKey(secret).toJSON().keyB64;
+      const sharedKeyB64 = new SymmetricCryptoKey(secret).keyB64;
 
       // eslint-disable-next-line
       console.log("5: Setting key in state service");

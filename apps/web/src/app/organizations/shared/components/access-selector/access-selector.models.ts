@@ -1,6 +1,6 @@
 import { OrganizationUserStatusType } from "@bitwarden/common/enums/organizationUserStatusType";
 import { OrganizationUserType } from "@bitwarden/common/enums/organizationUserType";
-import { SelectItemView } from "@bitwarden/components";
+import { SelectItemView } from "@bitwarden/components/src/multi-select/models/select-item-view";
 
 import { CollectionAccessSelectionView } from "../../../core";
 
@@ -75,7 +75,7 @@ export type AccessItemValue = {
 };
 
 /**
- * Converts the older SelectionReadOnly interface to one of the new CollectionPermission values
+ * Converts the CollectionAccessSelectionView interface to one of the new CollectionPermission values
  * for the dropdown in the AccessSelectorComponent
  * @param value
  */
@@ -88,7 +88,7 @@ export const convertToPermission = (value: CollectionAccessSelectionView) => {
 };
 
 /**
- * Converts an AccessItemValue back into a SelectionReadOnly class using the CollectionPermission
+ * Converts an AccessItemValue back into a CollectionAccessView class using the CollectionPermission
  * to determine the values for `readOnly` and `hidePassword`
  * @param value
  */

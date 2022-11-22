@@ -2,7 +2,7 @@ import { Meta, moduleMetadata, Story } from "@storybook/angular";
 
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 
-import { BadgeModule, BadgeTypes } from "../badge";
+import { BadgeModule } from "../badge";
 import { SharedModule } from "../shared";
 import { I18nMockService } from "../utils/i18n-mock.service";
 
@@ -10,6 +10,7 @@ import { BadgeListComponent } from "./badge-list.component";
 
 export default {
   title: "Component Library/Badge/List",
+  component: BadgeListComponent,
   decorators: [
     moduleMetadata({
       imports: [SharedModule, BadgeModule],
@@ -29,12 +30,6 @@ export default {
   args: {
     badgeType: "primary",
   },
-  argTypes: {
-    badgeType: {
-      options: ["primary", "secondary", "success", "danger", "warning", "info"] as BadgeTypes[],
-      control: { type: "inline-radio" },
-    },
-  },
   parameters: {
     design: {
       type: "figma",
@@ -46,7 +41,8 @@ export default {
 const ListTemplate: Story<BadgeListComponent> = (args: BadgeListComponent) => ({
   props: args,
   template: `
-  <bit-badge-list [badgeType]="badgeType" [maxItems]="maxItems" [items]="items"></bit-badge-list>`,
+    <bit-badge-list [badgeType]="badgeType" [maxItems]="maxItems" [items]="items"></bit-badge-list>
+  `,
 });
 
 export const Default = ListTemplate.bind({});

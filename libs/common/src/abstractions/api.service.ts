@@ -22,11 +22,10 @@ import { EmergencyAccessInviteRequest } from "../models/request/emergency-access
 import { EmergencyAccessPasswordRequest } from "../models/request/emergency-access-password.request";
 import { EmergencyAccessUpdateRequest } from "../models/request/emergency-access-update.request";
 import { EventRequest } from "../models/request/event.request";
-import { GroupRequest } from "../models/request/group.request";
 import { IapCheckRequest } from "../models/request/iap-check.request";
-import { ApiTokenRequest } from "../models/request/identity-token/api-token.request";
 import { PasswordTokenRequest } from "../models/request/identity-token/password-token.request";
 import { SsoTokenRequest } from "../models/request/identity-token/sso-token.request";
+import { UserApiTokenRequest } from "../models/request/identity-token/user-api-token.request";
 import { ImportCiphersRequest } from "../models/request/import-ciphers.request";
 import { ImportOrganizationCiphersRequest } from "../models/request/import-organization-ciphers.request";
 import { KdfRequest } from "../models/request/kdf.request";
@@ -120,8 +119,8 @@ import { OrganizationUserBulkPublicKeyResponse } from "../models/response/organi
 import { OrganizationUserBulkResponse } from "../models/response/organization-user-bulk.response";
 import {
   OrganizationUserDetailsResponse,
-  OrganizationUserUserDetailsResponse,
   OrganizationUserResetPasswordDetailsReponse,
+  OrganizationUserUserDetailsResponse,
 } from "../models/response/organization-user.response";
 import { PaymentResponse } from "../models/response/payment.response";
 import { PlanResponse } from "../models/response/plan.response";
@@ -135,8 +134,8 @@ import {
 import { ProviderUserBulkPublicKeyResponse } from "../models/response/provider/provider-user-bulk-public-key.response";
 import { ProviderUserBulkResponse } from "../models/response/provider/provider-user-bulk.response";
 import {
-  ProviderUserUserDetailsResponse,
   ProviderUserResponse,
+  ProviderUserUserDetailsResponse,
 } from "../models/response/provider/provider-user.response";
 import { ProviderResponse } from "../models/response/provider/provider.response";
 import { SelectionReadOnlyResponse } from "../models/response/selection-read-only.response";
@@ -155,14 +154,12 @@ import { TwoFactorEmailResponse } from "../models/response/two-factor-email.resp
 import { TwoFactorProviderResponse } from "../models/response/two-factor-provider.response";
 import { TwoFactorRecoverResponse } from "../models/response/two-factor-recover.response";
 import {
-  TwoFactorWebAuthnResponse,
   ChallengeResponse,
+  TwoFactorWebAuthnResponse,
 } from "../models/response/two-factor-web-authn.response";
 import { TwoFactorYubiKeyResponse } from "../models/response/two-factor-yubi-key.response";
 import { UserKeyResponse } from "../models/response/user-key.response";
 import { SendAccessView } from "../models/view/send-access.view";
-
-import { GroupResponse } from "./group/responses/group-response";
 
 export abstract class ApiService {
   send: (
@@ -176,7 +173,7 @@ export abstract class ApiService {
   ) => Promise<any>;
 
   postIdentityToken: (
-    request: PasswordTokenRequest | SsoTokenRequest | ApiTokenRequest
+    request: PasswordTokenRequest | SsoTokenRequest | UserApiTokenRequest
   ) => Promise<IdentityTokenResponse | IdentityTwoFactorResponse | IdentityCaptchaResponse>;
   refreshIdentityToken: () => Promise<any>;
 
@@ -343,8 +340,6 @@ export abstract class ApiService {
   ) => Promise<any>;
 
   getGroupUsers: (organizationId: string, id: string) => Promise<string[]>;
-  postGroup: (organizationId: string, request: GroupRequest) => Promise<GroupResponse>;
-  putGroup: (organizationId: string, id: string, request: GroupRequest) => Promise<GroupResponse>;
   putGroupUsers: (organizationId: string, id: string, request: string[]) => Promise<any>;
   deleteGroupUser: (organizationId: string, id: string, organizationUserId: string) => Promise<any>;
 
@@ -477,6 +472,7 @@ export abstract class ApiService {
   putDeviceVerificationSettings: (
     request: DeviceVerificationRequest
   ) => Promise<DeviceVerificationResponse>;
+  getKnownDevice: (email: string, deviceIdentifier: string) => Promise<boolean>;
 
   getEmergencyAccessTrusted: () => Promise<ListResponse<EmergencyAccessGranteeDetailsResponse>>;
   getEmergencyAccessGranted: () => Promise<ListResponse<EmergencyAccessGrantorDetailsResponse>>;

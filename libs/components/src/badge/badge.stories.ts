@@ -1,10 +1,11 @@
 import { CommonModule } from "@angular/common";
 import { Meta, moduleMetadata, Story } from "@storybook/angular";
 
-import { BadgeDirective, BadgeTypes } from "./badge.directive";
+import { BadgeDirective, BadgeType } from "./badge.directive";
 
 export default {
   title: "Component Library/Badge",
+  component: BadgeDirective,
   decorators: [
     moduleMetadata({
       imports: [CommonModule],
@@ -16,7 +17,7 @@ export default {
   },
   argTypes: {
     badgeType: {
-      options: ["primary", "secondary", "success", "danger", "warning", "info"] as BadgeTypes[],
+      options: ["primary", "secondary", "success", "danger", "warning", "info"] as BadgeType[],
       control: { type: "inline-radio" },
     },
   },

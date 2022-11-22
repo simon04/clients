@@ -1,7 +1,6 @@
 import { ApiService as ApiServiceAbstraction } from "../abstractions/api.service";
 import { AppIdService } from "../abstractions/appId.service";
 import { EnvironmentService } from "../abstractions/environment.service";
-import { GroupResponse } from "../abstractions/group";
 import { PlatformUtilsService } from "../abstractions/platformUtils.service";
 import { TokenService } from "../abstractions/token.service";
 import { DeviceType } from "../enums/deviceType";
@@ -30,12 +29,11 @@ import { EmergencyAccessInviteRequest } from "../models/request/emergency-access
 import { EmergencyAccessPasswordRequest } from "../models/request/emergency-access-password.request";
 import { EmergencyAccessUpdateRequest } from "../models/request/emergency-access-update.request";
 import { EventRequest } from "../models/request/event.request";
-import { GroupRequest } from "../models/request/group.request";
 import { IapCheckRequest } from "../models/request/iap-check.request";
-import { ApiTokenRequest } from "../models/request/identity-token/api-token.request";
 import { PasswordTokenRequest } from "../models/request/identity-token/password-token.request";
 import { SsoTokenRequest } from "../models/request/identity-token/sso-token.request";
 import { TokenTwoFactorRequest } from "../models/request/identity-token/token-two-factor.request";
+import { UserApiTokenRequest } from "../models/request/identity-token/user-api-token.request";
 import { ImportCiphersRequest } from "../models/request/import-ciphers.request";
 import { ImportOrganizationCiphersRequest } from "../models/request/import-organization-ciphers.request";
 import { KdfRequest } from "../models/request/kdf.request";
@@ -130,8 +128,8 @@ import { OrganizationUserBulkPublicKeyResponse } from "../models/response/organi
 import { OrganizationUserBulkResponse } from "../models/response/organization-user-bulk.response";
 import {
   OrganizationUserDetailsResponse,
-  OrganizationUserUserDetailsResponse,
   OrganizationUserResetPasswordDetailsReponse,
+  OrganizationUserUserDetailsResponse,
 } from "../models/response/organization-user.response";
 import { PaymentResponse } from "../models/response/payment.response";
 import { PlanResponse } from "../models/response/plan.response";
@@ -206,7 +204,7 @@ export class ApiService implements ApiServiceAbstraction {
   // Auth APIs
 
   async postIdentityToken(
-    request: ApiTokenRequest | PasswordTokenRequest | SsoTokenRequest
+    request: UserApiTokenRequest | PasswordTokenRequest | SsoTokenRequest
   ): Promise<IdentityTokenResponse | IdentityTwoFactorResponse | IdentityCaptchaResponse> {
     const headers = new Headers({
       "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
@@ -219,7 +217,7 @@ export class ApiService implements ApiServiceAbstraction {
     request.alterIdentityTokenHeaders(headers);
 
     const identityToken =
-      request instanceof ApiTokenRequest
+      request instanceof UserApiTokenRequest
         ? request.toIdentityToken()
         : request.toIdentityToken(this.platformUtilsService.getClientType());
 
@@ -933,32 +931,6 @@ export class ApiService implements ApiServiceAbstraction {
     return r;
   }
 
-  async postGroup(organizationId: string, request: GroupRequest): Promise<GroupResponse> {
-    const r = await this.send(
-      "POST",
-      "/organizations/" + organizationId + "/groups",
-      request,
-      true,
-      true
-    );
-    return new GroupResponse(r);
-  }
-
-  async putGroup(
-    organizationId: string,
-    id: string,
-    request: GroupRequest
-  ): Promise<GroupResponse> {
-    const r = await this.send(
-      "PUT",
-      "/organizations/" + organizationId + "/groups/" + id,
-      request,
-      true,
-      true
-    );
-    return new GroupResponse(r);
-  }
-
   async putGroupUsers(organizationId: string, id: string, request: string[]): Promise<any> {
     await this.send(
       "PUT",
@@ -1484,6 +1456,12 @@ export class ApiService implements ApiServiceAbstraction {
       true
     );
     return new DeviceVerificationResponse(r);
+  }
+
+  async getKnownDevice(email: string, deviceIdentifier: string): Promise<boolean> {
+    const path = `/devices/knowndevice/${email}/${deviceIdentifier}`;
+    const r = await this.send("GET", path, null, false, true);
+    return r as boolean;
   }
 
   // Emergency Access APIs
@@ -2233,8 +2211,7 @@ export class ApiService implements ApiServiceAbstraction {
 
     const appId = await this.appIdService.getAppId();
     const deviceRequest = new DeviceRequest(appId, this.platformUtilsService);
-
-    const tokenRequest = new ApiTokenRequest(
+    const tokenRequest = new UserApiTokenRequest(
       clientId,
       clientSecret,
       new TokenTwoFactorRequest(),
@@ -2322,21 +2299,25 @@ export class ApiService implements ApiServiceAbstraction {
     tokenError: boolean,
     authed: boolean
   ): Promise<ErrorResponse> {
-    if (
-      authed &&
-      ((tokenError && response.status === 400) ||
-        response.status === 401 ||
-        response.status === 403)
-    ) {
-      await this.logoutCallback(true);
-      return null;
-    }
-
     let responseJson: any = null;
     if (this.isJsonResponse(response)) {
       responseJson = await response.json();
     } else if (this.isTextResponse(response)) {
       responseJson = { Message: await response.text() };
+    }
+
+    if (authed) {
+      if (
+        response.status === 401 ||
+        response.status === 403 ||
+        (tokenError &&
+          response.status === 400 &&
+          responseJson != null &&
+          responseJson.error === "invalid_grant")
+      ) {
+        await this.logoutCallback(true);
+        return null;
+      }
     }
 
     return new ErrorResponse(responseJson, response.status, tokenError);

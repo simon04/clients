@@ -1,13 +1,14 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 
 import { ApiService } from "@bitwarden/common/abstractions/api.service";
-import { GroupServiceAbstraction } from "@bitwarden/common/abstractions/group";
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { LogService } from "@bitwarden/common/abstractions/log.service";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { Utils } from "@bitwarden/common/misc/utils";
 import { OrganizationUserUpdateGroupsRequest } from "@bitwarden/common/models/request/organization-user-update-groups.request";
-import { GroupView } from "@bitwarden/common/models/view/group-view";
+
+import { GroupServiceAbstraction } from "../services/abstractions/group";
+import { GroupView } from "../views/group.view";
 
 @Component({
   selector: "app-user-groups",

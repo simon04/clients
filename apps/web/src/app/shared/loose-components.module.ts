@@ -37,14 +37,11 @@ import { BulkStatusComponent as OrgBulkStatusComponent } from "../organizations/
 import { CollectionsComponent as OrgManageCollectionsComponent } from "../organizations/manage/collections.component";
 import { EntityEventsComponent as OrgEntityEventsComponent } from "../organizations/manage/entity-events.component";
 import { EventsComponent as OrgEventsComponent } from "../organizations/manage/events.component";
-import { GroupAddEditComponent as OrgGroupAddEditComponent } from "../organizations/manage/group-add-edit.component";
-import { GroupsComponent as OrgGroupsComponent } from "../organizations/manage/groups.component";
 import { ManageComponent as OrgManageComponent } from "../organizations/manage/manage.component";
 import { PeopleComponent as OrgPeopleComponent } from "../organizations/manage/people.component";
 import { ResetPasswordComponent as OrgResetPasswordComponent } from "../organizations/manage/reset-password.component";
 import { UserAddEditComponent as OrgUserAddEditComponent } from "../organizations/manage/user-add-edit.component";
 import { UserConfirmComponent as OrgUserConfirmComponent } from "../organizations/manage/user-confirm.component";
-import { UserGroupsComponent as OrgUserGroupsComponent } from "../organizations/manage/user-groups.component";
 import { AcceptFamilySponsorshipComponent } from "../organizations/sponsorships/accept-family-sponsorship.component";
 import { FamiliesForEnterpriseSetupComponent } from "../organizations/sponsorships/families-for-enterprise-setup.component";
 import { ExposedPasswordsReportComponent as OrgExposedPasswordsReportComponent } from "../organizations/tools/exposed-passwords-report.component";
@@ -189,8 +186,6 @@ import { SharedModule } from "./shared.module";
     OrgEntityEventsComponent,
     OrgEventsComponent,
     OrgExposedPasswordsReportComponent,
-    OrgGroupAddEditComponent,
-    OrgGroupsComponent,
     OrgInactiveTwoFactorReportComponent,
     OrgManageCollectionsComponent,
     OrgManageComponent,
@@ -201,7 +196,6 @@ import { SharedModule } from "./shared.module";
     OrgUnsecuredWebsitesReportComponent,
     OrgUserAddEditComponent,
     OrgUserConfirmComponent,
-    OrgUserGroupsComponent,
     OrgWeakPasswordsReportComponent,
     GeneratorComponent,
     PasswordGeneratorHistoryComponent,
@@ -312,8 +306,6 @@ import { SharedModule } from "./shared.module";
     OrgEntityEventsComponent,
     OrgEventsComponent,
     OrgExposedPasswordsReportComponent,
-    OrgGroupAddEditComponent,
-    OrgGroupsComponent,
     OrgInactiveTwoFactorReportComponent,
     OrgManageCollectionsComponent,
     OrgManageComponent,
@@ -324,7 +316,6 @@ import { SharedModule } from "./shared.module";
     OrgUnsecuredWebsitesReportComponent,
     OrgUserAddEditComponent,
     OrgUserConfirmComponent,
-    OrgUserGroupsComponent,
     OrgWeakPasswordsReportComponent,
     GeneratorComponent,
     PasswordGeneratorHistoryComponent,

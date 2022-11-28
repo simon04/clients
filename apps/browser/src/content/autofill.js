@@ -42,7 +42,7 @@
   9.  Add new handler, for new command that responds with page details in response callback
   10. Handle sandbox iframe and sandbox rule in CSP
   11. Work on array of saved urls instead of just one to determine if we should autofill non-https sites
-  12. Implement new HTML element query logic to be able to traverse into ShadowDOM
+  12. Implement new HTML element query logic to be able to traverse into ShadowRoot
   */
 
   /*
@@ -50,12 +50,12 @@
    * We need to use the correct implementation based on browser.
    */
   // START MODIFICATION
-  var openOrClosedShadowRoot;
+  var getShadowRoot;
 
   if (chrome.dom && chrome.dom.openOrClosedShadowRoot) {
       // Chromium 88+
       // https://developer.chrome.com/docs/extensions/reference/dom/
-      openOrClosedShadowRoot = function (element) {
+      getShadowRoot = function (element) {
           if (!(element instanceof HTMLElement)) {
               return null;
           }
@@ -63,16 +63,18 @@
           return chrome.dom.openOrClosedShadowRoot(element);
       };
   } else {
-      // Firefox 63+
-      // https://developer.mozilla.org/en-US/docs/Web/API/Element/openOrClosedShadowRoot
-      openOrClosedShadowRoot = function (element) {
-          return element.openOrClosedShadowRoot;
+      getShadowRoot = function (element) {
+          // `openOrClosedShadowRoot` is currently available for Firefox 63+
+          // https://developer.mozilla.org/en-US/docs/Web/API/Element/openOrClosedShadowRoot
+          // Fallback to usual shadowRoot if it doesn't exist, which will only find open ShadowRoots, not closed ones.
+          // https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot#browser_compatibility
+          return element.openOrClosedShadowRoot || element.shadowRoot;
       };
   }
 
   /*
    * Works like querySelectorAll but uses a filerCallback where the node is passed to instead of a CSS selector string.
-   * It has the advantage over querySelectorAll that it traverses into ShadowDOM.
+   * It has the advantage over querySelectorAll that it traverses into ShadowRoot.
    */
   function queryDocAll(doc, rootEl, filterCallback, els) {
       els = els || [];
@@ -89,10 +91,10 @@
             els.push(node);
         }
 
-        // If node contains a ShadowDOM we want to step into it and also traverse all child nodes inside.
-        var nodeShadowRoot = openOrClosedShadowRoot(node);
+        // If node contains a ShadowRoot we want to step into it and also traverse all child nodes inside.
+        var nodeShadowRoot = getShadowRoot(node);
         if (nodeShadowRoot) {
-            // recursively traverse into ShadowDOM
+            // recursively traverse into ShadowRoot
             els = queryDocAll(doc, nodeShadowRoot, filterCallback, els);
         }
     }
@@ -102,7 +104,7 @@
 
   /*
    * Works like querySelector but uses a filerCallback where the node is passed to instead of a CSS selector string.
-   * It has the advantage over querySelector that it traverses into ShadowDOM.
+   * It has the advantage over querySelector that it traverses into ShadowRoot.
    */
   function queryDoc(doc, rootEl, filterCallback) {
       if(typeof filterCallback !== 'function') {
@@ -117,10 +119,10 @@
               return node;
           }
 
-          // If node contains a ShadowDOM we want to step into it and also traverse all child nodes inside.
-          var nodeShadowRoot = openOrClosedShadowRoot(node);
+          // If node contains a ShadowRoot we want to step into it and also traverse all child nodes inside.
+          var nodeShadowRoot = getShadowRoot(node);
           if (nodeShadowRoot) {
-              // recursively traverse into ShadowDOM
+              // recursively traverse into ShadowRoot
               var subQueryResult = queryDoc(doc, nodeShadowRoot, filterCallback);
 
               if (subQueryResult) {

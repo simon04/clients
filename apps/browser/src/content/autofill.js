@@ -265,7 +265,7 @@
                       // START MODIFICATION
                       var elId = JSON.stringify(el.id);
                       var labelsByReferencedId = queryDocAll(theDoc, theDoc.body, function (node) {
-                          return node.nodeName === 'LABEL' && node.attributes.for === elId;
+                          return node.nodeName === 'LABEL' && node.attributes.for && node.attributes.for.value === elId;
                       });
                       theLabels = theLabels.concat(labelsByReferencedId);
                       // END MODIFICATION
@@ -275,7 +275,7 @@
                       // START MODIFICATION
                       var elName = JSON.stringify(el.name);
                       docLabel = queryDocAll(theDoc, theDoc.body, function (node) {
-                          return node.nodeName === 'LABEL' && node.attributes.for === elName;
+                          return node.nodeName === 'LABEL' && node.attributes.for && node.attributes.for.value === elName;
                       });
                       // END MODIFICATION
 
@@ -691,8 +691,8 @@
                       return el.attributes['data-bwautofill'];
                   case 'INPUT':
                       if (
-                          typeof el.attributes.type === 'string' &&
-                          ignoredInputTypes.indexOf(el.attributes.type.toLowerCase()) !== -1
+                          el.attributes.type &&
+                          ignoredInputTypes.indexOf(el.attributes.type.value.toLowerCase()) !== -1
                       ) {
                           return false;
                       }
@@ -770,8 +770,8 @@
 
           var passwordInputs = queryDocAll(document, document.body, function (el) {
               return el.nodeName === 'INPUT' &&
-                  typeof el.attributes.type === 'string' &&
-                  el.attributes.type.toLowerCase() === 'password';
+                  el.attributes.type &&
+                  el.attributes.type.value.toLowerCase() === 'password';
           });
 
         return savedURLs.some(url =>
@@ -1069,8 +1069,8 @@
           var r = RegExp('((\\\\b|_|-)pin(\\\\b|_|-)|password|passwort|kennwort|passe|contraseña|senha|密码|adgangskode|hasło|wachtwoord)', 'i');
           return queryDocAll(document, document.body, function (el) {
               return el.nodeName === 'FORM' &&
-                  typeof el.attributes.type === 'string' &&
-                  el.attributes.type.toLowerCase() === 'text' &&
+                  el.attributes.type &&
+                  el.attributes.type.value.toLowerCase() === 'text' &&
                   el.value &&
                   r.test(el.value);
           });

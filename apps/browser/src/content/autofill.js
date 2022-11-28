@@ -772,9 +772,12 @@
                   el.attributes.type.toLowerCase() === 'password';
           });
 
-          return savedURLs.some(url => url.indexOf('https://') === 0) && 'http:' === document.location.protocol,
-              0 < passwordInputs.length && (confirmResult = confirm('Warning: This is an unsecured HTTP page, and any information you submit can potentially be seen and changed by others. This Login was originally saved on a secure (HTTPS) page.\n\nDo you still wish to fill this login?'),
-                  0 == confirmResult)) ? true : false;
+        return savedURLs.some(url =>
+          url.indexOf('https://') === 0) &&
+          'http:' === document.location.protocol &&
+          0 < passwordInputs.length &&
+          (confirmResult = confirm('Warning: This is an unsecured HTTP page, and any information you submit can potentially be seen and changed by others. This Login was originally saved on a secure (HTTPS) page.\n\nDo you still wish to fill this login?'),
+            0 == confirmResult) ? true : false;
       }
 
       // Detect if within an iframe, and the iframe is sandboxed

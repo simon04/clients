@@ -79,7 +79,7 @@
   function queryDocAll(doc, rootEl, filterCallback, els) {
       els = els || [];
 
-      if(typeof filterCallback !== 'function') {
+      if (typeof filterCallback !== 'function') {
           filterCallback = function () { /* noop */ };
       }
 
@@ -107,7 +107,7 @@
    * roots, yielding a visited node only if it passes the predicate in filterCallback.
    */
   function queryDoc(doc, rootEl, filterCallback) {
-      if(typeof filterCallback !== 'function') {
+      if (typeof filterCallback !== 'function') {
           filterCallback = function () { /* noop */ };
       }
 

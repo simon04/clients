@@ -434,7 +434,7 @@ export class Utils {
   static validateHexColor(color: string) {
     return /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(color);
   }
-  
+
   /**
    * Converts map to a Record<string, V> with the same data. Inverse of recordToMap
    * Useful in toJSON methods, since Maps are not serializable

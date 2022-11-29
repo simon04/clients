@@ -73,8 +73,8 @@
   }
 
   /*
-   * Works like querySelectorAll but uses a filerCallback where the node is passed to instead of a CSS selector string.
-   * It has the advantage over querySelectorAll that it traverses into ShadowRoot.
+   * Returns elements like Document.querySelectorAll does, but traverses the document and shadow
+   * roots, yielding a visited node only if it passes the predicate in filterCallback.
    */
   function queryDocAll(doc, rootEl, filterCallback, els) {
       els = els || [];
@@ -103,8 +103,8 @@
   }
 
   /*
-   * Works like querySelector but uses a filerCallback where the node is passed to instead of a CSS selector string.
-   * It has the advantage over querySelector that it traverses into ShadowRoot.
+   * Returns an element like Document.querySelector does, but traverses the document and shadow
+   * roots, yielding a visited node only if it passes the predicate in filterCallback.
    */
   function queryDoc(doc, rootEl, filterCallback) {
       if(typeof filterCallback !== 'function') {

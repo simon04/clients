@@ -1,20 +1,19 @@
+import { onAlarmListener } from "./alarms/on-alarm-listener";
+import { registerAlarms } from "./alarms/register-alarms";
 import MainBackground from "./background/main.background";
 import { BrowserApi } from "./browser/browserApi";
 import { CipherContextMenuHandler } from "./browser/cipher-context-menu-handler";
 import { ContextMenuClickedHandler } from "./browser/context-menu-clicked-handler";
-import { ClearClipboard } from "./clipboard";
 import { combine } from "./listeners/combine";
 import { onCommandListener } from "./listeners/onCommandListener";
 import { onInstallListener } from "./listeners/onInstallListener";
 import { UpdateBadge } from "./listeners/update-badge";
 
-type AlarmAction = (executionTime: Date, serviceCache: Record<string, unknown>) => void;
-
-const AlarmActions: AlarmAction[] = [ClearClipboard.run];
-
 if (BrowserApi.manifestVersion === 3) {
   chrome.commands.onCommand.addListener(onCommandListener);
   chrome.runtime.onInstalled.addListener(onInstallListener);
+  chrome.alarms.onAlarm.addListener(onAlarmListener);
+  registerAlarms();
   chrome.tabs.onActivated.addListener(
     combine([UpdateBadge.tabsOnActivatedListener, CipherContextMenuHandler.tabsOnActivatedListener])
   );
@@ -33,14 +32,6 @@ if (BrowserApi.manifestVersion === 3) {
       ContextMenuClickedHandler.messageListener,
     ])
   );
-  chrome.alarms.onAlarm.addListener((_alarm) => {
-    const executionTime = new Date();
-    const serviceCache = {};
-
-    for (const alarmAction of AlarmActions) {
-      alarmAction(executionTime, serviceCache);
-    }
-  });
 } else {
   const bitwardenMain = ((window as any).bitwardenMain = new MainBackground());
   bitwardenMain.bootstrap().then(() => {

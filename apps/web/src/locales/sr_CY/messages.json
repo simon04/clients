@@ -1157,13 +1157,6 @@
   "disableIconsDesc": {
     "message": "Иконе веб сајта пружају препознатљиву слику поред сваке пријаву у сефу."
   },
-  "enableGravatars": {
-    "message": "Омогући Gravatar",
-    "description": "'Gravatar' is the name of a service. See www.gravatar.com"
-  },
-  "enableGravatarsDesc": {
-    "message": "Користите слике аватара учитане са gravatar.com."
-  },
   "enableFullWidth": {
     "message": "Упали пуни ширину распореда",
     "description": "Allows scaling the web vault UI's width"

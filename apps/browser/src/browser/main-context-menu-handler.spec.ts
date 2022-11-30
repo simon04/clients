@@ -1,15 +1,16 @@
 import { mock, MockProxy } from "jest-mock-extended";
 
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
-import { StateService } from "@bitwarden/common/abstractions/state.service";
 import { CipherType } from "@bitwarden/common/enums/cipherType";
 import { Cipher } from "@bitwarden/common/models/domain/cipher";
 import { CipherView } from "@bitwarden/common/models/view/cipher.view";
 
+import { BrowserStateService } from "../services/abstractions/browser-state.service";
+
 import { MainContextMenuHandler } from "./main-context-menu-handler";
 
 describe("context-menu", () => {
-  let stateService: MockProxy<StateService>;
+  let stateService: MockProxy<BrowserStateService>;
   let i18nService: MockProxy<I18nService>;
 
   let removeAllSpy: jest.SpyInstance<void, [callback?: () => void]>;

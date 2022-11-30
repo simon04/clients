@@ -94,18 +94,10 @@ export class BrowserApi {
     });
   }
 
-  static sendTabsMessage<T = never>(
+  static sendTabsMessage<T>(
     tabId: number,
     message: TabMessage,
-    responseCallback?: (response: T) => void
-  ) {
-    chrome.tabs.sendMessage<TabMessage, T>(tabId, message, responseCallback);
-  }
-
-  static sendTabsMessageOptions<T>(
-    tabId: number,
-    message: TabMessage,
-    options: chrome.tabs.MessageSendOptions,
+    options?: chrome.tabs.MessageSendOptions,
     responseCallback?: (response: T) => void
   ) {
     chrome.tabs.sendMessage<TabMessage, T>(tabId, message, options, responseCallback);

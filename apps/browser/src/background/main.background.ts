@@ -559,13 +559,15 @@ export default class MainBackground {
       this.apiService
     );
 
-    this.mainContextMenuHandler = new MainContextMenuHandler(this.stateService, this.i18nService);
+    if (!this.popupOnlyContext) {
+      this.mainContextMenuHandler = new MainContextMenuHandler(this.stateService, this.i18nService);
 
-    this.cipherContextMenuHandler = new CipherContextMenuHandler(
-      this.mainContextMenuHandler,
-      this.authService,
-      this.cipherService
-    );
+      this.cipherContextMenuHandler = new CipherContextMenuHandler(
+        this.mainContextMenuHandler,
+        this.authService,
+        this.cipherService
+      );
+    }
   }
 
   async bootstrap() {
@@ -626,16 +628,16 @@ export default class MainBackground {
     await MainContextMenuHandler.removeAll();
 
     if (forLocked) {
-      await this.mainContextMenuHandler.noAccess();
+      await this.mainContextMenuHandler?.noAccess();
       this.onUpdatedRan = this.onReplacedRan = false;
       return;
     }
 
-    await this.mainContextMenuHandler.init();
+    await this.mainContextMenuHandler?.init();
 
     const tab = await BrowserApi.getTabFromCurrentWindow();
     if (tab) {
-      await this.cipherContextMenuHandler.update(tab.url);
+      await this.cipherContextMenuHandler?.update(tab.url);
       this.onUpdatedRan = this.onReplacedRan = false;
     }
   }

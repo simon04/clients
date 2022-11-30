@@ -24,8 +24,7 @@ import { Account } from "../models/account";
 import { BrowserApi } from "./browserApi";
 import { MainContextMenuHandler } from "./main-context-menu-handler";
 
-const NOT_IMPLEMENTED = (..._args: unknown[]) =>
-  Promise.reject<never>("This action is not implemented inside of a service worker context.");
+const NOT_IMPLEMENTED = (..._args: unknown[]) => Promise.resolve();
 
 const LISTENED_TO_COMMANDS = [
   "loggedIn",
@@ -70,7 +69,7 @@ export class CipherContextMenuHandler {
         isDev: false,
       },
       platformUtilsServiceOptions: {
-        biometricCallback: NOT_IMPLEMENTED,
+        biometricCallback: () => Promise.resolve(false),
         clipboardWriteCallback: NOT_IMPLEMENTED,
         win: self,
       },

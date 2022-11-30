@@ -216,7 +216,7 @@ export class ContextMenuClickedHandler {
 
   private async getIdentifier(tab: chrome.tabs.Tab, info: chrome.contextMenus.OnClickData) {
     return new Promise<string>((resolve, reject) => {
-      BrowserApi.sendTabsMessageOptions(
+      BrowserApi.sendTabsMessage(
         tab.id,
         { command: "getClickedElement" },
         { frameId: info.frameId },

@@ -9,19 +9,10 @@ import { GlobalState } from "@bitwarden/common/models/domain/global-state";
 import { ContainerService } from "@bitwarden/common/services/container.service";
 
 import IconDetails from "../background/models/iconDetails";
-import {
-  authServiceFactory,
-  AuthServiceInitOptions,
-} from "../background/service_factories/auth-service.factory";
-import {
-  cipherServiceFactory,
-  CipherServiceInitOptions,
-} from "../background/service_factories/cipher-service.factory";
+import { authServiceFactory } from "../background/service_factories/auth-service.factory";
+import { cipherServiceFactory } from "../background/service_factories/cipher-service.factory";
 import { searchServiceFactory } from "../background/service_factories/search-service.factory";
-import {
-  stateServiceFactory,
-  StateServiceInitOptions,
-} from "../background/service_factories/state-service.factory";
+import { stateServiceFactory } from "../background/service_factories/state-service.factory";
 import { BrowserApi } from "../browser/browserApi";
 import { Account } from "../models/account";
 import { BrowserStateService } from "../services/abstractions/browser-state.service";
@@ -241,7 +232,7 @@ export class UpdateBadge {
     }
 
     const serviceCache: Record<string, unknown> = existingServiceCache || {};
-    const opts: StateServiceInitOptions & AuthServiceInitOptions & CipherServiceInitOptions = {
+    const opts = {
       cryptoFunctionServiceOptions: { win: self },
       encryptServiceOptions: { logMacFailures: false },
       logServiceOptions: { isDev: false },
@@ -265,9 +256,6 @@ export class UpdateBadge {
       },
       i18nServiceOptions: {
         systemLanguage: BrowserApi.getUILanguage(self),
-      },
-      cipherServiceOptions: {
-        searchServiceFactory: () => searchService,
       },
     };
     this.stateService = await stateServiceFactory(serviceCache, opts);

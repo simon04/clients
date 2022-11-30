@@ -57,7 +57,9 @@ document.addEventListener("contextmenu", (event) => {
 chrome.runtime.onMessage.addListener((event, _sender, sendResponse) => {
   if (event.command === "getClickedElement") {
     const identifier = getClickedElementIdentifier();
-    sendResponse(identifier);
+    if (sendResponse) {
+      sendResponse(identifier);
+    }
     chrome.runtime.sendMessage({
       command: "getClickedElementResponse",
       sender: "contextMenuHandler",

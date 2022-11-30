@@ -77,12 +77,15 @@
    * roots, yielding a visited node only if it passes the predicate in filterCallback.
    */
   function queryDocAll(doc, rootEl, filterCallback) {
-      accumulation = [];
-      accumulatingQueryDocAll(doc, rootEl, filterCallback, accumulation);  // mutates accumulation
-      return accumulation;
+      var accumulatedNodes = [];
+
+      // mutates accumulatedNodes
+      accumulatingQueryDocAll(doc, rootEl, filterCallback, accumulatedNodes);
+
+      return accumulatedNodes;
   }
-  
-  function accumulatingQueryDocAll(doc, rootEl, filterCallback, accumulation) {
+
+  function accumulatingQueryDocAll(doc, rootEl, filterCallback, accumulatedNodes) {
       if (typeof filterCallback !== 'function') {
           filterCallback = function () { /* noop */ };
       }
@@ -92,7 +95,7 @@
 
       while (node = treeWalker.nextNode()) {
         if (filterCallback(node)) {
-            accumulation.push(node);
+            accumulatedNodes.push(node);
         }
 
         // If node contains a ShadowRoot we want to step into it and also traverse all child nodes inside.
@@ -103,7 +106,7 @@
         }
 
         // recursively traverse into ShadowRoot
-        accumulatingQueryDocAll(doc, nodeShadowRoot, filterCallback, accumulation);
+        accumulatingQueryDocAll(doc, nodeShadowRoot, filterCallback, accumulatedNodes);
     }
   }
 

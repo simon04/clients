@@ -586,7 +586,7 @@ export default class MainBackground {
 
     await this.tabsBackground.init();
     if (!this.popupOnlyContext) {
-      this.contextMenusBackground.init();
+      this.contextMenusBackground?.init();
     }
     await this.idleBackground.init();
     await this.webRequestBackground.init();

@@ -76,9 +76,13 @@
    * Returns elements like Document.querySelectorAll does, but traverses the document and shadow
    * roots, yielding a visited node only if it passes the predicate in filterCallback.
    */
-  function queryDocAll(doc, rootEl, filterCallback, els) {
-      els = els || [];
-
+  function queryDocAll(doc, rootEl, filterCallback) {
+      accumulation = [];
+      accumulatingQueryDocAll(doc, rootEl, filterCallback, accumulation);  // mutates accumulation
+      return accumulation;
+  }
+  
+  function accumulatingQueryDocAll(doc, rootEl, filterCallback, accumulation) {
       if (typeof filterCallback !== 'function') {
           filterCallback = function () { /* noop */ };
       }
@@ -88,7 +92,7 @@
 
       while (node = treeWalker.nextNode()) {
         if (filterCallback(node)) {
-            els.push(node);
+            accumulation.push(node);
         }
 
         // If node contains a ShadowRoot we want to step into it and also traverse all child nodes inside.
@@ -99,10 +103,8 @@
         }
 
         // recursively traverse into ShadowRoot
-        els = queryDocAll(doc, nodeShadowRoot, filterCallback, els);
+        accumulatingQueryDocAll(doc, nodeShadowRoot, filterCallback, accumulation);
     }
-
-    return els;
   }
 
   /*

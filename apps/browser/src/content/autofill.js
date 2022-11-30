@@ -93,10 +93,13 @@
 
         // If node contains a ShadowRoot we want to step into it and also traverse all child nodes inside.
         var nodeShadowRoot = getShadowRoot(node);
-        if (nodeShadowRoot) {
-            // recursively traverse into ShadowRoot
-            els = queryDocAll(doc, nodeShadowRoot, filterCallback, els);
+
+        if (!nodeShadowRoot) {
+          continue;
         }
+
+        // recursively traverse into ShadowRoot
+        els = queryDocAll(doc, nodeShadowRoot, filterCallback, els);
     }
 
     return els;
@@ -121,13 +124,16 @@
 
           // If node contains a ShadowRoot we want to step into it and also traverse all child nodes inside.
           var nodeShadowRoot = getShadowRoot(node);
-          if (nodeShadowRoot) {
-              // recursively traverse into ShadowRoot
-              var subQueryResult = queryDoc(doc, nodeShadowRoot, filterCallback);
 
-              if (subQueryResult) {
-                  return subQueryResult;
-              }
+          if (!nodeShadowRoot) {
+            continue;
+          }
+
+          // recursively traverse into ShadowRoot
+          var subQueryResult = queryDoc(doc, nodeShadowRoot, filterCallback);
+
+          if (subQueryResult) {
+              return subQueryResult;
           }
       }
 

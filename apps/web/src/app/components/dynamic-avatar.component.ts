@@ -20,7 +20,7 @@ type SizeTypes = "xlarge" | "large" | "default" | "small";
 })
 export class DynamicAvatarComponent implements OnDestroy {
   @Input() border = false;
-  @Input() id: number;
+  @Input() id: string;
   @Input() text: string;
   @Input() title: string;
   @Input() size: SizeTypes = "default";

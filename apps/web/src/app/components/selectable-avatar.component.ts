@@ -25,7 +25,7 @@ import { Component, EventEmitter, Input, Output } from "@angular/core";
   </span>`,
 })
 export class SelectableAvatarComponent {
-  @Input() id: number;
+  @Input() id: string;
   @Input() text: string;
   @Input() title: string;
   @Input() color: string;

@@ -106,7 +106,7 @@ export class ChangeAvatarComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  private async setSelection(color: string | null) {
+  async setSelection(color: string | null) {
     this.defaultColorPalette.filter((x) => x.selected).forEach((c) => (c.selected = false));
 
     if (color == null) {

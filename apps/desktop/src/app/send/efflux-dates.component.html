@@ -52,7 +52,6 @@
           formControlName="defaultExpirationDateTime"
           required
           placeholder="MM/DD/YYYY HH:MM AM/PM"
-          [readOnly]="disableSend"
         />
         <small *ngIf="editMode" id="expirationDateCustomHelp" class="help-block">{{
           "expirationDateDesc" | i18n

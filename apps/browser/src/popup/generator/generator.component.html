@@ -57,8 +57,13 @@
         appStopClick
         appA11yTitle="{{ 'regenerateUsername' | i18n }}"
         (click)="regenerate()"
+        [disabled]="$any(form).loading"
       >
-        <i class="bwi bwi-lg bwi-generate" aria-hidden="true"></i>
+        <i
+          class="bwi bwi-lg bwi-generate"
+          [ngClass]="$any(form).loading ? 'bwi-spin' : ''"
+          aria-hidden="true"
+        ></i>
       </button>
     </div>
   </div>

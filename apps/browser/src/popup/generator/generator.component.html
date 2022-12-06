@@ -306,7 +306,7 @@
               [(ngModel)]="usernameOptions.type"
               name="UsernameType"
               id="type_{{ o.value }}"
-              aria-describedby="type_{{ o.value }}_Help"
+              attr.aria-describedby="type_{{ o.value }}_Help"
               [value]="o.value"
               (change)="saveUsernameOptions()"
               [checked]="usernameOptions.type === o.value"

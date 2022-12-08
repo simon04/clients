@@ -18,11 +18,15 @@ import { StateService } from "@bitwarden/common/abstractions/state.service";
 import { SyncService } from "@bitwarden/common/abstractions/sync/sync.service.abstraction";
 import { Utils } from "@bitwarden/common/misc/utils";
 
+import { flagEnabled } from "../../flags";
+
 @Component({
   selector: "app-login",
   templateUrl: "login.component.html",
 })
 export class LoginComponent extends BaseLoginComponent {
+  protected skipRememberEmail = true;
+  showPasswordless = false;
   constructor(
     apiService: ApiService,
     appIdService: AppIdService,
@@ -64,6 +68,19 @@ export class LoginComponent extends BaseLoginComponent {
       await syncService.fullSync(true);
     };
     super.successRoute = "/tabs/vault";
+    this.showPasswordless = flagEnabled("showPasswordless");
+  }
+
+  async startPasswordlessLogin() {
+    this.formGroup.get("masterPassword")?.clearValidators();
+    this.formGroup.get("masterPassword")?.updateValueAndValidity();
+
+    if (!this.formGroup.valid) {
+      return;
+    }
+
+    this.setFormValues();
+    this.router.navigate(["/login-with-device"]);
   }
 
   settings() {

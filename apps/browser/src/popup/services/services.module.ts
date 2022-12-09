@@ -12,6 +12,8 @@ import { AuditService } from "@bitwarden/common/abstractions/audit.service";
 import { AuthService as AuthServiceAbstraction } from "@bitwarden/common/abstractions/auth.service";
 import { CipherService } from "@bitwarden/common/abstractions/cipher.service";
 import { CollectionService } from "@bitwarden/common/abstractions/collection.service";
+import { ConfigApiServiceAbstraction } from "@bitwarden/common/abstractions/config/config-api.service.abstraction";
+import { ConfigServiceAbstraction } from "@bitwarden/common/abstractions/config/config.service.abstraction";
 import { CryptoService } from "@bitwarden/common/abstractions/crypto.service";
 import { CryptoFunctionService } from "@bitwarden/common/abstractions/cryptoFunction.service";
 import { EnvironmentService } from "@bitwarden/common/abstractions/environment.service";
@@ -65,6 +67,7 @@ import { BrowserApi } from "../../browser/browserApi";
 import { Account } from "../../models/account";
 import { AutofillService } from "../../services/abstractions/autofill.service";
 import { BrowserStateService as StateServiceAbstraction } from "../../services/abstractions/browser-state.service";
+import { BrowserConfigService } from "../../services/browser-config.service";
 import { BrowserEnvironmentService } from "../../services/browser-environment.service";
 import { BrowserFolderService } from "../../services/browser-folder.service";
 import { BrowserI18nService } from "../../services/browser-i18n.service";
@@ -413,6 +416,11 @@ function getBgService<T>(service: keyof MainBackground) {
         );
       },
       deps: [StateServiceAbstraction, PlatformUtilsService],
+    },
+    {
+      provide: ConfigServiceAbstraction,
+      useClass: BrowserConfigService,
+      deps: [StateServiceAbstraction, ConfigApiServiceAbstraction],
     },
   ],
 })

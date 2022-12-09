@@ -21,7 +21,10 @@ import { ExportService } from "@bitwarden/common/abstractions/export.service";
 import { FileDownloadService } from "@bitwarden/common/abstractions/fileDownload/fileDownload.service";
 import { FileUploadService } from "@bitwarden/common/abstractions/fileUpload.service";
 import { FolderApiServiceAbstraction } from "@bitwarden/common/abstractions/folder/folder-api.service.abstraction";
-import { FolderService } from "@bitwarden/common/abstractions/folder/folder.service.abstraction";
+import {
+  FolderService,
+  InternalFolderService,
+} from "@bitwarden/common/abstractions/folder/folder.service.abstraction";
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { KeyConnectorService } from "@bitwarden/common/abstractions/keyConnector.service";
 import { LogService as LogServiceAbstraction } from "@bitwarden/common/abstractions/log.service";
@@ -53,6 +56,7 @@ import { StateFactory } from "@bitwarden/common/factories/stateFactory";
 import { GlobalState } from "@bitwarden/common/models/domain/global-state";
 import { AuthService } from "@bitwarden/common/services/auth.service";
 import { ConsoleLogService } from "@bitwarden/common/services/consoleLog.service";
+import { FolderApiService } from "@bitwarden/common/services/folder/folder-api.service";
 import { LoginService } from "@bitwarden/common/services/login.service";
 import { SearchService } from "@bitwarden/common/services/search.service";
 
@@ -62,6 +66,7 @@ import { Account } from "../../models/account";
 import { AutofillService } from "../../services/abstractions/autofill.service";
 import { BrowserStateService as StateServiceAbstraction } from "../../services/abstractions/browser-state.service";
 import { BrowserEnvironmentService } from "../../services/browser-environment.service";
+import { BrowserFolderService } from "../../services/browser-folder.service";
 import { BrowserOrganizationService } from "../../services/browser-organization.service";
 import { BrowserPolicyService } from "../../services/browser-policy.service";
 import { BrowserSettingsService } from "../../services/browser-settings.service";
@@ -165,13 +170,26 @@ function getBgService<T>(service: keyof MainBackground) {
     },
     {
       provide: FolderService,
-      useFactory: getBgService<FolderService>("folderService"),
-      deps: [],
+      useFactory: (
+        cryptoService: CryptoService,
+        i18nService: I18nService,
+        cipherService: CipherService,
+        stateService: StateServiceAbstraction
+      ) => {
+        return new BrowserFolderService(cryptoService, i18nService, cipherService, stateService);
+      },
+      deps: [CryptoService, I18nService, CipherService, StateServiceAbstraction],
+    },
+    {
+      provide: InternalFolderService,
+      useExisting: FolderService,
     },
     {
       provide: FolderApiServiceAbstraction,
-      useFactory: getBgService<FolderApiServiceAbstraction>("folderApiService"),
-      deps: [],
+      useFactory: (folderService: InternalFolderService, apiService: ApiService) => {
+        return new FolderApiService(folderService, apiService);
+      },
+      deps: [InternalFolderService, ApiService],
     },
     {
       provide: CollectionService,

@@ -25,7 +25,7 @@ import {
   FolderService,
   InternalFolderService,
 } from "@bitwarden/common/abstractions/folder/folder.service.abstraction";
-import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
+import { I18nService as I18nServiceAbstraction } from "@bitwarden/common/abstractions/i18n.service";
 import { KeyConnectorService } from "@bitwarden/common/abstractions/keyConnector.service";
 import { LogService as LogServiceAbstraction } from "@bitwarden/common/abstractions/log.service";
 import { LoginService as LoginServiceAbstraction } from "@bitwarden/common/abstractions/login.service";
@@ -67,6 +67,7 @@ import { AutofillService } from "../../services/abstractions/autofill.service";
 import { BrowserStateService as StateServiceAbstraction } from "../../services/abstractions/browser-state.service";
 import { BrowserEnvironmentService } from "../../services/browser-environment.service";
 import { BrowserFolderService } from "../../services/browser-folder.service";
+import { BrowserI18nService } from "../../services/browser-i18n.service";
 import { BrowserOrganizationService } from "../../services/browser-organization.service";
 import { BrowserPolicyService } from "../../services/browser-policy.service";
 import { BrowserSettingsService } from "../../services/browser-settings.service";
@@ -110,7 +111,7 @@ function getBgService<T>(service: keyof MainBackground) {
     DebounceNavigationService,
     {
       provide: LOCALE_ID,
-      useFactory: () => getBgService<I18nService>("i18nService")().translationLocale,
+      useFactory: () => getBgService<I18nServiceAbstraction>("i18nService")().translationLocale,
       deps: [],
     },
     {
@@ -145,7 +146,7 @@ function getBgService<T>(service: keyof MainBackground) {
       useFactory: (
         cipherService: CipherService,
         logService: ConsoleLogService,
-        i18nService: I18nService
+        i18nService: I18nServiceAbstraction
       ) => {
         return new PopupSearchService(
           getBgService<SearchService>("searchService")(),
@@ -154,7 +155,7 @@ function getBgService<T>(service: keyof MainBackground) {
           i18nService
         );
       },
-      deps: [CipherService, LogServiceAbstraction, I18nService],
+      deps: [CipherService, LogServiceAbstraction, I18nServiceAbstraction],
     },
     { provide: AuditService, useFactory: getBgService<AuditService>("auditService"), deps: [] },
     {
@@ -172,13 +173,13 @@ function getBgService<T>(service: keyof MainBackground) {
       provide: FolderService,
       useFactory: (
         cryptoService: CryptoService,
-        i18nService: I18nService,
+        i18nService: I18nServiceAbstraction,
         cipherService: CipherService,
         stateService: StateServiceAbstraction
       ) => {
         return new BrowserFolderService(cryptoService, i18nService, cipherService, stateService);
       },
-      deps: [CryptoService, I18nService, CipherService, StateServiceAbstraction],
+      deps: [CryptoService, I18nServiceAbstraction, CipherService, StateServiceAbstraction],
     },
     {
       provide: InternalFolderService,
@@ -212,7 +213,13 @@ function getBgService<T>(service: keyof MainBackground) {
     },
     { provide: TotpService, useFactory: getBgService<TotpService>("totpService"), deps: [] },
     { provide: TokenService, useFactory: getBgService<TokenService>("tokenService"), deps: [] },
-    { provide: I18nService, useFactory: getBgService<I18nService>("i18nService"), deps: [] },
+    {
+      provide: I18nServiceAbstraction,
+      useFactory: () => {
+        return new BrowserI18nService(BrowserApi.getUILanguage(window));
+      },
+      deps: [],
+    },
     { provide: CryptoService, useFactory: getBgService<CryptoService>("cryptoService"), deps: [] },
     {
       provide: EventUploadService,

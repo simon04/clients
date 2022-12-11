@@ -39,7 +39,7 @@ export class VerifyEmailComponent {
     );
   }
 
-  async send() {
+  send = async () => {
     if (this.actionPromise != null) {
       return;
     }
@@ -51,5 +51,5 @@ export class VerifyEmailComponent {
       this.logService.error(e);
     }
     this.actionPromise = null;
-  }
+  };
 }

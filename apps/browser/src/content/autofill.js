@@ -766,7 +766,12 @@
       // Check if URL is not secure when the original saved one was
       // START MODIFICATION
       function urlNotSecure(savedURLs) {
-          if (!savedURLs) {
+          if (document.location.protocol === 'https:') {
+              return false;
+          }
+
+          if (!savedURLs || !savedURLs.some(url => url.indexOf('https://') === 0)) {
+              // there are no saved URLs with https
               return false;
           }
 
@@ -776,12 +781,11 @@
                   el.attributes.type.value.toLowerCase() === 'password';
           });
 
-        return savedURLs.some(url =>
-          url.indexOf('https://') === 0) &&
-          'http:' === document.location.protocol &&
-          0 < passwordInputs.length &&
-          (confirmResult = confirm('Warning: This is an unsecured HTTP page, and any information you submit can potentially be seen and changed by others. This Login was originally saved on a secure (HTTPS) page.\n\nDo you still wish to fill this login?'),
-            0 == confirmResult) ? true : false;
+          if (passwordInputs.length === 0) {
+              return false;
+          }
+
+          return confirm('Warning: This is an unsecured HTTP page, and any information you submit can potentially be seen and changed by others. This Login was originally saved on a secure (HTTPS) page.\n\nDo you still wish to fill this login?');
       }
 
       // Detect if within an iframe, and the iframe is sandboxed

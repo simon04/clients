@@ -260,7 +260,7 @@ export default class MainBackground {
       },
       window
     );
-    this.i18nService = new BrowserI18nService(BrowserApi.getUILanguage(window));
+    this.i18nService = new BrowserI18nService(BrowserApi.getUILanguage(window), this.stateService);
     this.encryptService = flagEnabled("multithreadDecryption")
       ? new MultithreadEncryptServiceImplementation(
           this.cryptoFunctionService,

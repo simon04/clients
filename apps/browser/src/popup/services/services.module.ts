@@ -43,7 +43,10 @@ import { ProviderService } from "@bitwarden/common/abstractions/provider.service
 import { SearchService as SearchServiceAbstraction } from "@bitwarden/common/abstractions/search.service";
 import { SendService } from "@bitwarden/common/abstractions/send.service";
 import { SettingsService } from "@bitwarden/common/abstractions/settings.service";
-import { StateService as BaseStateServiceAbstraction } from "@bitwarden/common/abstractions/state.service";
+import {
+  StateService as BaseStateServiceAbstraction,
+  StateService,
+} from "@bitwarden/common/abstractions/state.service";
 import { StateMigrationService } from "@bitwarden/common/abstractions/stateMigration.service";
 import { AbstractStorageService } from "@bitwarden/common/abstractions/storage.service";
 import { SyncService } from "@bitwarden/common/abstractions/sync/sync.service.abstraction";
@@ -218,10 +221,10 @@ function getBgService<T>(service: keyof MainBackground) {
     { provide: TokenService, useFactory: getBgService<TokenService>("tokenService"), deps: [] },
     {
       provide: I18nServiceAbstraction,
-      useFactory: () => {
-        return new BrowserI18nService(BrowserApi.getUILanguage(window));
+      useFactory: (stateService: BrowserStateService) => {
+        return new BrowserI18nService(BrowserApi.getUILanguage(window), stateService);
       },
-      deps: [],
+      deps: [StateService],
     },
     { provide: CryptoService, useFactory: getBgService<CryptoService>("cryptoService"), deps: [] },
     {

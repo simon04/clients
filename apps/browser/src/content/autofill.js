@@ -512,8 +512,7 @@
           // get proper page title. maybe they are using the special meta tag?
           // START MODIFICATION
           var theTitle = queryDoc(theDoc, theDoc, function (node) {
-              return node.attributes['data-onepassword-title'] &&
-                  typeof node.attributes['data-onepassword-title'].value === 'string';
+              return node.attributes['data-onepassword-title'];
           });
           // END MODIFICATION
           if (theTitle && theTitle.dataset[DISPLAY_TITLE_ATTRIBUE]) {

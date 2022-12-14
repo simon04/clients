@@ -1070,7 +1070,7 @@
       function getAllFields() {
           var r = RegExp('((\\\\b|_|-)pin(\\\\b|_|-)|password|passwort|kennwort|passe|contraseña|senha|密码|adgangskode|hasło|wachtwoord)', 'i');
           return queryDocAll(document, document.body, function (el) {
-              return el.nodeName === 'FORM' &&
+              return el.nodeName === 'INPUT' &&
                   el.attributes.type &&
                   el.attributes.type.value.toLowerCase() === 'text' &&
                   el.value &&

@@ -86,10 +86,6 @@
   }
 
   function accumulatingQueryDocAll(doc, rootEl, filterCallback, accumulatedNodes) {
-      if (typeof filterCallback !== 'function') {
-          filterCallback = function () { /* noop */ };
-      }
-
       var treeWalker = doc.createTreeWalker(rootEl, NodeFilter.SHOW_ELEMENT);
       var node;
 
@@ -115,10 +111,6 @@
    * roots, yielding a visited node only if it passes the predicate in filterCallback.
    */
   function queryDoc(doc, rootEl, filterCallback) {
-      if (typeof filterCallback !== 'function') {
-          filterCallback = function () { /* noop */ };
-      }
-
       var treeWalker = doc.createTreeWalker(rootEl, NodeFilter.SHOW_ELEMENT);
       var node;
 

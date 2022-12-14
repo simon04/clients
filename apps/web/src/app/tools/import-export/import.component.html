@@ -288,6 +288,10 @@
       From the Yoti browser extension, click on "Settings", then "Export Saved Logins" and save the
       CSV file.
     </ng-container>
+    <ng-container *ngIf="format === 'psonojson'">
+      Log in to the Psono web vault, click on the "Signed in as"-dropdown, select "Others". Go to
+      the "Export"-tab and select the json type export and then click on Export.
+    </ng-container>
   </app-callout>
   <div class="row">
     <div class="col-6">

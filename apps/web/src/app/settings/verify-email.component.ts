@@ -40,16 +40,10 @@ export class VerifyEmailComponent {
   }
 
   send = async () => {
-    if (this.actionPromise != null) {
-      return;
-    }
-
     try {
-      this.actionPromise = this.verifyEmail();
-      await this.actionPromise;
+      await this.verifyEmail();
     } catch (e) {
       this.logService.error(e);
     }
-    this.actionPromise = null;
   };
 }

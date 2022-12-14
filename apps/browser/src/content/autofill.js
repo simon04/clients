@@ -1158,7 +1158,7 @@
           // START MODIFICATION
           return queryDocAll(document, document, function(node) {
               // required check for instanceof Element to make sure .matches method exists.
-              return node instanceof Element && node.matches(theSelector);
+              return node.matches(theSelector);
           });
           // END MODIFICATION
       }

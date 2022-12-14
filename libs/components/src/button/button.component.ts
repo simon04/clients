@@ -77,7 +77,16 @@ export class ButtonComponent implements ButtonLikeAbstraction {
 
   @Input() buttonType: ButtonTypes = null;
 
-  @Input() block?: boolean;
+  private _block?: boolean;
+
+  @Input()
+  get block(): boolean {
+    return this._block;
+  }
+
+  set block(value: boolean | "") {
+    this._block = value === "" || value;
+  }
 
   @Input() loading = false;
 

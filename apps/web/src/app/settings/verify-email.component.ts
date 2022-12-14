@@ -40,10 +40,6 @@ export class VerifyEmailComponent {
   }
 
   send = async () => {
-    try {
-      await this.verifyEmail();
-    } catch (e) {
-      this.logService.error(e);
-    }
+    await this.verifyEmail();
   };
 }

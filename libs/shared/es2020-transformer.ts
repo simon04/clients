@@ -4,8 +4,8 @@ import * as ts from "typescript";
 // Removes specified ES2020 syntax from source code, as node does not support it yet
 // Reference: https://kulshekhar.github.io/ts-jest/docs/getting-started/options/astTransformers
 
-// export const version = 1;
-export const version = Math.random(); // Used for testing to avoid cacheing transformation output
+export const version = 1;
+// export const version = Math.random(); // Used for testing to avoid cacheing transformation output
 export const name = "bit-es2020-transformer";
 
 // Returns true for 'import.meta' statements

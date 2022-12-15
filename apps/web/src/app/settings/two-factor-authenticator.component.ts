@@ -40,6 +40,7 @@ export class TwoFactorAuthenticatorComponent
   token: string;
   formPromise: Promise<TwoFactorAuthenticatorResponse>;
 
+  override componentName = "app-two-factor-authenticator";
   private qrScript: HTMLScriptElement;
 
   constructor(

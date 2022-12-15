@@ -1,3 +1,4 @@
+import { coerceBooleanProperty } from "@angular/cdk/coercion";
 import { Input, HostBinding, Component } from "@angular/core";
 
 import { ButtonLikeAbstraction } from "../shared/button-like.abstraction";
@@ -85,7 +86,7 @@ export class ButtonComponent implements ButtonLikeAbstraction {
   }
 
   set block(value: boolean | "") {
-    this._block = value === "" || value;
+    this._block = coerceBooleanProperty(value);
   }
 
   @Input() loading = false;

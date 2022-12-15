@@ -38,7 +38,10 @@ import { PasswordGenerationService } from "@bitwarden/common/abstractions/passwo
 import { PasswordRepromptService as PasswordRepromptServiceAbstraction } from "@bitwarden/common/abstractions/passwordReprompt.service";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { PolicyApiServiceAbstraction } from "@bitwarden/common/abstractions/policy/policy-api.service.abstraction";
-import { PolicyService } from "@bitwarden/common/abstractions/policy/policy.service.abstraction";
+import {
+  InternalPolicyService,
+  PolicyService,
+} from "@bitwarden/common/abstractions/policy/policy.service.abstraction";
 import { ProviderService } from "@bitwarden/common/abstractions/provider.service";
 import { SearchService as SearchServiceAbstraction } from "@bitwarden/common/abstractions/search.service";
 import { SendService } from "@bitwarden/common/abstractions/send.service";
@@ -63,6 +66,7 @@ import { AuthService } from "@bitwarden/common/services/auth.service";
 import { ConsoleLogService } from "@bitwarden/common/services/consoleLog.service";
 import { FolderApiService } from "@bitwarden/common/services/folder/folder-api.service";
 import { LoginService } from "@bitwarden/common/services/login.service";
+import { PolicyApiService } from "@bitwarden/common/services/policy/policy-api.service";
 import { SearchService } from "@bitwarden/common/services/search.service";
 
 import MainBackground from "../../background/main.background";
@@ -249,8 +253,15 @@ function getBgService<T>(service: keyof MainBackground) {
     },
     {
       provide: PolicyApiServiceAbstraction,
-      useFactory: getBgService<PolicyApiServiceAbstraction>("policyApiService"),
-      deps: [],
+      useFactory: (
+        policyService: InternalPolicyService,
+        apiService: ApiService,
+        stateService: StateService,
+        organizationService: OrganizationService
+      ) => {
+        return new PolicyApiService(policyService, apiService, stateService, organizationService);
+      },
+      deps: [InternalPolicyService, ApiService, StateService, OrganizationService],
     },
     {
       provide: PlatformUtilsService,

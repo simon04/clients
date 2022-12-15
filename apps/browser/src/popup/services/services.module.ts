@@ -259,9 +259,9 @@ function getBgService<T>(service: keyof MainBackground) {
         stateService: StateService,
         organizationService: OrganizationService
       ) => {
-        return new PolicyApiService(policyService, apiService, stateService, organizationService);
+        return new PolicyApiService(policyService, apiService, stateService);
       },
-      deps: [InternalPolicyService, ApiService, StateService, OrganizationService],
+      deps: [InternalPolicyService, ApiService, StateService],
     },
     {
       provide: PlatformUtilsService,

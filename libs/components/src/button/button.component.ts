@@ -64,9 +64,7 @@ export class ButtonComponent implements ButtonLikeAbstraction {
       "focus-visible:tw-ring-primary-700",
       "focus-visible:tw-z-10",
     ]
-      .concat(
-        this.block == null || this.block === false ? ["tw-inline-block"] : ["tw-w-full", "tw-block"]
-      )
+      .concat(this.block ? ["tw-inline-block"] : ["tw-w-full", "tw-block"])
       .concat(buttonStyles[this.buttonType ?? "secondary"]);
   }
 
@@ -78,7 +76,7 @@ export class ButtonComponent implements ButtonLikeAbstraction {
 
   @Input() buttonType: ButtonTypes = null;
 
-  private _block?: boolean;
+  private _block = false;
 
   @Input()
   get block(): boolean {

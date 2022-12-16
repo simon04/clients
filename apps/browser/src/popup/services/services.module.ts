@@ -256,8 +256,7 @@ function getBgService<T>(service: keyof MainBackground) {
       useFactory: (
         policyService: InternalPolicyService,
         apiService: ApiService,
-        stateService: StateService,
-        organizationService: OrganizationService
+        stateService: StateService
       ) => {
         return new PolicyApiService(policyService, apiService, stateService);
       },

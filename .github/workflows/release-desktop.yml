@@ -185,6 +185,8 @@ jobs:
       #     --endpoint-url https://${CF_ACCOUNT}.r2.cloudflarestorage.com
 
       - name: Get checksum files
+        env:
+          RELEASE_CHANNEL: ${{ steps.release-channel.outputs.channel }}
         run: |
             python scripts/export_sha_to_files.py apps/desktop/artifacts/${{ env.RELEASE_CHANNEL }}.yml \
             apps/desktop/artifacts/${{ env.RELEASE_CHANNEL }}-linux.yml \

@@ -32,7 +32,6 @@ export class OrganizationSubscriptionCloudComponent implements OnInit, OnDestroy
   @Input() organizationId: string;
   @Input() loading: boolean;
   @Input() hasBillingSyncToken: boolean; // TODO: move into this class properly
-  @Input() subscriptionMarkedForCancel: boolean;
   @Input() userOrg: Organization;
   @Output() reload = new EventEmitter();
 

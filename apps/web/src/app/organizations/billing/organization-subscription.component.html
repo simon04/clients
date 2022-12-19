@@ -35,7 +35,7 @@
   <app-callout
     type="warning"
     title="{{ 'pendingCancellation' | i18n }}"
-    *ngIf="subscriptionMarkedForCancel"
+    *ngIf="subscription.markedForCancel"
   >
     <p>{{ "subscriptionPendingCanceled" | i18n }}</p>
     <button
@@ -56,7 +56,6 @@
     [organizationId]="organizationId"
     [loading]="loading"
     [hasBillingSyncToken]="hasBillingSyncToken"
-    [subscriptionMarkedForCancel]="subscriptionMarkedForCancel"
     [userOrg]="userOrg"
     (reload)="load()"
   >

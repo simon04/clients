@@ -105,12 +105,6 @@ export class OrganizationSubscriptionComponent implements OnInit, OnDestroy {
     }
   }
 
-  get subscriptionMarkedForCancel() {
-    return (
-      this.subscription != null && !this.subscription.cancelled && this.subscription.cancelAtEndDate
-    );
-  }
-
   get subscription() {
     return this.sub != null ? this.sub.subscription : null;
   }

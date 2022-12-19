@@ -2,7 +2,7 @@ import { mock, MockProxy } from "jest-mock-extended";
 
 import { AuthService } from "@bitwarden/common/abstractions/auth.service";
 import { CipherService } from "@bitwarden/common/abstractions/cipher.service";
-import { EventService } from "@bitwarden/common/abstractions/event.service";
+import { EventCollectionService } from "@bitwarden/common/abstractions/event/event-collection.service";
 import { TotpService } from "@bitwarden/common/abstractions/totp.service";
 import { CipherRepromptType } from "@bitwarden/common/enums/cipherRepromptType";
 import { CipherType } from "@bitwarden/common/enums/cipherType";
@@ -63,7 +63,7 @@ describe("ContextMenuClickedHandler", () => {
   let autofillTabCommand: MockProxy<AutofillTabCommand>;
   let generatePasswordToClipboardCommand: MockProxy<GeneratePasswordToClipboardCommand>;
   let totpService: MockProxy<TotpService>;
-  let eventService: MockProxy<EventService>;
+  let eventCollectionService: MockProxy<EventCollectionService>;
 
   let sut: ContextMenuClickedHandler;
 
@@ -74,7 +74,7 @@ describe("ContextMenuClickedHandler", () => {
     autofillTabCommand = mock();
     generatePasswordToClipboardCommand = mock();
     totpService = mock();
-    eventService = mock();
+    eventCollectionService = mock();
 
     sut = new ContextMenuClickedHandler(
       copyToClipboard,
@@ -83,7 +83,7 @@ describe("ContextMenuClickedHandler", () => {
       autofillTabCommand,
       generatePasswordToClipboardCommand,
       totpService,
-      eventService
+      eventCollectionService
     );
   });
 

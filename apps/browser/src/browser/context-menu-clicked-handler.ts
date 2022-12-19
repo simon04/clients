@@ -1,6 +1,6 @@
 import { AuthService } from "@bitwarden/common/abstractions/auth.service";
 import { CipherService } from "@bitwarden/common/abstractions/cipher.service";
-import { EventService } from "@bitwarden/common/abstractions/event.service";
+import { EventCollectionService } from "@bitwarden/common/abstractions/event/event-collection.service";
 import { SearchService } from "@bitwarden/common/abstractions/search.service";
 import { TotpService } from "@bitwarden/common/abstractions/totp.service";
 import { AuthenticationStatus } from "@bitwarden/common/enums/authenticationStatus";
@@ -20,7 +20,7 @@ import {
   cipherServiceFactory,
   CipherServiceInitOptions,
 } from "../background/service_factories/cipher-service.factory";
-import { eventServiceFactory } from "../background/service_factories/event-service.factory";
+import { eventCollectionServiceFactory } from "../background/service_factories/event-collection-service.factory";
 import { CachedServices } from "../background/service_factories/factory-options";
 import { passwordGenerationServiceFactory } from "../background/service_factories/password-generation-service.factory";
 import { searchServiceFactory } from "../background/service_factories/search-service.factory";
@@ -55,7 +55,7 @@ export class ContextMenuClickedHandler {
     private autofillTabCommand: AutofillTabCommand,
     private generatePasswordToClipboardCommand: GeneratePasswordToClipboardCommand,
     private totpService: TotpService,
-    private eventService: EventService
+    private eventCollectionService: EventCollectionService
   ) {}
 
   static async mv3Create(cachedServices: CachedServices) {
@@ -106,7 +106,7 @@ export class ContextMenuClickedHandler {
         await stateServiceFactory(cachedServices, serviceOptions)
       ),
       await totpServiceFactory(cachedServices, serviceOptions),
-      await eventServiceFactory(cachedServices, serviceOptions)
+      await eventCollectionServiceFactory(cachedServices, serviceOptions)
     );
   }
 
@@ -206,7 +206,7 @@ export class ContextMenuClickedHandler {
         break;
       case COPY_PASSWORD_ID:
         this.copyToClipboard({ text: cipher.login.password, tab: tab });
-        this.eventService.collect(EventType.Cipher_ClientCopiedPassword, cipher.id);
+        this.eventCollectionService.collect(EventType.Cipher_ClientCopiedPassword, cipher.id);
         break;
       case COPY_VERIFICATIONCODE_ID:
         this.copyToClipboard({ text: await this.totpService.getCode(cipher.login.totp), tab: tab });

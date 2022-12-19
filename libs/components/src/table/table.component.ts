@@ -3,6 +3,7 @@ import {
   AfterContentChecked,
   Component,
   ContentChild,
+  Directive,
   Input,
   OnDestroy,
   TemplateRef,
@@ -11,6 +12,14 @@ import { Observable } from "rxjs";
 
 import { TableDataSource } from "./table-data-source";
 
+@Directive({
+  selector: "ng-template[body]",
+})
+export class TableBodyDirective {
+  // eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
+  constructor(public readonly template: TemplateRef<any>) {}
+}
+
 @Component({
   selector: "bit-table",
   templateUrl: "./table.component.html",
@@ -18,7 +27,7 @@ import { TableDataSource } from "./table-data-source";
 export class TableComponent implements OnDestroy, AfterContentChecked {
   @Input() dataSource: TableDataSource<any>;
 
-  @ContentChild(TemplateRef) templateVariable: TemplateRef<any>;
+  @ContentChild(TableBodyDirective) templateVariable: TableBodyDirective;
 
   protected rows: Observable<readonly any[]>;
 

@@ -36,7 +36,7 @@ const Template: Story = (args) => ({
           <th bitCell>Header 3</th>
         </tr>
       </ng-container>
-      <ng-template>
+      <ng-template body>
         <tr bitRow [alignContent]="alignRowContent">
           <td bitCell>Cell 1</td>
           <td bitCell>Cell 2 <br> Multiline Cell</td>
@@ -85,7 +85,7 @@ const DataSourceTemplate: Story = (args) => ({
           <th bitCell bitSortable="other" [fn]="sortFn">Other</th>
         </tr>
       </ng-container>
-      <ng-template let-rows$>
+      <ng-template body let-rows$>
         <tr bitRow *ngFor="let r of rows$ | async">
           <td bitCell>{{ r.id }}</td>
           <td bitCell>{{ r.name }}</td>
@@ -120,7 +120,7 @@ const ScrollableTemplate: Story = (args) => ({
             <th bitCell bitSortable="other" [fn]="sortFn">Other</th>
           </tr>
         </ng-container>
-        <ng-template let-rows$>
+        <ng-template body let-rows$>
           <tr bitRow *cdkVirtualFor="let r of rows$">
             <td bitCell>{{ r.id }}</td>
             <td bitCell>{{ r.name }}</td>

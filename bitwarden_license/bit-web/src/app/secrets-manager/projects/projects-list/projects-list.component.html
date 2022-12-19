@@ -39,7 +39,7 @@
     </tr>
   </ng-container>
   <ng-template let-rows$>
-    <tr bitRow *ngFor="let project of rows$ | async; index as i">
+    <tr bitRow *ngFor="let project of rows$ | async">
       <td bitCell>
         <input
           type="checkbox"

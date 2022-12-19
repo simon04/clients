@@ -10,7 +10,6 @@ import { OrganizationApiServiceAbstraction } from "@bitwarden/common/abstraction
 import { OrganizationService } from "@bitwarden/common/abstractions/organization/organization.service.abstraction";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { OrganizationApiKeyType } from "@bitwarden/common/enums/organizationApiKeyType";
-import { OrganizationConnectionType } from "@bitwarden/common/enums/organizationConnectionType";
 import { PlanType } from "@bitwarden/common/enums/planType";
 import { BillingSyncConfigApi } from "@bitwarden/common/models/api/billing-sync-config.api";
 import { Organization } from "@bitwarden/common/models/domain/organization";
@@ -33,7 +32,6 @@ export class OrganizationSubscriptionComponent implements OnInit, OnDestroy {
   organizationId: string;
   adjustStorageAdd = true;
   showAdjustStorage = false;
-  showBillingSyncKey = false;
   showDownloadLicense = false;
   showChangePlan = false;
   sub: OrganizationSubscriptionResponse;
@@ -101,18 +99,6 @@ export class OrganizationSubscriptionComponent implements OnInit, OnDestroy {
     this.hasBillingSyncToken = apiKeyResponse.data.some(
       (i) => i.keyType === OrganizationApiKeyType.BillingSync
     );
-
-    if (this.selfHosted) {
-      this.showBillingSyncKey = await this.apiService.getCloudCommunicationsEnabled();
-    }
-
-    if (this.showBillingSyncKey) {
-      this.existingBillingSyncConnection = await this.apiService.getOrganizationConnection(
-        this.organizationId,
-        OrganizationConnectionType.CloudBillingSync,
-        BillingSyncConfigApi
-      );
-    }
 
     this.loading = false;
   }

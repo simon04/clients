@@ -239,7 +239,7 @@
     </div>
   </ng-container>
   <app-org-subscription-selfhost
-    *ngIf="selfHosted"
+    *ngIf="selfHosted && !loading"
     [sub]="sub"
     [organizationId]="organizationId"
     [userOrg]="userOrg"

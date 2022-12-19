@@ -2,6 +2,8 @@ import { SelectionModel } from "@angular/cdk/collections";
 import { Component, EventEmitter, Input, OnDestroy, Output } from "@angular/core";
 import { Subject, takeUntil } from "rxjs";
 
+import { TableDataSource } from "@bitwarden/components";
+
 import { ProjectListView } from "../../models/view/project-list.view";
 
 @Component({
@@ -9,8 +11,11 @@ import { ProjectListView } from "../../models/view/project-list.view";
   templateUrl: "./projects-list.component.html",
 })
 export class ProjectsListComponent implements OnDestroy {
+  protected dataSource = new TableDataSource<ProjectListView>();
+
   @Input()
   get projects(): ProjectListView[] {
+    this.dataSource.data = this._projects;
     return this._projects;
   }
   set projects(projects: ProjectListView[]) {

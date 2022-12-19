@@ -9,6 +9,7 @@ import { DownloadLicenseComponent } from "./download-license.component";
 import { OrgBillingHistoryViewComponent } from "./organization-billing-history-view.component";
 import { OrganizationBillingRoutingModule } from "./organization-billing-routing.module";
 import { OrganizationBillingTabComponent } from "./organization-billing-tab.component";
+import { OrganizationSubscriptionCloudComponent } from "./organization-subscription-cloud.component";
 import { OrganizationSubscriptionSelfhostComponent } from "./organization-subscription-selfhost.component";
 import { OrganizationSubscriptionComponent } from "./organization-subscription.component";
 
@@ -23,6 +24,7 @@ import { OrganizationSubscriptionComponent } from "./organization-subscription.c
     OrganizationSubscriptionComponent,
     OrgBillingHistoryViewComponent,
     OrganizationSubscriptionSelfhostComponent,
+    OrganizationSubscriptionCloudComponent,
   ],
 })
 export class OrganizationBillingModule {}

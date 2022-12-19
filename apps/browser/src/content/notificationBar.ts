@@ -1,13 +1,29 @@
+import { ThemeType } from "@bitwarden/common/enums/themeType";
+
 import AddLoginRuntimeMessage from "../background/models/addLoginRuntimeMessage";
 import ChangePasswordRuntimeMessage from "../background/models/changePasswordRuntimeMessage";
+import AutofillField from "../models/autofillField";
+import { FormData, PageDetail } from "../services/abstractions/autofill.service";
 
-document.addEventListener("DOMContentLoaded", (event) => {
+type FullFormData = {
+  data: FormData;
+  formEl: HTMLFormElement | null;
+  usernameEl: HTMLInputElement | null;
+  passwordEl: HTMLInputElement | null;
+  passwordEls: HTMLInputElement[] | null;
+};
+
+document.addEventListener("DOMContentLoaded", (_event) => {
+  executeDomLoaded();
+});
+
+export function executeDomLoaded() {
   if (window.location.hostname.endsWith("vault.bitwarden.com")) {
     return;
   }
 
-  const pageDetails: any[] = [];
-  const formData: any[] = [];
+  const pageDetails: PageDetail[] = [];
+  const formData: FullFormData[] = [];
   let barType: string = null;
   let pageHref: string = null;
   let observer: MutationObserver = null;
@@ -44,7 +60,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
     "change password",
     "change",
   ]);
-  const changePasswordButtonContainsNames = new Set(["pass", "change", "contras", "senha"]);
+  const changePasswordButtonContainsNames = new Set<Lowercase<string>>([
+    "pass",
+    "change",
+    "contras",
+    "senha",
+  ]);
   let disabledAddLoginNotification = false;
   let disabledChangedPasswordNotification = false;
 
@@ -218,12 +239,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
     });
   }
 
-  function watchForms(forms: any[]) {
+  function watchForms(forms: FormData[]) {
     if (forms == null || forms.length === 0) {
       return;
     }
 
-    forms.forEach((f: any) => {
+    forms.forEach((f) => {
       const formId: string = f.form != null ? f.form.htmlID : null;
       let formEl: HTMLFormElement = null;
       if (formId != null && formId !== "") {
@@ -236,7 +257,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
       }
 
       if (formEl != null && formEl.dataset.bitwardenWatching !== "1") {
-        const formDataObj: any = {
+        const formDataObj: FullFormData = {
           data: f,
           formEl: formEl,
           usernameEl: null,
@@ -261,7 +282,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     }
   }
 
-  function locateFields(formDataObj: any) {
+  function locateFields(formDataObj: FullFormData) {
     const inputs = Array.from(document.getElementsByTagName("input"));
     formDataObj.usernameEl = locateField(formDataObj.formEl, formDataObj.data.username, inputs);
     if (formDataObj.usernameEl != null && formDataObj.data.password != null) {
@@ -273,7 +294,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
       );
     } else if (formDataObj.data.passwords != null) {
       formDataObj.passwordEls = [];
-      formDataObj.data.passwords.forEach((pData: any) => {
+      formDataObj.data.passwords.forEach((pData) => {
         const el = locatePassword(formDataObj.formEl, pData, inputs, false);
         if (el != null) {
           formDataObj.passwordEls.push(el);
@@ -301,7 +322,11 @@ document.addEventListener("DOMContentLoaded", (event) => {
     return el;
   }
 
-  function locateField(form: HTMLFormElement, fieldData: any, inputs: HTMLInputElement[]) {
+  function locateField(
+    form: HTMLFormElement,
+    fieldData: AutofillField,
+    inputs: HTMLInputElement[]
+  ) {
     if (fieldData == null) {
       return;
     }
@@ -392,7 +417,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
           } else {
             const buttonText = getButtonText(getSubmitButton(form, changePasswordButtonNames));
             const matches = Array.from(changePasswordButtonContainsNames).filter(
-              (n) => buttonText.indexOf(n) > -1
+              (n) => buttonText?.toLocaleLowerCase().indexOf(n) > -1
             );
             if (matches.length > 0) {
               curPass = passwords[0];
@@ -497,13 +522,23 @@ document.addEventListener("DOMContentLoaded", (event) => {
     }, 500);
   }
 
-  function closeExistingAndOpenBar(type: string, typeData: any) {
+  function closeExistingAndOpenBar(
+    type: string,
+    typeData: { isVaultLocked: boolean; theme: ThemeType }
+  ) {
     const barQueryParams = {
       type,
       isVaultLocked: typeData.isVaultLocked,
       theme: typeData.theme,
     };
-    const barQueryString = new URLSearchParams(barQueryParams).toString();
+
+    if (typeData.theme === ThemeType.System) {
+      barQueryParams.theme = window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? ThemeType.Dark
+        : ThemeType.Light;
+    }
+
+    const barQueryString = new URLSearchParams(barQueryParams as any).toString();
     const barPage = "notification/bar.html?" + barQueryString;
 
     const frame = document.getElementById("bit-notification-bar-iframe") as HTMLIFrameElement;
@@ -522,7 +557,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
       return;
     }
 
-    const barPageUrl: string = chrome.extension.getURL(barPage);
+    const barPageUrl: string = chrome.runtime.getURL(barPage);
 
     const iframe = document.createElement("iframe");
     iframe.style.cssText = "height: 42px; width: 100%; border: 0; min-height: initial;";
@@ -538,7 +573,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     frameDiv.appendChild(iframe);
     document.body.appendChild(frameDiv);
 
-    (iframe.contentWindow.location as any) = barPageUrl;
+    iframe.contentWindow.location = barPageUrl;
 
     const spacer = document.createElement("div");
     spacer.id = "bit-notification-bar-spacer";
@@ -593,7 +628,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     }
   }
 
-  function sendPlatformMessage(msg: any) {
+  function sendPlatformMessage(msg: unknown) {
     chrome.runtime.sendMessage(msg);
   }
-});
+}

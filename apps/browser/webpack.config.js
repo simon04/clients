@@ -141,7 +141,7 @@ const mainConfig = {
     "content/notificationBar": "./src/content/notificationBar.ts",
     "content/contextMenuHandler": "./src/content/contextMenuHandler.ts",
     "content/message_handler": "./src/content/message_handler.ts",
-    "notification/bar": "./src/notification/bar.js",
+    "notification/bar": "./src/notification/bar.ts",
     "encrypt-worker": "../../libs/common/src/services/cryptography/encrypt.worker.ts",
   },
   optimization: {
@@ -252,7 +252,7 @@ if (manifestVersion == 2) {
   const backgroundConfig = {
     name: "background",
     mode: ENV,
-    devtool: false,
+    devtool: ENV === "development" ? "inline-source-map" : false,
     entry: "./src/background.ts",
     target: "webworker",
     output: {

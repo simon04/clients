@@ -11,12 +11,14 @@ import { ContainerService } from "@bitwarden/common/services/container.service";
 import IconDetails from "../background/models/iconDetails";
 import { authServiceFactory } from "../background/service_factories/auth-service.factory";
 import { cipherServiceFactory } from "../background/service_factories/cipher-service.factory";
+import { CachedServices } from "../background/service_factories/factory-options";
 import { searchServiceFactory } from "../background/service_factories/search-service.factory";
 import { stateServiceFactory } from "../background/service_factories/state-service.factory";
 import { BrowserApi } from "../browser/browserApi";
 import { Account } from "../models/account";
 import { BrowserStateService } from "../services/abstractions/browser-state.service";
 import BrowserPlatformUtilsService from "../services/browserPlatformUtils.service";
+import RuntimeMessage from "../types/runtime-messages";
 
 export type BadgeOptions = {
   tab?: chrome.tabs.Tab;
@@ -68,14 +70,15 @@ export class UpdateBadge {
   }
 
   static async messageListener(
-    message: { command: string; tabId: number },
-    serviceCache: Record<string, unknown>
+    message: RuntimeMessage,
+    sender: chrome.runtime.MessageSender,
+    cachedServices: CachedServices
   ) {
     if (!UpdateBadge.listenedToCommands.includes(message.command)) {
       return;
     }
 
-    await new UpdateBadge(self).run({ existingServices: serviceCache });
+    await new UpdateBadge(self).run({ existingServices: cachedServices });
   }
 
   constructor(win: Window & typeof globalThis) {

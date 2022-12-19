@@ -1,9 +1,11 @@
+import NotificationBackground from "../background/notification.background";
 import { CipherContextMenuHandler } from "../browser/cipher-context-menu-handler";
 import { ContextMenuClickedHandler } from "../browser/context-menu-clicked-handler";
 
 import { combine } from "./combine";
 import { onCommandListener } from "./onCommandListener";
 import { onInstallListener } from "./onInstallListener";
+import { NotificationBarPageDetailsRelay } from "./page-details-relay";
 import { UpdateBadge } from "./update-badge";
 
 const tabsOnActivatedListener = combine([
@@ -25,6 +27,8 @@ const contextMenusClickedListener = ContextMenuClickedHandler.onClickedListener;
 
 const runtimeMessageListener = combine([
   UpdateBadge.messageListener,
+  NotificationBarPageDetailsRelay.messageListener,
+  NotificationBackground.messageListener,
   CipherContextMenuHandler.messageListener,
   ContextMenuClickedHandler.messageListener,
 ]);

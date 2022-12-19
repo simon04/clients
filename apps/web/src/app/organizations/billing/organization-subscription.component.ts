@@ -2,12 +2,10 @@ import { Component, OnDestroy, OnInit, ViewChild, ViewContainerRef } from "@angu
 import { ActivatedRoute } from "@angular/router";
 import { concatMap, Subject, takeUntil } from "rxjs";
 
-import { ModalRef } from "@bitwarden/angular/components/modal/modal.ref";
 import { ModalService } from "@bitwarden/angular/services/modal.service";
 import { ApiService } from "@bitwarden/common/abstractions/api.service";
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { LogService } from "@bitwarden/common/abstractions/log.service";
-import { MessagingService } from "@bitwarden/common/abstractions/messaging.service";
 import { OrganizationApiServiceAbstraction } from "@bitwarden/common/abstractions/organization/organization-api.service.abstraction";
 import { OrganizationService } from "@bitwarden/common/abstractions/organization/organization.service.abstraction";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
@@ -18,8 +16,6 @@ import { BillingSyncConfigApi } from "@bitwarden/common/models/api/billing-sync-
 import { Organization } from "@bitwarden/common/models/domain/organization";
 import { OrganizationConnectionResponse } from "@bitwarden/common/models/response/organization-connection.response";
 import { OrganizationSubscriptionResponse } from "@bitwarden/common/models/response/organization-subscription.response";
-
-import { BillingSyncKeyComponent } from "../../settings/billing-sync-key.component";
 
 import { BillingSyncApiKeyComponent } from "./billing-sync-api-key.component";
 import { SubscriptionHiddenIcon } from "./subscription-hidden.icon";
@@ -37,7 +33,6 @@ export class OrganizationSubscriptionComponent implements OnInit, OnDestroy {
   organizationId: string;
   adjustStorageAdd = true;
   showAdjustStorage = false;
-  showUpdateLicense = false;
   showBillingSyncKey = false;
   showDownloadLicense = false;
   showChangePlan = false;
@@ -52,10 +47,6 @@ export class OrganizationSubscriptionComponent implements OnInit, OnDestroy {
   cancelPromise: Promise<void>;
   reinstatePromise: Promise<void>;
 
-  @ViewChild("rotateBillingSyncKeyTemplate", { read: ViewContainerRef, static: true })
-  billingSyncKeyViewContainerRef: ViewContainerRef;
-  billingSyncKeyRef: [ModalRef, BillingSyncKeyComponent];
-
   subscriptionHiddenIcon = SubscriptionHiddenIcon;
 
   private destroy$ = new Subject<void>();
@@ -64,7 +55,6 @@ export class OrganizationSubscriptionComponent implements OnInit, OnDestroy {
     private apiService: ApiService,
     private platformUtilsService: PlatformUtilsService,
     private i18nService: I18nService,
-    private messagingService: MessagingService,
     private route: ActivatedRoute,
     private organizationService: OrganizationService,
     private logService: LogService,
@@ -217,21 +207,6 @@ export class OrganizationSubscriptionComponent implements OnInit, OnDestroy {
     this.showDownloadLicense = false;
   }
 
-  updateLicense() {
-    if (this.loading) {
-      return;
-    }
-    this.showUpdateLicense = true;
-  }
-
-  closeUpdateLicense(updated: boolean) {
-    this.showUpdateLicense = false;
-    if (updated) {
-      this.load();
-      this.messagingService.send("updatedOrgLicense");
-    }
-  }
-
   subscriptionAdjusted() {
     this.load();
   }
@@ -273,30 +248,6 @@ export class OrganizationSubscriptionComponent implements OnInit, OnDestroy {
     } catch (e) {
       this.logService.error(e);
     }
-  }
-
-  async manageBillingSyncSelfHosted() {
-    this.billingSyncKeyRef = await this.modalService.openViewRef(
-      BillingSyncKeyComponent,
-      this.billingSyncKeyViewContainerRef,
-      (comp) => {
-        comp.entityId = this.organizationId;
-        comp.existingConnectionId = this.existingBillingSyncConnection?.id;
-        comp.billingSyncKey = this.existingBillingSyncConnection?.config?.billingSyncKey;
-        comp.setParentConnection = (
-          connection: OrganizationConnectionResponse<BillingSyncConfigApi>
-        ) => {
-          this.existingBillingSyncConnection = connection;
-          this.billingSyncKeyRef[0].close();
-        };
-      }
-    );
-  }
-
-  get isExpired() {
-    return (
-      this.sub != null && this.sub.expiration != null && new Date(this.sub.expiration) < new Date()
-    );
   }
 
   get subscriptionMarkedForCancel() {
@@ -395,9 +346,5 @@ export class OrganizationSubscriptionComponent implements OnInit, OnDestroy {
 
   get showChangePlanButton() {
     return this.subscription == null && this.sub.planType === PlanType.Free && !this.showChangePlan;
-  }
-
-  get billingSyncSetUp() {
-    return this.existingBillingSyncConnection?.id != null;
   }
 }

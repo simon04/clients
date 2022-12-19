@@ -184,14 +184,56 @@ jobs:
           --quiet \
           --endpoint-url https://${CF_ACCOUNT}.r2.cloudflarestorage.com
 
-      - name: Get checksum files
+      # - name: Get checksum files
+      #   env:
+      #     RELEASE_CHANNEL: ${{ steps.release-channel.outputs.channel }}
+      #   run: |
+      #       python scripts/export_sha_to_files.py apps/desktop/artifacts/${{ env.RELEASE_CHANNEL }}.yml \
+      #       apps/desktop/artifacts/${{ env.RELEASE_CHANNEL }}-linux.yml \
+      #       apps/desktop/artifacts/${{ env.RELEASE_CHANNEL }}-mac.yml \
+      #       -o apps/desktop/artifacts
+
+      - name: Create Windows checksum files
         env:
+          PKG_VERSION: ${{ steps.version.outputs.version }}
           RELEASE_CHANNEL: ${{ steps.release-channel.outputs.channel }}
         run: |
-            python scripts/export_sha_to_files.py apps/desktop/artifacts/${{ env.RELEASE_CHANNEL }}.yml \
-            apps/desktop/artifacts/${{ env.RELEASE_CHANNEL }}-linux.yml \
-            apps/desktop/artifacts/${{ env.RELEASE_CHANNEL }}-mac.yml \
-            -o apps/desktop/artifacts
+          FILE=$(yq -r ".files[0].url" ${{ env.RELEASE_CHANNEL }}.yml)
+          yq -r ".files[0].sha512" ${{ env.RELEASE_CHANNEL }}.yml > $FILE-sha512.txt
+
+          FILE=$(yq -r ".packages.arm64.file" ${{ env.RELEASE_CHANNEL }}.yml)
+          yq -r ".packages.arm64.sha512" ${{ env.RELEASE_CHANNEL }}.yml > $FILE-sha512.txt
+
+          FILE=$(yq -r ".packages.x64.file" ${{ env.RELEASE_CHANNEL }}.yml)
+          yq -r ".packages.x64.sha512" ${{ env.RELEASE_CHANNEL }}.yml > $FILE-sha512.txt
+
+          FILE=$(yq -r ".packages.ia32.file" ${{ env.RELEASE_CHANNEL }}.yml)
+          yq -r ".packages.ia32.sha512" ${{ env.RELEASE_CHANNEL }}.yml > $FILE-sha512.txt
+        working-directory: apps/desktop/artifacts
+
+      - name: Create MacOS checksum files
+        env:
+          PKG_VERSION: ${{ steps.version.outputs.version }}
+          RELEASE_CHANNEL: ${{ steps.release-channel.outputs.channel }}
+        run: |
+          FILE=$(yq -r ".files[0].url" ${{ env.RELEASE_CHANNEL }}-mac.yml)
+          yq -r ".files[0].sha512" ${{ env.RELEASE_CHANNEL }}-mac.yml > $FILE-sha512.txt
+
+          FILE=$(yq -r ".files[1].url" ${{ env.RELEASE_CHANNEL }}-mac.yml)
+          yq -r ".files[1].sha512" ${{ env.RELEASE_CHANNEL }}-mac.yml > $FILE-sha512.txt
+        working-directory: apps/desktop/artifacts
+      
+      - name: Create Linux checksum files
+        env:
+          PKG_VERSION: ${{ steps.version.outputs.version }}
+          RELEASE_CHANNEL: ${{ steps.release-channel.outputs.channel }}
+        run: |
+          FILE=$(yq -r ".files[0].url" ${{ env.RELEASE_CHANNEL }}-linux.yml)
+          yq -r ".files[0].sha512" ${{ env.RELEASE_CHANNEL }}-linux.yml > $FILE-sha512.txt
+        working-directory: apps/desktop/artifacts
+
+      - name: TEST STEP
+        run: ls -alh apps/desktop/artifacts
 
       - name: Create Release
         uses: ncipollo/release-action@95215a3cb6e6a1908b3c44e00b4fdb15548b1e09

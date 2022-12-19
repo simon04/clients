@@ -193,22 +193,16 @@ jobs:
       #       apps/desktop/artifacts/${{ env.RELEASE_CHANNEL }}-mac.yml \
       #       -o apps/desktop/artifacts
 
-      - name: Create Windows checksum files
+      - name: Create checksum file
         env:
           PKG_VERSION: ${{ steps.version.outputs.version }}
           RELEASE_CHANNEL: ${{ steps.release-channel.outputs.channel }}
         run: |
-          FILE=$(yq -r ".files[0].url" ${{ env.RELEASE_CHANNEL }}.yml)
-          yq -r ".files[0].sha512" ${{ env.RELEASE_CHANNEL }}.yml > $FILE-sha512.txt
-
-          FILE=$(yq -r ".packages.arm64.file" ${{ env.RELEASE_CHANNEL }}.yml)
-          yq -r ".packages.arm64.sha512" ${{ env.RELEASE_CHANNEL }}.yml > $FILE-sha512.txt
-
-          FILE=$(yq -r ".packages.x64.file" ${{ env.RELEASE_CHANNEL }}.yml)
-          yq -r ".packages.x64.sha512" ${{ env.RELEASE_CHANNEL }}.yml > $FILE-sha512.txt
-
-          FILE=$(yq -r ".packages.ia32.file" ${{ env.RELEASE_CHANNEL }}.yml)
-          yq -r ".packages.ia32.sha512" ${{ env.RELEASE_CHANNEL }}.yml > $FILE-sha512.txt
+          FILES="$(pwd)/*"
+          for f in $FILES
+          do
+            echo "$f"
+          done
         working-directory: apps/desktop/artifacts
 
       - name: Create MacOS checksum files

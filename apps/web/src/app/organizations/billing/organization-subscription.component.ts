@@ -5,7 +5,6 @@ import { concatMap, Subject, takeUntil } from "rxjs";
 import { OrganizationApiServiceAbstraction } from "@bitwarden/common/abstractions/organization/organization-api.service.abstraction";
 import { OrganizationService } from "@bitwarden/common/abstractions/organization/organization.service.abstraction";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
-import { OrganizationApiKeyType } from "@bitwarden/common/enums/organizationApiKeyType";
 import { Organization } from "@bitwarden/common/models/domain/organization";
 import { OrganizationSubscriptionResponse } from "@bitwarden/common/models/response/organization-subscription.response";
 
@@ -21,7 +20,6 @@ export class OrganizationSubscriptionComponent implements OnInit, OnDestroy {
   organizationId: string;
   sub: OrganizationSubscriptionResponse;
   selfHosted = false;
-  hasBillingSyncToken: boolean;
 
   userOrg: Organization;
 
@@ -65,12 +63,6 @@ export class OrganizationSubscriptionComponent implements OnInit, OnDestroy {
     if (this.userOrg.canManageBilling) {
       this.sub = await this.organizationApiService.getSubscription(this.organizationId);
     }
-    const apiKeyResponse = await this.organizationApiService.getApiKeyInformation(
-      this.organizationId
-    );
-    this.hasBillingSyncToken = apiKeyResponse.data.some(
-      (i) => i.keyType === OrganizationApiKeyType.BillingSync
-    );
 
     this.loading = false;
   }

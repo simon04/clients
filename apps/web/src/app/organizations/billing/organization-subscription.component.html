@@ -24,19 +24,18 @@
   </div>
 </ng-container>
 
-<ng-container *ngIf="sub">
+<ng-container *ngIf="sub && !loading">
   <app-org-subscription-cloud
-    *ngIf="!selfHosted && !loading"
+    *ngIf="!selfHosted"
     [sub]="sub"
     [organizationId]="organizationId"
     [loading]="loading"
-    [hasBillingSyncToken]="hasBillingSyncToken"
     [userOrg]="userOrg"
     (reload)="load()"
   >
   </app-org-subscription-cloud>
   <app-org-subscription-selfhost
-    *ngIf="selfHosted && !loading"
+    *ngIf="selfHosted"
     [sub]="sub"
     [organizationId]="organizationId"
     [userOrg]="userOrg"

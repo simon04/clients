@@ -17,6 +17,7 @@ import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { LogService } from "@bitwarden/common/abstractions/log.service";
 import { OrganizationApiServiceAbstraction } from "@bitwarden/common/abstractions/organization/organization-api.service.abstraction";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
+import { OrganizationApiKeyType } from "@bitwarden/common/enums/organizationApiKeyType";
 import { PlanType } from "@bitwarden/common/enums/planType";
 import { Organization } from "@bitwarden/common/models/domain/organization";
 import { OrganizationSubscriptionResponse } from "@bitwarden/common/models/response/organization-subscription.response";
@@ -31,7 +32,6 @@ export class OrganizationSubscriptionCloudComponent implements OnInit, OnDestroy
   @Input() sub: OrganizationSubscriptionResponse;
   @Input() organizationId: string;
   @Input() loading: boolean;
-  @Input() hasBillingSyncToken: boolean; // TODO: move into this class properly
   @Input() userOrg: Organization;
   @Output() reload = new EventEmitter();
 
@@ -42,6 +42,7 @@ export class OrganizationSubscriptionCloudComponent implements OnInit, OnDestroy
   showDownloadLicense = false;
   adjustStorageAdd = true;
   showAdjustStorage = false;
+  hasBillingSyncToken: boolean;
 
   private destroy$ = new Subject<void>();
 
@@ -55,10 +56,17 @@ export class OrganizationSubscriptionCloudComponent implements OnInit, OnDestroy
     private route: ActivatedRoute
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     if (this.route.snapshot.queryParamMap.get("upgrade")) {
       this.changePlan();
     }
+
+    const apiKeyResponse = await this.organizationApiService.getApiKeyInformation(
+      this.organizationId
+    );
+    this.hasBillingSyncToken = apiKeyResponse.data.some(
+      (i) => i.keyType === OrganizationApiKeyType.BillingSync
+    );
   }
 
   ngOnDestroy() {

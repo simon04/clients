@@ -1,5 +1,7 @@
 import { Component } from "@angular/core";
 
+import { ModalRef } from "@bitwarden/angular/components/modal/modal.ref";
+import { ModalConfig } from "@bitwarden/angular/services/modal.service";
 import { ApiService } from "@bitwarden/common/abstractions/api.service";
 import { LogService } from "@bitwarden/common/abstractions/log.service";
 import { OrganizationConnectionType } from "@bitwarden/common/enums/organizationConnectionType";
@@ -20,7 +22,17 @@ export class BillingSyncKeyComponent {
 
   formPromise: Promise<OrganizationConnectionResponse<BillingSyncConfigApi>> | Promise<void>;
 
-  constructor(private apiService: ApiService, private logService: LogService) {}
+  constructor(
+    private apiService: ApiService,
+    private logService: LogService,
+    protected modalRef: ModalRef,
+    config: ModalConfig
+  ) {
+    this.entityId = config.data.organizationId;
+    this.existingConnectionId = config.data.existingConnectionId;
+    this.billingSyncKey = config.data.billingSyncKey;
+    this.setParentConnection = config.data.setParentConnection;
+  }
 
   async submit() {
     try {
@@ -47,6 +59,7 @@ export class BillingSyncKeyComponent {
       this.existingConnectionId = response?.id;
       this.billingSyncKey = response?.config?.billingSyncKey;
       this.setParentConnection(response);
+      this.modalRef.close();
     } catch (e) {
       this.logService.error(e);
     }
@@ -56,5 +69,6 @@ export class BillingSyncKeyComponent {
     this.formPromise = this.apiService.deleteOrganizationConnection(this.existingConnectionId);
     await this.formPromise;
     this.setParentConnection(null);
+    this.modalRef.close();
   }
 }

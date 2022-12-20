@@ -1,5 +1,6 @@
 import { Component } from "@angular/core";
 
+import { ModalConfig } from "@bitwarden/angular/services/modal.service";
 import { ApiService } from "@bitwarden/common/abstractions/api.service";
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { OrganizationApiServiceAbstraction } from "@bitwarden/common/abstractions/organization/organization-api.service.abstraction";
@@ -30,8 +31,12 @@ export class BillingSyncApiKeyComponent {
     private apiService: ApiService,
     private platformUtilsService: PlatformUtilsService,
     private i18nService: I18nService,
-    private organizationApiService: OrganizationApiServiceAbstraction
-  ) {}
+    private organizationApiService: OrganizationApiServiceAbstraction,
+    modalConfig: ModalConfig
+  ) {
+    this.organizationId = modalConfig.data.organizationId;
+    this.hasBillingToken = modalConfig.data.hasBillingToken;
+  }
 
   copy() {
     this.platformUtilsService.copyToClipboard(this.clientSecret);

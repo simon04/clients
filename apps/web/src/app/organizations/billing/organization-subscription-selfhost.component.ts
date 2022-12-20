@@ -1,14 +1,5 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-  ViewChild,
-  ViewContainerRef,
-} from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 
-import { ModalRef } from "@bitwarden/angular/components/modal/modal.ref";
 import { ModalService } from "@bitwarden/angular/services/modal.service";
 import { ApiService } from "@bitwarden/common/abstractions/api.service";
 import { MessagingService } from "@bitwarden/common/abstractions/messaging.service";
@@ -32,12 +23,8 @@ export class OrganizationSubscriptionSelfhostComponent implements OnInit {
 
   loading = false;
   showUpdateLicense = false;
-  billingSyncKeyRef: [ModalRef, BillingSyncKeyComponent];
-  existingBillingSyncConnection: OrganizationConnectionResponse<BillingSyncConfigApi>;
   showBillingSyncKey = false;
-
-  @ViewChild("rotateBillingSyncKeyTemplate", { read: ViewContainerRef, static: true })
-  billingSyncKeyViewContainerRef: ViewContainerRef;
+  existingBillingSyncConnection: OrganizationConnectionResponse<BillingSyncConfigApi>;
 
   constructor(
     private modalService: ModalService,
@@ -79,21 +66,16 @@ export class OrganizationSubscriptionSelfhostComponent implements OnInit {
   }
 
   async manageBillingSyncSelfHosted() {
-    this.billingSyncKeyRef = await this.modalService.openViewRef(
-      BillingSyncKeyComponent,
-      this.billingSyncKeyViewContainerRef,
-      (comp) => {
-        comp.entityId = this.organizationId;
-        comp.existingConnectionId = this.existingBillingSyncConnection?.id;
-        comp.billingSyncKey = this.existingBillingSyncConnection?.config?.billingSyncKey;
-        comp.setParentConnection = (
-          connection: OrganizationConnectionResponse<BillingSyncConfigApi>
-        ) => {
+    await this.modalService.open(BillingSyncKeyComponent, {
+      data: {
+        entityId: this.organizationId,
+        existingConnectionId: this.existingBillingSyncConnection?.id,
+        billingSyncKey: this.existingBillingSyncConnection?.config?.billingSyncKey,
+        setParentConnection: (connection: OrganizationConnectionResponse<BillingSyncConfigApi>) => {
           this.existingBillingSyncConnection = connection;
-          this.billingSyncKeyRef[0].close();
-        };
-      }
-    );
+        },
+      },
+    });
   }
 
   get billingSyncSetUp() {

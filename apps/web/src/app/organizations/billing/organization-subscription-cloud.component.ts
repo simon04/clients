@@ -1,13 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-  ViewChild,
-  ViewContainerRef,
-} from "@angular/core";
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { concatMap, Subject, takeUntil } from "rxjs";
 
@@ -34,9 +25,6 @@ export class OrganizationSubscriptionCloudComponent implements OnInit, OnDestroy
   @Input() loading: boolean;
   @Input() userOrg: Organization;
   @Output() reload = new EventEmitter();
-
-  @ViewChild("setupBillingSyncTemplate", { read: ViewContainerRef, static: true })
-  setupBillingSyncModalRef: ViewContainerRef;
 
   showChangePlan = false;
   showDownloadLicense = false;
@@ -227,15 +215,14 @@ export class OrganizationSubscriptionCloudComponent implements OnInit, OnDestroy
   }
 
   async manageBillingSync() {
-    const [ref] = await this.modalService.openViewRef(
-      BillingSyncApiKeyComponent,
-      this.setupBillingSyncModalRef,
-      (comp) => {
-        comp.organizationId = this.organizationId;
-        comp.hasBillingToken = this.hasBillingSyncToken;
-      }
-    );
-    ref.onClosed
+    const modalRef = await this.modalService.open(BillingSyncApiKeyComponent, {
+      data: {
+        organizationId: this.organizationId,
+        hasBillingToken: this.hasBillingSyncToken,
+      },
+    });
+
+    modalRef.onClosed
       .pipe(
         concatMap(async () => {
           this.load();

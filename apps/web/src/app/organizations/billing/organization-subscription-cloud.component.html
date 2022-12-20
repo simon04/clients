@@ -1,4 +1,22 @@
 <ng-container>
+  <bit-callout
+    type="warning"
+    title="{{ 'canceled' | i18n }}"
+    *ngIf="subscription && subscription.cancelled"
+  >
+    {{ "subscriptionCanceled" | i18n }}</bit-callout
+  >
+  <bit-callout
+    type="warning"
+    title="{{ 'pendingCancellation' | i18n }}"
+    *ngIf="subscription?.markedForCancel"
+  >
+    <p>{{ "subscriptionPendingCanceled" | i18n }}</p>
+    <button bitButton buttonType="secondary" [bitAction]="reinstate" type="button">
+      {{ "reinstateSubscription" | i18n }}
+    </button>
+  </bit-callout>
+
   <div class="row">
     <div class="col-4">
       <dl>

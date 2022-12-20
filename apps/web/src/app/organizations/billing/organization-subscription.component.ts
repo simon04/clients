@@ -2,8 +2,6 @@ import { Component, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { concatMap, Subject, takeUntil } from "rxjs";
 
-import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
-import { LogService } from "@bitwarden/common/abstractions/log.service";
 import { OrganizationApiServiceAbstraction } from "@bitwarden/common/abstractions/organization/organization-api.service.abstraction";
 import { OrganizationService } from "@bitwarden/common/abstractions/organization/organization.service.abstraction";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
@@ -32,12 +30,10 @@ export class OrganizationSubscriptionComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   constructor(
-    private platformUtilsService: PlatformUtilsService,
+    platformUtilsService: PlatformUtilsService,
     private route: ActivatedRoute,
     private organizationService: OrganizationService,
-    private organizationApiService: OrganizationApiServiceAbstraction,
-    private i18nService: I18nService,
-    private logService: LogService
+    private organizationApiService: OrganizationApiServiceAbstraction
   ) {
     this.selfHosted = platformUtilsService.isSelfHost();
   }
@@ -77,33 +73,5 @@ export class OrganizationSubscriptionComponent implements OnInit, OnDestroy {
     );
 
     this.loading = false;
-  }
-
-  reinstate = async () => {
-    if (this.loading) {
-      return;
-    }
-
-    const confirmed = await this.platformUtilsService.showDialog(
-      this.i18nService.t("reinstateConfirmation"),
-      this.i18nService.t("reinstateSubscription"),
-      this.i18nService.t("yes"),
-      this.i18nService.t("cancel")
-    );
-    if (!confirmed) {
-      return;
-    }
-
-    try {
-      await this.organizationApiService.reinstate(this.organizationId);
-      this.platformUtilsService.showToast("success", null, this.i18nService.t("reinstated"));
-      this.load();
-    } catch (e) {
-      this.logService.error(e);
-    }
-  };
-
-  get subscription() {
-    return this.sub != null ? this.sub.subscription : null;
   }
 }

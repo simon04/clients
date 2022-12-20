@@ -25,23 +25,6 @@
 </ng-container>
 
 <ng-container *ngIf="sub">
-  <bit-callout
-    type="warning"
-    title="{{ 'canceled' | i18n }}"
-    *ngIf="subscription && subscription.cancelled"
-  >
-    {{ "subscriptionCanceled" | i18n }}</bit-callout
-  >
-  <bit-callout
-    type="warning"
-    title="{{ 'pendingCancellation' | i18n }}"
-    *ngIf="subscription?.markedForCancel"
-  >
-    <p>{{ "subscriptionPendingCanceled" | i18n }}</p>
-    <button bitButton buttonType="secondary" [bitAction]="reinstate" type="button">
-      {{ "reinstateSubscription" | i18n }}
-    </button>
-  </bit-callout>
   <app-org-subscription-cloud
     *ngIf="!selfHosted && !loading"
     [sub]="sub"

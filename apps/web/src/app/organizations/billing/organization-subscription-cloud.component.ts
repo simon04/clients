@@ -182,6 +182,30 @@ export class OrganizationSubscriptionCloudComponent implements OnInit, OnDestroy
     }
   };
 
+  reinstate = async () => {
+    if (this.loading) {
+      return;
+    }
+
+    const confirmed = await this.platformUtilsService.showDialog(
+      this.i18nService.t("reinstateConfirmation"),
+      this.i18nService.t("reinstateSubscription"),
+      this.i18nService.t("yes"),
+      this.i18nService.t("cancel")
+    );
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      await this.organizationApiService.reinstate(this.organizationId);
+      this.platformUtilsService.showToast("success", null, this.i18nService.t("reinstated"));
+      this.load();
+    } catch (e) {
+      this.logService.error(e);
+    }
+  };
+
   async changePlan() {
     this.showChangePlan = !this.showChangePlan;
   }

@@ -35,7 +35,6 @@ export class OrganizationSubscriptionSelfhostComponent implements OnInit {
   billingSyncKeyRef: [ModalRef, BillingSyncKeyComponent];
   existingBillingSyncConnection: OrganizationConnectionResponse<BillingSyncConfigApi>;
   showBillingSyncKey = false;
-  hasBillingSyncToken: boolean;
 
   @ViewChild("rotateBillingSyncKeyTemplate", { read: ViewContainerRef, static: true })
   billingSyncKeyViewContainerRef: ViewContainerRef;

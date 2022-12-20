@@ -23,7 +23,6 @@ export class OrganizationSubscriptionComponent implements OnInit, OnDestroy {
   organizationId: string;
   sub: OrganizationSubscriptionResponse;
   selfHosted = false;
-  reinstatePromise: Promise<void>;
   hasBillingSyncToken: boolean;
 
   userOrg: Organization;
@@ -80,7 +79,7 @@ export class OrganizationSubscriptionComponent implements OnInit, OnDestroy {
     this.loading = false;
   }
 
-  async reinstate() {
+  reinstate = async () => {
     if (this.loading) {
       return;
     }
@@ -96,14 +95,13 @@ export class OrganizationSubscriptionComponent implements OnInit, OnDestroy {
     }
 
     try {
-      this.reinstatePromise = this.organizationApiService.reinstate(this.organizationId);
-      await this.reinstatePromise;
+      await this.organizationApiService.reinstate(this.organizationId);
       this.platformUtilsService.showToast("success", null, this.i18nService.t("reinstated"));
       this.load();
     } catch (e) {
       this.logService.error(e);
     }
-  }
+  };
 
   get subscription() {
     return this.sub != null ? this.sub.subscription : null;

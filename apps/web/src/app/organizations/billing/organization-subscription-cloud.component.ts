@@ -39,8 +39,6 @@ export class OrganizationSubscriptionCloudComponent implements OnInit, OnDestroy
   setupBillingSyncModalRef: ViewContainerRef;
 
   showChangePlan = false;
-  removeSponsorshipPromise: Promise<void>;
-  cancelPromise: Promise<void>;
   showDownloadLicense = false;
   adjustStorageAdd = true;
   showAdjustStorage = false;
@@ -155,7 +153,7 @@ export class OrganizationSubscriptionCloudComponent implements OnInit, OnDestroy
     }
   }
 
-  async cancel() {
+  cancel = async () => {
     if (this.loading) {
       return;
     }
@@ -172,8 +170,7 @@ export class OrganizationSubscriptionCloudComponent implements OnInit, OnDestroy
     }
 
     try {
-      this.cancelPromise = this.organizationApiService.cancel(this.organizationId);
-      await this.cancelPromise;
+      await this.organizationApiService.cancel(this.organizationId);
       this.platformUtilsService.showToast(
         "success",
         null,
@@ -183,7 +180,7 @@ export class OrganizationSubscriptionCloudComponent implements OnInit, OnDestroy
     } catch (e) {
       this.logService.error(e);
     }
-  }
+  };
 
   async changePlan() {
     this.showChangePlan = !this.showChangePlan;
@@ -240,7 +237,7 @@ export class OrganizationSubscriptionCloudComponent implements OnInit, OnDestroy
     this.reload.emit();
   }
 
-  async removeSponsorship() {
+  removeSponsorship = async () => {
     const isConfirmed = await this.platformUtilsService.showDialog(
       this.i18nService.t("removeSponsorshipConfirmation"),
       this.i18nService.t("removeSponsorship"),
@@ -254,8 +251,7 @@ export class OrganizationSubscriptionCloudComponent implements OnInit, OnDestroy
     }
 
     try {
-      this.removeSponsorshipPromise = this.apiService.deleteRemoveSponsorship(this.organizationId);
-      await this.removeSponsorshipPromise;
+      await this.apiService.deleteRemoveSponsorship(this.organizationId);
       this.platformUtilsService.showToast(
         "success",
         null,
@@ -265,7 +261,7 @@ export class OrganizationSubscriptionCloudComponent implements OnInit, OnDestroy
     } catch (e) {
       this.logService.error(e);
     }
-  }
+  };
 
   get showChangePlanButton() {
     return this.subscription == null && this.sub.planType === PlanType.Free && !this.showChangePlan;

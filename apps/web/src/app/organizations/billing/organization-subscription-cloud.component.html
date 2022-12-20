@@ -10,7 +10,7 @@
             <span class="text-capitalize">{{
               isSponsoredSubscription ? "sponsored" : subscription.status || "-"
             }}</span>
-            <span bitBadge badgeType="warning" *ngIf="subscription.markedForCancel">{{
+            <span bitBadge badgeType="warning" *ngIf="subscription?.markedForCancel">{{
               "pendingCancellation" | i18n
             }}</span>
           </dd>
@@ -52,8 +52,9 @@
   </div>
   <ng-container>
     <button
+      bitButton
+      buttonType="secondary"
       type="button"
-      class="btn btn-outline-secondary"
       (click)="changePlan()"
       *ngIf="showChangePlanButton"
     >
@@ -70,7 +71,7 @@
   <p class="mb-4">{{ subscriptionDesc }}</p>
   <ng-container
     *ngIf="
-      subscription && canAdjustSeats && !subscription.cancelled && !subscription.markedForCancel
+      subscription && canAdjustSeats && !subscription.cancelled && !subscription?.markedForCancel
     "
   >
     <div class="mt-3">
@@ -86,16 +87,13 @@
     </div>
   </ng-container>
   <button
-    #removeSponsorshipBtn
+    bitButton
+    buttonType="danger"
     type="button"
-    class="btn btn-outline-danger btn-submit"
-    (click)="removeSponsorship()"
-    [appApiAction]="removeSponsorshipPromise"
-    [disabled]="$any(removeSponsorshipBtn).loading"
+    [bitAction]="removeSponsorship"
     *ngIf="isSponsoredSubscription"
   >
-    <i class="bwi bwi-spinner bwi-spin" title="{{ 'loading' | i18n }}" aria-hidden="true"></i>
-    <span>{{ "removeSponsorship" | i18n }}</span>
+    {{ "removeSponsorship" | i18n }}
   </button>
   <h2 class="spaced-header">{{ "storage" | i18n }}</h2>
   <p>{{ "subscriptionStorage" | i18n: sub.maxStorageGb || 0:sub.storageName || "0 MB" }}</p>
@@ -111,13 +109,19 @@
       {{ storagePercentage / 100 | percent }}
     </div>
   </div>
-  <ng-container *ngIf="subscription && !subscription.cancelled && !subscription.markedForCancel">
+  <ng-container *ngIf="subscription && !subscription.cancelled && !subscription?.markedForCancel">
     <div class="mt-3">
       <div class="d-flex" *ngIf="!showAdjustStorage">
-        <button type="button" class="btn btn-outline-secondary" (click)="adjustStorage(true)">
+        <button bitButton buttonType="secondary" type="button" (click)="adjustStorage(true)">
           {{ "addStorage" | i18n }}
         </button>
-        <button type="button" class="btn btn-outline-secondary ml-1" (click)="adjustStorage(false)">
+        <button
+          bitButton
+          buttonType="secondary"
+          type="button"
+          class="ml-1"
+          (click)="adjustStorage(false)"
+        >
           {{ "removeStorage" | i18n }}
         </button>
       </div>
@@ -139,8 +143,9 @@
   </p>
   <div class="d-flex">
     <button
+      bitButton
+      buttonType="secondary"
       type="button"
-      class="btn btn-outline-secondary"
       (click)="downloadLicense()"
       *ngIf="canDownloadLicense"
       [disabled]="showDownloadLicense"
@@ -148,8 +153,10 @@
       {{ "downloadLicense" | i18n }}
     </button>
     <button
+      bitButton
+      buttonType="secondary"
       type="button"
-      class="btn btn-outline-secondary ml-1"
+      class="ml-1"
       (click)="manageBillingSync()"
       *ngIf="canManageBillingSync"
     >
@@ -169,16 +176,14 @@
   </p>
   <div class="d-flex">
     <button
-      #cancelBtn
+      bitButton
+      buttonType="danger"
+      [bitAction]="cancel"
       type="button"
-      class="btn btn-outline-danger btn-submit ml-1"
-      (click)="cancel()"
-      [appApiAction]="cancelPromise"
-      [disabled]="$any(cancelBtn).loading"
-      *ngIf="subscription && !subscription.cancelled && !subscription.markedForCancel"
+      class="ml-1"
+      *ngIf="subscription && !subscription.cancelled && !subscription?.markedForCancel"
     >
-      <i class="bwi bwi-spinner bwi-spin" title="{{ 'loading' | i18n }}" aria-hidden="true"></i>
-      <span>{{ "cancelSubscription" | i18n }}</span>
+      {{ "cancelSubscription" | i18n }}
     </button>
   </div>
 </ng-container>

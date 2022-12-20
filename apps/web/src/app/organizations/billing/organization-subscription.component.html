@@ -25,31 +25,23 @@
 </ng-container>
 
 <ng-container *ngIf="sub">
-  <app-callout
+  <bit-callout
     type="warning"
     title="{{ 'canceled' | i18n }}"
     *ngIf="subscription && subscription.cancelled"
   >
-    {{ "subscriptionCanceled" | i18n }}</app-callout
+    {{ "subscriptionCanceled" | i18n }}</bit-callout
   >
-  <app-callout
+  <bit-callout
     type="warning"
     title="{{ 'pendingCancellation' | i18n }}"
-    *ngIf="subscription.markedForCancel"
+    *ngIf="subscription?.markedForCancel"
   >
     <p>{{ "subscriptionPendingCanceled" | i18n }}</p>
-    <button
-      #reinstateBtn
-      type="button"
-      class="btn btn-outline-secondary btn-submit"
-      (click)="reinstate()"
-      [appApiAction]="reinstatePromise"
-      [disabled]="$any(reinstateBtn).loading"
-    >
-      <i class="bwi bwi-spinner bwi-spin" title="{{ 'loading' | i18n }}" aria-hidden="true"></i>
-      <span>{{ "reinstateSubscription" | i18n }}</span>
+    <button bitButton buttonType="secondary" [bitAction]="reinstate" type="button">
+      {{ "reinstateSubscription" | i18n }}
     </button>
-  </app-callout>
+  </bit-callout>
   <app-org-subscription-cloud
     *ngIf="!selfHosted && !loading"
     [sub]="sub"

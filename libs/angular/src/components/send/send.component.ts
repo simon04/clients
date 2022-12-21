@@ -7,7 +7,8 @@ import { LogService } from "@bitwarden/common/abstractions/log.service";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { PolicyService } from "@bitwarden/common/abstractions/policy/policy.service.abstraction";
 import { SearchService } from "@bitwarden/common/abstractions/search.service";
-import { SendService } from "@bitwarden/common/abstractions/send.service";
+import { SendApiService } from "@bitwarden/common/abstractions/send/send-api.service.abstraction";
+import { SendService } from "@bitwarden/common/abstractions/send/send.service.abstraction";
 import { PolicyType } from "@bitwarden/common/enums/policyType";
 import { SendType } from "@bitwarden/common/enums/sendType";
 import { SendView } from "@bitwarden/common/models/view/send.view";
@@ -47,7 +48,8 @@ export class SendComponent implements OnInit, OnDestroy {
     protected ngZone: NgZone,
     protected searchService: SearchService,
     protected policyService: PolicyService,
-    private logService: LogService
+    private logService: LogService,
+    protected sendApiService: SendApiService
   ) {}
 
   async ngOnInit() {

@@ -10,7 +10,7 @@ import { MessagingService } from "../../abstractions/messaging.service";
 import { InternalOrganizationService } from "../../abstractions/organization/organization.service.abstraction";
 import { InternalPolicyService } from "../../abstractions/policy/policy.service.abstraction";
 import { ProviderService } from "../../abstractions/provider.service";
-import { SendService } from "../../abstractions/send.service";
+import { InternalSendService } from "../../abstractions/send/send.service.abstraction";
 import { SettingsService } from "../../abstractions/settings.service";
 import { StateService } from "../../abstractions/state.service";
 import { SyncService as SyncServiceAbstraction } from "../../abstractions/sync/sync.service.abstraction";
@@ -34,6 +34,7 @@ import {
 import { PolicyResponse } from "../../models/response/policy.response";
 import { ProfileResponse } from "../../models/response/profile.response";
 import { SendResponse } from "../../models/response/send.response";
+import { SendApiService } from "../send/send-api.service";
 
 export class SyncService implements SyncServiceAbstraction {
   syncInProgress = false;
@@ -47,13 +48,14 @@ export class SyncService implements SyncServiceAbstraction {
     private collectionService: CollectionService,
     private messagingService: MessagingService,
     private policyService: InternalPolicyService,
-    private sendService: SendService,
+    private sendService: InternalSendService,
     private logService: LogService,
     private keyConnectorService: KeyConnectorService,
     private stateService: StateService,
     private providerService: ProviderService,
     private folderApiService: FolderApiServiceAbstraction,
     private organizationService: InternalOrganizationService,
+    private sendApiService: SendApiService,
     private logoutCallback: (expired: boolean) => Promise<void>
   ) {}
 
@@ -235,7 +237,7 @@ export class SyncService implements SyncServiceAbstraction {
           (!isEdit && localSend == null) ||
           (isEdit && localSend != null && localSend.revisionDate < notification.revisionDate)
         ) {
-          const remoteSend = await this.apiService.getSend(notification.id);
+          const remoteSend = await this.sendApiService.getSend(notification.id);
           if (remoteSend != null) {
             await this.sendService.upsert(new SendData(remoteSend));
             this.messagingService.send("syncedUpsertedSend", { sendId: notification.id });

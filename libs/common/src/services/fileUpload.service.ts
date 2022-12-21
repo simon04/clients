@@ -1,6 +1,7 @@
 import { ApiService } from "../abstractions/api.service";
 import { FileUploadService as FileUploadServiceAbstraction } from "../abstractions/fileUpload.service";
 import { LogService } from "../abstractions/log.service";
+import { SendApiService } from "../abstractions/send/send-api.service.abstraction";
 import { FileUploadType } from "../enums/fileUploadType";
 import { EncArrayBuffer } from "../models/domain/enc-array-buffer";
 import { EncString } from "../models/domain/enc-string";
@@ -14,7 +15,11 @@ export class FileUploadService implements FileUploadServiceAbstraction {
   private azureFileUploadService: AzureFileUploadService;
   private bitwardenFileUploadService: BitwardenFileUploadService;
 
-  constructor(private logService: LogService, private apiService: ApiService) {
+  constructor(
+    private logService: LogService,
+    private apiService: ApiService,
+    private sendApiService: SendApiService
+  ) {
     this.azureFileUploadService = new AzureFileUploadService(logService);
     this.bitwardenFileUploadService = new BitwardenFileUploadService();
   }
@@ -31,7 +36,7 @@ export class FileUploadService implements FileUploadServiceAbstraction {
             fileName.encryptedString,
             encryptedFileData,
             (fd) =>
-              this.apiService.postSendFile(
+              this.sendApiService.postSendFile(
                 uploadData.sendResponse.id,
                 uploadData.sendResponse.file.id,
                 fd
@@ -40,7 +45,7 @@ export class FileUploadService implements FileUploadServiceAbstraction {
           break;
         case FileUploadType.Azure: {
           const renewalCallback = async () => {
-            const renewalResponse = await this.apiService.renewSendFileUploadUrl(
+            const renewalResponse = await this.sendApiService.renewSendFileUploadUrl(
               uploadData.sendResponse.id,
               uploadData.sendResponse.file.id
             );
@@ -57,7 +62,7 @@ export class FileUploadService implements FileUploadServiceAbstraction {
           throw new Error("Unknown file upload type");
       }
     } catch (e) {
-      await this.apiService.deleteSend(uploadData.sendResponse.id);
+      await this.sendApiService.deleteSend(uploadData.sendResponse.id);
       throw e;
     }
   }

@@ -51,7 +51,8 @@ import {
 } from "@bitwarden/common/abstractions/policy/policy.service.abstraction";
 import { ProviderService as ProviderServiceAbstraction } from "@bitwarden/common/abstractions/provider.service";
 import { SearchService as SearchServiceAbstraction } from "@bitwarden/common/abstractions/search.service";
-import { SendService as SendServiceAbstraction } from "@bitwarden/common/abstractions/send.service";
+import { SendApiService as SendApiServiceAbstraction } from "@bitwarden/common/abstractions/send/send-api.service.abstraction";
+import { SendService as SendServiceAbstraction } from "@bitwarden/common/abstractions/send/send.service.abstraction";
 import { SettingsService as SettingsServiceAbstraction } from "@bitwarden/common/abstractions/settings.service";
 import { StateService as StateServiceAbstraction } from "@bitwarden/common/abstractions/state.service";
 import { StateMigrationService as StateMigrationServiceAbstraction } from "@bitwarden/common/abstractions/stateMigration.service";
@@ -105,7 +106,8 @@ import { PolicyApiService } from "@bitwarden/common/services/policy/policy-api.s
 import { PolicyService } from "@bitwarden/common/services/policy/policy.service";
 import { ProviderService } from "@bitwarden/common/services/provider.service";
 import { SearchService } from "@bitwarden/common/services/search.service";
-import { SendService } from "@bitwarden/common/services/send.service";
+import { SendApiService } from "@bitwarden/common/services/send/send-api.service";
+import { SendService } from "@bitwarden/common/services/send/send.service";
 import { SettingsService } from "@bitwarden/common/services/settings.service";
 import { StateService } from "@bitwarden/common/services/state.service";
 import { StateMigrationService } from "@bitwarden/common/services/stateMigration.service";
@@ -343,7 +345,7 @@ import { AbstractThemingService } from "./theming/theming.service.abstraction";
     {
       provide: FileUploadServiceAbstraction,
       useClass: FileUploadService,
-      deps: [LogService, ApiServiceAbstraction],
+      deps: [LogService, ApiServiceAbstraction, SendApiServiceAbstraction],
     },
     {
       provide: SyncServiceAbstraction,
@@ -495,15 +497,20 @@ import { AbstractThemingService } from "./theming/theming.service.abstraction";
       ],
     },
     {
+      provide: SendApiServiceAbstraction,
+      useClass: SendApiService,
+      deps: [ApiServiceAbstraction],
+    },
+    {
       provide: SendServiceAbstraction,
       useClass: SendService,
       deps: [
         CryptoServiceAbstraction,
-        ApiServiceAbstraction,
-        FileUploadServiceAbstraction,
         I18nServiceAbstraction,
         CryptoFunctionServiceAbstraction,
         StateServiceAbstraction,
+        SendApiServiceAbstraction,
+        FileUploadServiceAbstraction,
       ],
     },
     {

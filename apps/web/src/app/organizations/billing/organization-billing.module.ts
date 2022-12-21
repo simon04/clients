@@ -12,6 +12,7 @@ import { OrganizationBillingTabComponent } from "./organization-billing-tab.comp
 import { OrganizationSubscriptionCloudComponent } from "./organization-subscription-cloud.component";
 import { OrganizationSubscriptionSelfhostComponent } from "./organization-subscription-selfhost.component";
 import { OrganizationSubscriptionComponent } from "./organization-subscription.component";
+import { SubscriptionHiddenComponent } from "./subscription-hidden.component";
 
 @NgModule({
   imports: [SharedModule, LooseComponentsModule, OrganizationBillingRoutingModule],
@@ -25,6 +26,7 @@ import { OrganizationSubscriptionComponent } from "./organization-subscription.c
     OrgBillingHistoryViewComponent,
     OrganizationSubscriptionSelfhostComponent,
     OrganizationSubscriptionCloudComponent,
+    SubscriptionHiddenComponent,
   ],
 })
 export class OrganizationBillingModule {}

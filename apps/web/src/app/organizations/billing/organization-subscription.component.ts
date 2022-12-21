@@ -8,8 +8,6 @@ import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUti
 import { Organization } from "@bitwarden/common/models/domain/organization";
 import { OrganizationSubscriptionResponse } from "@bitwarden/common/models/response/organization-subscription.response";
 
-import { SubscriptionHiddenIcon } from "./subscription-hidden.icon";
-
 @Component({
   selector: "app-org-subscription",
   templateUrl: "organization-subscription.component.html",
@@ -22,8 +20,6 @@ export class OrganizationSubscriptionComponent implements OnInit, OnDestroy {
   selfHosted = false;
 
   userOrg: Organization;
-
-  subscriptionHiddenIcon = SubscriptionHiddenIcon;
 
   private destroy$ = new Subject<void>();
 

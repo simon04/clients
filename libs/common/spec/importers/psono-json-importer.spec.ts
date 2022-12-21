@@ -214,14 +214,15 @@ describe("PSONO JSON Importer", () => {
     expect(result.ciphers.filter((c) => c.folderId === folders[1].id).length).toBeGreaterThan(0);
   });
 
-  // it("should create collections if part of an organization", async () => {
-  //   const importer = new Importer();
-  //   importer.organizationId = Utils.newGuid();
-  //   const result = await importer.parse(FoldersTestDataJson);
-  //   expect(result != null).toBe(true);
+  it("should create collections if part of an organization", async () => {
+    const importer = new Importer();
+    importer.organizationId = "someOrg";
+    const result = await importer.parse(FoldersTestDataJson);
+    expect(result != null).toBe(true);
 
-  //   const collections = result.collections;
-  //   expect(collections.length).toBe(1);
-  //   expect(collections[0].name).toBe("TestFolder");
-  // });
+    const collections = result.collections;
+    expect(collections.length).toBe(2);
+    expect(collections[0].name).toBe("TestFolder");
+    expect(collections[1].name).toBe("TestFolder2");
+  });
 });

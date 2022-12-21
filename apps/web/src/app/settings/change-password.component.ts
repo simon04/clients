@@ -17,7 +17,7 @@ import { OrganizationService } from "@bitwarden/common/abstractions/organization
 import { PasswordGenerationService } from "@bitwarden/common/abstractions/passwordGeneration.service";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { PolicyService } from "@bitwarden/common/abstractions/policy/policy.service.abstraction";
-import { SendService } from "@bitwarden/common/abstractions/send.service";
+import { SendService } from "@bitwarden/common/abstractions/send/send.service.abstraction";
 import { StateService } from "@bitwarden/common/abstractions/state.service";
 import { SyncService } from "@bitwarden/common/abstractions/sync/sync.service.abstraction";
 import { EmergencyAccessStatusType } from "@bitwarden/common/enums/emergencyAccessStatusType";

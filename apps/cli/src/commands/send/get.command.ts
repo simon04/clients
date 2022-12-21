@@ -3,7 +3,7 @@ import * as program from "commander";
 import { CryptoService } from "@bitwarden/common/abstractions/crypto.service";
 import { EnvironmentService } from "@bitwarden/common/abstractions/environment.service";
 import { SearchService } from "@bitwarden/common/abstractions/search.service";
-import { SendService } from "@bitwarden/common/abstractions/send.service";
+import { SendService } from "@bitwarden/common/abstractions/send/send.service.abstraction";
 import { Utils } from "@bitwarden/common/misc/utils";
 import { SendView } from "@bitwarden/common/models/view/send.view";
 

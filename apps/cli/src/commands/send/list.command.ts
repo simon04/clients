@@ -1,6 +1,6 @@
 import { EnvironmentService } from "@bitwarden/common/abstractions/environment.service";
 import { SearchService } from "@bitwarden/common/abstractions/search.service";
-import { SendService } from "@bitwarden/common/abstractions/send.service";
+import { SendService } from "@bitwarden/common/abstractions/send/send.service.abstraction";
 
 import { Response } from "../../models/response";
 import { ListResponse } from "../../models/response/list.response";

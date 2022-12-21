@@ -1,4 +1,4 @@
-import { SendService } from "@bitwarden/common/abstractions/send.service";
+import { SendService } from "@bitwarden/common/abstractions/send/send.service.abstraction";
 
 import { Response } from "../../models/response";
 

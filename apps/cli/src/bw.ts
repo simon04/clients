@@ -38,7 +38,8 @@ import { PasswordGenerationService } from "@bitwarden/common/services/passwordGe
 import { PolicyService } from "@bitwarden/common/services/policy/policy.service";
 import { ProviderService } from "@bitwarden/common/services/provider.service";
 import { SearchService } from "@bitwarden/common/services/search.service";
-import { SendService } from "@bitwarden/common/services/send.service";
+import { SendApiService } from "@bitwarden/common/services/send/send-api.service";
+import { SendService } from "@bitwarden/common/services/send/send.service";
 import { SettingsService } from "@bitwarden/common/services/settings.service";
 import { StateService } from "@bitwarden/common/services/state.service";
 import { StateMigrationService } from "@bitwarden/common/services/stateMigration.service";
@@ -118,6 +119,7 @@ export class Main {
   userVerificationApiService: UserVerificationApiService;
   organizationApiService: OrganizationApiServiceAbstraction;
   syncNotifierService: SyncNotifierService;
+  sendApiService: SendApiService;
 
   constructor() {
     let p = null;
@@ -208,7 +210,21 @@ export class Main {
 
     this.settingsService = new SettingsService(this.stateService);
 
-    this.fileUploadService = new FileUploadService(this.logService, this.apiService);
+    this.sendApiService = this.sendApiService = new SendApiService(this.apiService);
+
+    this.fileUploadService = new FileUploadService(
+      this.logService,
+      this.apiService,
+      this.sendApiService
+    );
+    this.sendService = new SendService(
+      this.cryptoService,
+      this.i18nService,
+      this.cryptoFunctionService,
+      this.stateService,
+      this.sendApiService,
+      this.fileUploadService
+    );
 
     this.cipherService = new CipherService(
       this.cryptoService,
@@ -248,15 +264,6 @@ export class Main {
     this.organizationUserService = new OrganizationUserServiceImplementation(this.apiService);
 
     this.policyService = new PolicyService(this.stateService, this.organizationService);
-
-    this.sendService = new SendService(
-      this.cryptoService,
-      this.apiService,
-      this.fileUploadService,
-      this.i18nService,
-      this.cryptoFunctionService,
-      this.stateService
-    );
 
     this.keyConnectorService = new KeyConnectorService(
       this.stateService,
@@ -328,6 +335,7 @@ export class Main {
       this.providerService,
       this.folderApiService,
       this.organizationService,
+      this.sendApiService,
       async (expired: boolean) => await this.logout()
     );
 

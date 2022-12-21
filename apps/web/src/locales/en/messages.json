@@ -5567,6 +5567,9 @@
   "notYou": {
     "message": "Not you?"
   },
+  "selectPlaceholder": {
+    "message": "-- Select --"
+  },
   "multiSelectPlaceholder": {
     "message": "-- Type to Filter --"
   },

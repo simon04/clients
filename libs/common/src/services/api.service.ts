@@ -62,8 +62,6 @@ import { ProviderUserUpdateRequest } from "../models/request/provider/provider-u
 import { RegisterRequest } from "../models/request/register.request";
 import { SecretVerificationRequest } from "../models/request/secret-verification.request";
 import { SelectionReadOnlyRequest } from "../models/request/selection-read-only.request";
-import { SendAccessRequest } from "../models/request/send-access.request";
-import { SendRequest } from "../models/request/send.request";
 import { SetPasswordRequest } from "../models/request/set-password.request";
 import { StorageRequest } from "../models/request/storage.request";
 import { TaxInfoUpdateRequest } from "../models/request/tax-info-update.request";
@@ -134,10 +132,6 @@ import {
 } from "../models/response/provider/provider-user.response";
 import { ProviderResponse } from "../models/response/provider/provider.response";
 import { SelectionReadOnlyResponse } from "../models/response/selection-read-only.response";
-import { SendAccessResponse } from "../models/response/send-access.response";
-import { SendFileDownloadDataResponse } from "../models/response/send-file-download-data.response";
-import { SendFileUploadDataResponse } from "../models/response/send-file-upload-data.response";
-import { SendResponse } from "../models/response/send.response";
 import { SsoPreValidateResponse } from "../models/response/sso-pre-validate.response";
 import { SubscriptionResponse } from "../models/response/subscription.response";
 import { SyncResponse } from "../models/response/sync.response";
@@ -154,7 +148,6 @@ import {
 } from "../models/response/two-factor-web-authn.response";
 import { TwoFactorYubiKeyResponse } from "../models/response/two-factor-yubi-key.response";
 import { UserKeyResponse } from "../models/response/user-key.response";
-import { SendAccessView } from "../models/view/send-access.view";
 
 /**
  * @deprecated The `ApiService` class is deprecated and calls should be extracted into individual
@@ -452,103 +445,6 @@ export class ApiService implements ApiServiceAbstraction {
   async getUserBillingPayment(): Promise<BillingPaymentResponse> {
     const r = await this.send("GET", "/accounts/billing/payment-method", null, true, true);
     return new BillingPaymentResponse(r);
-  }
-
-  // Send APIs
-
-  async getSend(id: string): Promise<SendResponse> {
-    const r = await this.send("GET", "/sends/" + id, null, true, true);
-    return new SendResponse(r);
-  }
-
-  async postSendAccess(
-    id: string,
-    request: SendAccessRequest,
-    apiUrl?: string
-  ): Promise<SendAccessResponse> {
-    const addSendIdHeader = (headers: Headers) => {
-      headers.set("Send-Id", id);
-    };
-    const r = await this.send(
-      "POST",
-      "/sends/access/" + id,
-      request,
-      false,
-      true,
-      apiUrl,
-      addSendIdHeader
-    );
-    return new SendAccessResponse(r);
-  }
-
-  async getSendFileDownloadData(
-    send: SendAccessView,
-    request: SendAccessRequest,
-    apiUrl?: string
-  ): Promise<SendFileDownloadDataResponse> {
-    const addSendIdHeader = (headers: Headers) => {
-      headers.set("Send-Id", send.id);
-    };
-    const r = await this.send(
-      "POST",
-      "/sends/" + send.id + "/access/file/" + send.file.id,
-      request,
-      false,
-      true,
-      apiUrl,
-      addSendIdHeader
-    );
-    return new SendFileDownloadDataResponse(r);
-  }
-
-  async getSends(): Promise<ListResponse<SendResponse>> {
-    const r = await this.send("GET", "/sends", null, true, true);
-    return new ListResponse(r, SendResponse);
-  }
-
-  async postSend(request: SendRequest): Promise<SendResponse> {
-    const r = await this.send("POST", "/sends", request, true, true);
-    return new SendResponse(r);
-  }
-
-  async postFileTypeSend(request: SendRequest): Promise<SendFileUploadDataResponse> {
-    const r = await this.send("POST", "/sends/file/v2", request, true, true);
-    return new SendFileUploadDataResponse(r);
-  }
-
-  async renewSendFileUploadUrl(
-    sendId: string,
-    fileId: string
-  ): Promise<SendFileUploadDataResponse> {
-    const r = await this.send("GET", "/sends/" + sendId + "/file/" + fileId, null, true, true);
-    return new SendFileUploadDataResponse(r);
-  }
-
-  postSendFile(sendId: string, fileId: string, data: FormData): Promise<any> {
-    return this.send("POST", "/sends/" + sendId + "/file/" + fileId, data, true, false);
-  }
-
-  /**
-   * @deprecated Mar 25 2021: This method has been deprecated in favor of direct uploads.
-   * This method still exists for backward compatibility with old server versions.
-   */
-  async postSendFileLegacy(data: FormData): Promise<SendResponse> {
-    const r = await this.send("POST", "/sends/file", data, true, true);
-    return new SendResponse(r);
-  }
-
-  async putSend(id: string, request: SendRequest): Promise<SendResponse> {
-    const r = await this.send("PUT", "/sends/" + id, request, true, true);
-    return new SendResponse(r);
-  }
-
-  async putSendRemovePassword(id: string): Promise<SendResponse> {
-    const r = await this.send("PUT", "/sends/" + id + "/remove-password", null, true, true);
-    return new SendResponse(r);
-  }
-
-  deleteSend(id: string): Promise<any> {
-    return this.send("DELETE", "/sends/" + id, null, true, false);
   }
 
   // Cipher APIs

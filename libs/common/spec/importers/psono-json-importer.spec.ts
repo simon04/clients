@@ -137,7 +137,8 @@ describe("PSONO JSON Importer", () => {
     validateCustomField(cipher.fields, "write_date", "2022-12-13T19:41:42.972609Z");
   });
 
-  it("should parse GPG data", async () => {
+  // Skipping this test until we can save GPG into notes/custom fields
+  it.skip("should parse GPG data", async () => {
     const importer = new Importer();
     const result = await importer.parse(GPGDataJson);
     expect(result != null).toBe(true);

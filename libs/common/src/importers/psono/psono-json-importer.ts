@@ -88,9 +88,10 @@ export class PsonoJsonImporter extends BaseImporter implements Importer {
       case "bookmark":
         this.parseBookmarks(item, cipher);
         break;
-      case "mail_gpg_own_key":
-        this.parseGPG(item, cipher);
-        break;
+      // Skipping this until we can save GPG into notes/custom fields
+      // case "mail_gpg_own_key":
+      //   this.parseGPG(item, cipher);
+      //   break;
       case "note":
         this.parseNotes(item, cipher);
         break;

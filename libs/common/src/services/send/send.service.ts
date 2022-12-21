@@ -1,33 +1,40 @@
-import { ApiService } from "../abstractions/api.service";
-import { CryptoService } from "../abstractions/crypto.service";
-import { CryptoFunctionService } from "../abstractions/cryptoFunction.service";
-import { FileUploadService } from "../abstractions/fileUpload.service";
-import { I18nService } from "../abstractions/i18n.service";
-import { SendService as SendServiceAbstraction } from "../abstractions/send.service";
-import { StateService } from "../abstractions/state.service";
-import { SEND_KDF_ITERATIONS } from "../enums/kdfType";
-import { SendType } from "../enums/sendType";
-import { Utils } from "../misc/utils";
-import { SendData } from "../models/data/send.data";
-import { EncArrayBuffer } from "../models/domain/enc-array-buffer";
-import { EncString } from "../models/domain/enc-string";
-import { Send } from "../models/domain/send";
-import { SendFile } from "../models/domain/send-file";
-import { SendText } from "../models/domain/send-text";
-import { SymmetricCryptoKey } from "../models/domain/symmetric-crypto-key";
-import { SendRequest } from "../models/request/send.request";
-import { ErrorResponse } from "../models/response/error.response";
-import { SendResponse } from "../models/response/send.response";
-import { SendView } from "../models/view/send.view";
+import { BehaviorSubject } from "rxjs";
 
-export class SendService implements SendServiceAbstraction {
+import { CryptoService } from "../../abstractions/crypto.service";
+import { CryptoFunctionService } from "../../abstractions/cryptoFunction.service";
+import { FileUploadService } from "../../abstractions/fileUpload.service";
+import { I18nService } from "../../abstractions/i18n.service";
+import { InternalSendService as InternalSendServiceAbstraction } from "../../abstractions/send/send.service.abstraction";
+import { StateService } from "../../abstractions/state.service";
+import { SEND_KDF_ITERATIONS } from "../../enums/kdfType";
+import { SendType } from "../../enums/sendType";
+import { Utils } from "../../misc/utils";
+import { SendData } from "../../models/data/send.data";
+import { EncArrayBuffer } from "../../models/domain/enc-array-buffer";
+import { EncString } from "../../models/domain/enc-string";
+import { Send } from "../../models/domain/send";
+import { SendFile } from "../../models/domain/send-file";
+import { SendText } from "../../models/domain/send-text";
+import { SymmetricCryptoKey } from "../../models/domain/symmetric-crypto-key";
+import { SendRequest } from "../../models/request/send.request";
+import { ErrorResponse } from "../../models/response/error.response";
+import { SendResponse } from "../../models/response/send.response";
+import { SendView } from "../../models/view/send.view";
+
+import { SendApiService } from "./send-api.service";
+
+export class SendService implements InternalSendServiceAbstraction {
+  protected _sends: BehaviorSubject<Send[]> = new BehaviorSubject([]);
+
+  sends$ = this._sends.asObservable();
+
   constructor(
     private cryptoService: CryptoService,
-    private apiService: ApiService,
-    private fileUploadService: FileUploadService,
     private i18nService: I18nService,
     private cryptoFunctionService: CryptoFunctionService,
-    private stateService: StateService
+    private stateService: StateService,
+    private sendApiService: SendApiService,
+    private fileUploadService: FileUploadService
   ) {}
 
   async clearCache(): Promise<void> {
@@ -139,10 +146,10 @@ export class SendService implements SendServiceAbstraction {
     let response: SendResponse;
     if (sendData[0].id == null) {
       if (sendData[0].type === SendType.Text) {
-        response = await this.apiService.postSend(request);
+        response = await this.sendApiService.postSend(request);
       } else {
         try {
-          const uploadDataResponse = await this.apiService.postFileTypeSend(request);
+          const uploadDataResponse = await this.sendApiService.postFileTypeSend(request);
           response = uploadDataResponse.sendResponse;
 
           await this.fileUploadService.uploadSendFile(
@@ -163,7 +170,7 @@ export class SendService implements SendServiceAbstraction {
       sendData[0].id = response.id;
       sendData[0].accessId = response.accessId;
     } else {
-      response = await this.apiService.putSend(sendData[0].id, request);
+      response = await this.sendApiService.putSend(sendData[0].id, request);
     }
 
     const data = new SendData(response);
@@ -198,7 +205,7 @@ export class SendService implements SendServiceAbstraction {
         throw e;
       }
     }
-    return await this.apiService.postSendFileLegacy(fd);
+    return await this.sendApiService.postSendFileLegacy(fd);
   }
 
   async upsert(send: SendData | SendData[]): Promise<any> {
@@ -250,12 +257,12 @@ export class SendService implements SendServiceAbstraction {
   }
 
   async deleteWithServer(id: string): Promise<any> {
-    await this.apiService.deleteSend(id);
+    await this.sendApiService.deleteSend(id);
     await this.delete(id);
   }
 
   async removePasswordWithServer(id: string): Promise<any> {
-    const response = await this.apiService.putSendRemovePassword(id);
+    const response = await this.sendApiService.putSendRemovePassword(id);
     const data = new SendData(response);
     await this.upsert(data);
   }

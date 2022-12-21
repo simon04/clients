@@ -64,7 +64,6 @@ export class PsonoJsonImporter extends BaseImporter implements Importer {
     items.forEach((record) => {
       const cipher = this.parsePsonoItem(record);
 
-      // this.convertToNoteIfNeeded(cipher);
       this.cleanupCipher(cipher);
       result.ciphers.push(cipher);
     });
@@ -102,6 +101,19 @@ export class PsonoJsonImporter extends BaseImporter implements Importer {
     return cipher;
   }
 
+  readonly WEBSITE_mappedValues = new Set([
+    "type",
+    "name",
+    "website_password_title",
+    "website_password_notes",
+    "website_password_username",
+    "website_password_password",
+    "website_password_url",
+    "autosubmit",
+    "website_password_auto_submit",
+    "urlfilter",
+    "website_password_url_filter",
+  ]);
   private parseWebsiteLogins(entry: WebsitePasswordEntry, cipher: CipherView) {
     if (entry == null || entry.type != "website_password") {
       return;
@@ -114,8 +126,27 @@ export class PsonoJsonImporter extends BaseImporter implements Importer {
     cipher.login.password = entry.website_password_password;
 
     cipher.login.uris = this.makeUriArray(entry.website_password_url);
+
+    this.processKvp(
+      cipher,
+      "website_password_auto_submit",
+      entry.website_password_auto_submit.toString(),
+      FieldType.Boolean
+    );
+
+    this.processKvp(cipher, "website_password_url_filter", entry.website_password_url_filter);
+
+    this.importUnmappedFields(cipher, entry, this.WEBSITE_mappedValues);
   }
 
+  readonly APP_PWD_mappedValues = new Set([
+    "type",
+    "name",
+    "application_password_title",
+    "application_password_notes",
+    "application_password_username",
+    "application_password_password",
+  ]);
   private parseApplicationPasswords(entry: AppPasswordEntry, cipher: CipherView) {
     if (entry == null || entry.type != "application_password") {
       return;
@@ -126,8 +157,17 @@ export class PsonoJsonImporter extends BaseImporter implements Importer {
 
     cipher.login.username = entry.application_password_username;
     cipher.login.password = entry.application_password_password;
+
+    this.importUnmappedFields(cipher, entry, this.APP_PWD_mappedValues);
   }
 
+  readonly BOOKMARK_mappedValues = new Set([
+    "type",
+    "name",
+    "bookmark_title",
+    "bookmark_notes",
+    "bookmark_url",
+  ]);
   private parseBookmarks(entry: BookmarkEntry, cipher: CipherView) {
     if (entry == null || entry.type != "bookmark") {
       return;
@@ -137,8 +177,11 @@ export class PsonoJsonImporter extends BaseImporter implements Importer {
     cipher.notes = entry.bookmark_notes;
 
     cipher.login.uris = this.makeUriArray(entry.bookmark_url);
+
+    this.importUnmappedFields(cipher, entry, this.BOOKMARK_mappedValues);
   }
 
+  readonly NOTES_mappedValues = new Set(["type", "name", "note_title", "note_notes"]);
   private parseNotes(entry: NotesEntry, cipher: CipherView) {
     if (entry == null || entry.type != "note") {
       return;
@@ -148,9 +191,11 @@ export class PsonoJsonImporter extends BaseImporter implements Importer {
     cipher.secureNote.type = SecureNoteType.Generic;
     cipher.name = entry.note_title;
     cipher.notes = entry.note_notes;
+
+    this.importUnmappedFields(cipher, entry, this.NOTES_mappedValues);
   }
 
-  readonly mappedValues: string[] = ["type", "name", "totp_title", "totp_notes"];
+  readonly TOTP_mappedValues = new Set(["type", "name", "totp_title", "totp_notes", "totp_code"]);
   private parseTOTP(entry: TOTPEntry, cipher: CipherView) {
     if (entry == null || entry.type != "totp") {
       return;
@@ -161,21 +206,16 @@ export class PsonoJsonImporter extends BaseImporter implements Importer {
 
     cipher.login.totp = entry.totp_code;
 
-    this.importUnmappedFields(cipher, entry, new Set(this.mappedValues));
+    this.importUnmappedFields(cipher, entry, this.TOTP_mappedValues);
   }
 
-  private importUnmappedFields(
-    cipher: CipherView,
-    entry: PsonoItemTypes,
-    mappedValues: Set<string>
-  ) {
-    const unmappedFields = Object.keys(entry).filter((x) => !mappedValues.has(x));
-    unmappedFields.forEach((key) => {
-      const item = entry as any;
-      this.processKvp(cipher, key, item[key]);
-    });
-  }
-
+  readonly ENV_VARIABLES_mappedValues = new Set([
+    "type",
+    "name",
+    "environment_variables_title",
+    "environment_variables_notes",
+    "environment_variables_variables",
+  ]);
   private parseEnvironmentVariables(entry: EnvironmentVariablesEntry, cipher: CipherView) {
     if (entry == null || entry.type != "environment_variables") {
       return;
@@ -190,8 +230,19 @@ export class PsonoJsonImporter extends BaseImporter implements Importer {
     entry.environment_variables_variables.forEach((KvPair) => {
       this.processKvp(cipher, KvPair.key, KvPair.value);
     });
+
+    this.importUnmappedFields(cipher, entry, this.ENV_VARIABLES_mappedValues);
   }
 
+  readonly GPG_mappedValues = new Set([
+    "type",
+    "name",
+    "mail_gpg_own_key_title",
+    "mail_gpg_own_key_public",
+    "mail_gpg_own_key_name",
+    "mail_gpg_own_key_email",
+    "mail_gpg_own_key_private",
+  ]);
   private parseGPG(entry: GPGEntry, cipher: CipherView) {
     if (entry == null || entry.type != "mail_gpg_own_key") {
       return;
@@ -211,5 +262,19 @@ export class PsonoJsonImporter extends BaseImporter implements Importer {
       entry.mail_gpg_own_key_private,
       FieldType.Hidden
     );
+
+    this.importUnmappedFields(cipher, entry, this.GPG_mappedValues);
+  }
+
+  private importUnmappedFields(
+    cipher: CipherView,
+    entry: PsonoItemTypes,
+    mappedValues: Set<string>
+  ) {
+    const unmappedFields = Object.keys(entry).filter((x) => !mappedValues.has(x));
+    unmappedFields.forEach((key) => {
+      const item = entry as any;
+      this.processKvp(cipher, key, item[key].toString());
+    });
   }
 }

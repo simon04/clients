@@ -7,10 +7,14 @@ import { FolderView } from "../../models/view/folder.view";
 import { BaseImporter } from "../base-importer";
 import { Importer } from "../importer";
 
+import { EnpassJsonFile, EnpassFolder, EnpassField } from "./types/enpass-json-type";
+
+type EnpassFolderTreeItem = EnpassFolder & { children: EnpassFolderTreeItem[] };
+
 export class EnpassJsonImporter extends BaseImporter implements Importer {
   parse(data: string): Promise<ImportResult> {
     const result = new ImportResult();
-    const results = JSON.parse(data);
+    const results: EnpassJsonFile = JSON.parse(data);
     if (results == null || results.items == null || results.items.length === 0) {
       result.success = false;
       return Promise.resolve(result);
@@ -27,7 +31,7 @@ export class EnpassJsonImporter extends BaseImporter implements Importer {
       result.folders.push(f);
     });
 
-    results.items.forEach((item: any) => {
+    results.items.forEach((item) => {
       if (item.folders != null && item.folders.length > 0 && foldersIndexMap.has(item.folders[0])) {
         result.folderRelationships.push([
           result.ciphers.length,
@@ -49,7 +53,7 @@ export class EnpassJsonImporter extends BaseImporter implements Importer {
           this.processCard(cipher, item.fields);
         } else if (
           item.template_type.indexOf("identity.") < 0 &&
-          item.fields.some((f: any) => f.type === "password" && !this.isNullOrWhitespace(f.value))
+          item.fields.some((f) => f.type === "password" && !this.isNullOrWhitespace(f.value))
         ) {
           this.processLogin(cipher, item.fields);
         } else {
@@ -67,9 +71,9 @@ export class EnpassJsonImporter extends BaseImporter implements Importer {
     return Promise.resolve(result);
   }
 
-  private processLogin(cipher: CipherView, fields: any[]) {
+  private processLogin(cipher: CipherView, fields: EnpassField[]) {
     const urls: string[] = [];
-    fields.forEach((field: any) => {
+    fields.forEach((field) => {
       if (this.isNullOrWhitespace(field.value) || field.type === "section") {
         return;
       }
@@ -97,10 +101,10 @@ export class EnpassJsonImporter extends BaseImporter implements Importer {
     cipher.login.uris = this.makeUriArray(urls);
   }
 
-  private processCard(cipher: CipherView, fields: any[]) {
+  private processCard(cipher: CipherView, fields: EnpassField[]) {
     cipher.card = new CardView();
     cipher.type = CipherType.Card;
-    fields.forEach((field: any) => {
+    fields.forEach((field) => {
       if (
         this.isNullOrWhitespace(field.value) ||
         field.type === "section" ||
@@ -136,8 +140,8 @@ export class EnpassJsonImporter extends BaseImporter implements Importer {
     });
   }
 
-  private processNote(cipher: CipherView, fields: any[]) {
-    fields.forEach((field: any) => {
+  private processNote(cipher: CipherView, fields: EnpassField[]) {
+    fields.forEach((field) => {
       if (this.isNullOrWhitespace(field.value) || field.type === "section") {
         return;
       }
@@ -150,17 +154,17 @@ export class EnpassJsonImporter extends BaseImporter implements Importer {
     });
   }
 
-  private buildFolderTree(folders: any[]): any[] {
+  private buildFolderTree(folders: EnpassFolder[]): EnpassFolderTreeItem[] {
     if (folders == null) {
       return [];
     }
-    const folderTree: any[] = [];
-    const map = new Map<string, any>([]);
-    folders.forEach((obj: any) => {
+    const folderTree: EnpassFolderTreeItem[] = [];
+    const map = new Map<string, EnpassFolderTreeItem>([]);
+    folders.forEach((obj: EnpassFolderTreeItem) => {
       map.set(obj.uuid, obj);
       obj.children = [];
     });
-    folders.forEach((obj: any) => {
+    folders.forEach((obj: EnpassFolderTreeItem) => {
       if (obj.parent_uuid != null && obj.parent_uuid !== "" && map.has(obj.parent_uuid)) {
         map.get(obj.parent_uuid).children.push(obj);
       } else {
@@ -170,11 +174,15 @@ export class EnpassJsonImporter extends BaseImporter implements Importer {
     return folderTree;
   }
 
-  private flattenFolderTree(titlePrefix: string, tree: any[], map: Map<string, string>) {
+  private flattenFolderTree(
+    titlePrefix: string,
+    tree: EnpassFolderTreeItem[],
+    map: Map<string, string>
+  ) {
     if (tree == null) {
       return;
     }
-    tree.forEach((f: any) => {
+    tree.forEach((f) => {
       if (f.title != null && f.title.trim() !== "") {
         let title = f.title.trim();
         if (titlePrefix != null && titlePrefix.trim() !== "") {

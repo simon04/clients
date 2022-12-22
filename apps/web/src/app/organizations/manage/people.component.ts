@@ -30,7 +30,13 @@ import { ProductType } from "@bitwarden/common/enums/productType";
 import { Organization } from "@bitwarden/common/models/domain/organization";
 import { OrganizationKeysRequest } from "@bitwarden/common/models/request/organization-keys.request";
 import { ListResponse } from "@bitwarden/common/models/response/list.response";
-import { DialogService } from "@bitwarden/components";
+import {
+  DialogService,
+  SimpleDialogCloseType,
+  SimpleDialogOptions,
+  SimpleDialogType,
+} from "@bitwarden/components";
+// import { SimpleDialogOptions } from "@bitwarden/components";
 
 import { BasePeopleComponent } from "../../common/base.people.component";
 
@@ -264,13 +270,18 @@ export class PeopleComponent
             this.organization.seats.toString()
           );
 
-      this.dialogService.open(OrgUpgradeDialogComponent, {
+      const dialog = this.dialogService.open(OrgUpgradeDialogComponent, {
         data: {
           orgId: this.organization.id,
           orgCanManageBilling: this.organization.canManageBilling,
           dialogBodyText: dialogBodyText,
         },
       });
+
+      dialog.closed.pipe(takeUntil(this.destroy$)).subscribe((result) => {
+        // console.log("result: ", result);
+      });
+
       return;
     }
 
@@ -512,5 +523,71 @@ export class PeopleComponent
       close = true;
       modal.close();
     }
+  }
+
+  // Setup scenarios:
+  simpleDialogPrimaryOpts: SimpleDialogOptions = {
+    title: "Primary title (localized)",
+    content: "Primary content (localized)",
+    type: SimpleDialogType.PRIMARY,
+    icon: undefined,
+    isLocalized: true,
+    acceptButtonText: undefined,
+    cancelButtonText: undefined,
+    disableClose: undefined,
+  };
+
+  simpleDialogSuccessOpts: SimpleDialogOptions = {
+    title: "Success title (localized)",
+    content: "Success content (localized)",
+    type: SimpleDialogType.SUCCESS,
+    icon: undefined,
+    isLocalized: true,
+    acceptButtonText: undefined,
+    cancelButtonText: undefined,
+    disableClose: undefined,
+  };
+
+  simpleDialogInfoOpts: SimpleDialogOptions = {
+    title: "Info title (localized)",
+    content: "Info content (localized)",
+    type: SimpleDialogType.INFO,
+    icon: undefined,
+    isLocalized: true,
+    acceptButtonText: undefined,
+    cancelButtonText: undefined,
+    disableClose: undefined,
+  };
+
+  simpleDialogWarningOpts: SimpleDialogOptions = {
+    title: "Warning title (localized)",
+    content: "Warning content (localized)",
+    type: SimpleDialogType.WARNING,
+    icon: undefined,
+    isLocalized: true,
+    acceptButtonText: undefined,
+    cancelButtonText: undefined,
+    disableClose: undefined,
+  };
+
+  simpleDialogDangerOpts: SimpleDialogOptions = {
+    title: "Danger title (localized)",
+    content: "Danger content (localized)",
+    type: SimpleDialogType.DANGER,
+    icon: undefined,
+    isLocalized: true,
+    acceptButtonText: undefined,
+    cancelButtonText: undefined,
+    disableClose: undefined,
+  };
+
+  openSimpleDialog(simpleDialogOpts: SimpleDialogOptions) {
+    const dialog = this.dialogService.openSimpleDialog(simpleDialogOpts);
+
+    dialog.closed
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((result: SimpleDialogCloseType | undefined) => {
+        // console.log("result: ", result);
+      });
   }
 }

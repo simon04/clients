@@ -1,4 +1,4 @@
-import { EnpassItemTemplates } from "./enpass-item-templates";
+import { EnpassItemTemplate } from "./enpass-item-templates";
 
 export type EnpassJsonFile = {
   folders: EnpassFolder[];
@@ -23,7 +23,7 @@ export type EnpassItem = {
   icon: Icon;
   note: string;
   subtitle: string;
-  template_type: string | EnpassItemTemplates;
+  template_type: EnpassItemTemplate;
   title: string;
   trashed: number;
   updated_at: number;
@@ -31,30 +31,29 @@ export type EnpassItem = {
   folders?: string[];
 };
 
-export const enum EnpassFieldTypes {
-  text = "text",
-  password = "password",
-  pin = "pin",
-  numeric = "numeric",
-  date = "date",
-  email = "email",
-  url = "url",
-  phone = "phone",
-  username = "username",
-  totp = "totp",
-  multiline = "multiline",
-  ccName = "ccName",
-  ccNumber = "ccNumber",
-  ccCvc = "ccCvc",
-  ccPin = "ccPin",
-  ccExpiry = "ccExpiry",
-  ccBankname = "ccBankname",
-  ccTxnpassword = "ccTxnpassword",
-  ccType = "ccType",
-  ccValidfrom = "ccValidfrom",
-  section = "section",
-  androidUrl = ".Android#",
-}
+export type EnpassFieldType =
+  | "text"
+  | "password"
+  | "pin"
+  | "numeric"
+  | "date"
+  | "email"
+  | "url"
+  | "phone"
+  | "username"
+  | "totp"
+  | "multiline"
+  | "ccName"
+  | "ccNumber"
+  | "ccCvc"
+  | "ccPin"
+  | "ccExpiry"
+  | "ccBankname"
+  | "ccTxnpassword"
+  | "ccType"
+  | "ccValidfrom"
+  | "section"
+  | ".Android#";
 
 export type EnpassField = {
   deleted: number;
@@ -62,7 +61,7 @@ export type EnpassField = {
   label: string;
   order: number;
   sensitive: number;
-  type: string | EnpassFieldTypes;
+  type: EnpassFieldType;
   uid: number;
   updated_at: number;
   value: string;

@@ -1,100 +1,79 @@
-enum Login {
-  Default = "login.default",
-}
+type Login = "login.default";
 
-enum CreditCard {
-  Default = "creditcard.default",
-}
+type CreditCard = "creditcard.default";
 
-enum Identity {
-  Default = "identity.default",
-}
+type Identity = "identity.default";
 
-enum Note {
-  Default = "note.default",
-}
+type Note = "note.default";
 
-enum Password {
-  Default = "password.default",
-}
+type Password = "password.default";
 
-enum Finance {
-  Stock = "finance.stock",
-  BankAccount = "finance.bankaccount",
-  Loan = "finance.loan",
-  MutualFund = "finance.mutualfund",
-  Insurance = "finance.insurance",
-  Other = "finance.other",
-}
+type Finance =
+  | "finance.stock"
+  | "finance.bankaccount"
+  | "finance.loan"
+  | "finance.mutualfund"
+  | "finance.insurance"
+  | "finance.other";
 
-enum License {
-  DriversLicense = "license.driving",
-  HuntingLicense = "license.hunting",
-  SoftwareLicense = "license.software",
-  Other = "license.other",
-}
+type License = "license.driving" | "license.hunting" | "license.software" | "license.other";
 
-enum Travel {
-  Passport = "travel.passport",
-  FlightDetails = "travel.flightdetails",
-  HotelReservation = "travel.hotelreservation",
-  Visa = "travel.visa",
-  FrequentFlyer = "travel.freqflyer",
-  Other = "travel.other",
-}
+type Travel =
+  | "travel.passport"
+  | "travel.flightdetails"
+  | "travel.hotelreservation"
+  | "travel.visa"
+  | "travel.freqflyer"
+  | "travel.other";
 
-enum Computer {
-  Database = "computer.database",
-  EmailAccount = "computer.emailaccount",
-  FTP = "computer.ftp",
-  Messaging = "computer.messaging",
-  ISP = "computer.internetprovider",
-  Server = "computer.server",
-  WifiRouter = "computer.wifi",
-  Hosting = "computer.hosting",
-  Other = "computer.other",
-}
+type Computer =
+  | "computer.database"
+  | "computer.emailaccount"
+  | "computer.ftp"
+  | "computer.messaging"
+  | "computer.internetprovider"
+  | "computer.server"
+  | "computer.wifi"
+  | "computer.hosting"
+  | "computer.other";
 
-enum Misc {
-  Aadhar = "misc.Aadhar",
-  Address = "misc.address",
-  library = "misc.library",
-  RewardProgram = "misc.rewardprogram",
-  Lens = "misc.lens",
-  ServiceProvider = "misc.service",
-  VehicleInfo = "misc.vehicleinfo",
-  ITIC = "misc.itic",
-  ITZ = "misc.itz",
-  PropertyInfo = "misc.propertyinfo",
-  ClothSize = "misc.clothsize",
-  Contact = "misc.contact",
-  Membership = "misc.membership",
-  CellPhone = "misc.cellphone",
-  EmergencyNo = "misc.emergencyno",
-  PAN_Card = "misc.pan",
-  Identity = "misc.identity",
-  RegCode = "misc.regcode",
-  Prescription = "misc.prescription",
-  Serial = "misc.serial",
-  SocialSecurityNo = "misc.socialsecurityno",
-  ISIC = "misc.isic",
-  Calling = "misc.calling",
-  Voicemail = "misc.voicemail",
-  Voter = "misc.voter",
-  CombinationLock = "misc.combilock",
-  Other = "misc.other",
-}
+type Misc =
+  | "misc.Aadhar"
+  | "misc.address"
+  | "misc.library"
+  | "misc.rewardprogram"
+  | "misc.lens"
+  | "misc.service"
+  | "misc.vehicleinfo"
+  | "misc.itic"
+  | "misc.itz"
+  | "misc.propertyinfo"
+  | "misc.clothsize"
+  | "misc.contact"
+  | "misc.membership"
+  | "misc.cellphone"
+  | "misc.emergencyno"
+  | "misc.pan"
+  | "misc.identity"
+  | "misc.regcode"
+  | "misc.prescription"
+  | "misc.serial"
+  | "misc.socialsecurityno"
+  | "misc.isic"
+  | "misc.calling"
+  | "misc.voicemail"
+  | "misc.voter"
+  | "misc.combilock"
+  | "misc.other";
 
-export const EnpassItemTemplates = {
-  Login,
-  CreditCard,
-  Identity,
-  Note,
-  Password,
-  Finance,
-  License,
-  Travel,
-  Computer,
-  Misc,
-};
-export type EnpassItemTemplates = typeof EnpassItemTemplates;
+export type EnpassItemTemplate =
+  | Login
+  | CreditCard
+  | Identity
+  | Note
+  | Password
+  | Finance
+  | License
+  | Travel
+  | Computer
+  | Misc;

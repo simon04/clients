@@ -25,7 +25,8 @@ import { PolicyApiServiceAbstraction } from "@bitwarden/common/abstractions/poli
 import { InternalPolicyService as InternalPolicyServiceAbstraction } from "@bitwarden/common/abstractions/policy/policy.service.abstraction";
 import { ProviderService as ProviderServiceAbstraction } from "@bitwarden/common/abstractions/provider.service";
 import { SearchService as SearchServiceAbstraction } from "@bitwarden/common/abstractions/search.service";
-import { SendService as SendServiceAbstraction } from "@bitwarden/common/abstractions/send.service";
+import { SendApiService as SendApiServiceAbstraction } from "@bitwarden/common/abstractions/send/send-api.service.abstraction";
+import { InternalSendService as InternalSendServiceAbstraction } from "@bitwarden/common/abstractions/send/send.service.abstraction";
 import { SettingsService as SettingsServiceAbstraction } from "@bitwarden/common/abstractions/settings.service";
 import { AbstractStorageService } from "@bitwarden/common/abstractions/storage.service";
 import { SyncService as SyncServiceAbstraction } from "@bitwarden/common/abstractions/sync/sync.service.abstraction";
@@ -67,7 +68,7 @@ import { PasswordGenerationService } from "@bitwarden/common/services/passwordGe
 import { PolicyApiService } from "@bitwarden/common/services/policy/policy-api.service";
 import { ProviderService } from "@bitwarden/common/services/provider.service";
 import { SearchService } from "@bitwarden/common/services/search.service";
-import { SendService } from "@bitwarden/common/services/send.service";
+import { SendApiService } from "@bitwarden/common/services/send/send-api.service";
 import { StateMigrationService } from "@bitwarden/common/services/stateMigration.service";
 import { SyncService } from "@bitwarden/common/services/sync/sync.service";
 import { SyncNotifierService } from "@bitwarden/common/services/sync/syncNotifier.service";
@@ -94,6 +95,7 @@ import { BrowserEnvironmentService } from "../services/browser-environment.servi
 import { BrowserFolderService } from "../services/browser-folder.service";
 import { BrowserOrganizationService } from "../services/browser-organization.service";
 import { BrowserPolicyService } from "../services/browser-policy.service";
+import { BrowserSendService } from "../services/browser-send.service";
 import { BrowserSettingsService } from "../services/browser-settings.service";
 import { BrowserStateService } from "../services/browser-state.service";
 import { BrowserCryptoService } from "../services/browserCrypto.service";
@@ -154,7 +156,7 @@ export default class MainBackground {
   eventUploadService: EventUploadServiceAbstraction;
   policyService: InternalPolicyServiceAbstraction;
   popupUtilsService: PopupUtilsService;
-  sendService: SendServiceAbstraction;
+  sendService: InternalSendServiceAbstraction;
   fileUploadService: FileUploadServiceAbstraction;
   organizationService: InternalOrganizationServiceAbstraction;
   providerService: ProviderServiceAbstraction;
@@ -166,6 +168,7 @@ export default class MainBackground {
   encryptService: EncryptService;
   folderApiService: FolderApiServiceAbstraction;
   policyApiService: PolicyApiServiceAbstraction;
+  sendApiService: SendApiServiceAbstraction;
   userVerificationApiService: UserVerificationApiServiceAbstraction;
   syncNotifierService: SyncNotifierServiceAbstraction;
 
@@ -302,7 +305,20 @@ export default class MainBackground {
       (expired: boolean) => this.logout(expired)
     );
     this.settingsService = new BrowserSettingsService(this.stateService);
-    this.fileUploadService = new FileUploadService(this.logService, this.apiService);
+    this.sendApiService = new SendApiService(this.apiService);
+    this.fileUploadService = new FileUploadService(
+      this.logService,
+      this.apiService,
+      this.sendApiService
+    );
+    this.sendService = new BrowserSendService(
+      this.cryptoService,
+      this.i18nService,
+      this.cryptoFunctionService,
+      this.stateService,
+      this.sendApiService,
+      this.fileUploadService
+    );
     this.cipherService = new CipherService(
       this.cryptoService,
       this.settingsService,
@@ -327,14 +343,6 @@ export default class MainBackground {
       this.stateService
     );
     this.searchService = new SearchService(this.cipherService, this.logService, this.i18nService);
-    this.sendService = new SendService(
-      this.cryptoService,
-      this.apiService,
-      this.fileUploadService,
-      this.i18nService,
-      this.cryptoFunctionService,
-      this.stateService
-    );
     this.syncNotifierService = new SyncNotifierService();
     this.organizationService = new BrowserOrganizationService(this.stateService);
     this.policyService = new BrowserPolicyService(this.stateService, this.organizationService);
@@ -420,6 +428,7 @@ export default class MainBackground {
       this.providerService,
       this.folderApiService,
       this.organizationService,
+      this.sendApiService,
       logoutCallback
     );
     this.eventUploadService = new EventUploadService(

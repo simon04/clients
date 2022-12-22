@@ -4,6 +4,7 @@ import { CryptoService } from "../../abstractions/crypto.service";
 import { CryptoFunctionService } from "../../abstractions/cryptoFunction.service";
 import { FileUploadService } from "../../abstractions/fileUpload.service";
 import { I18nService } from "../../abstractions/i18n.service";
+import { SendApiService } from "../../abstractions/send/send-api.service.abstraction";
 import { InternalSendService as InternalSendServiceAbstraction } from "../../abstractions/send/send.service.abstraction";
 import { StateService } from "../../abstractions/state.service";
 import { SEND_KDF_ITERATIONS } from "../../enums/kdfType";
@@ -20,8 +21,6 @@ import { SendRequest } from "../../models/request/send.request";
 import { ErrorResponse } from "../../models/response/error.response";
 import { SendResponse } from "../../models/response/send.response";
 import { SendView } from "../../models/view/send.view";
-
-import { SendApiService } from "./send-api.service";
 
 export class SendService implements InternalSendServiceAbstraction {
   protected _sends: BehaviorSubject<Send[]> = new BehaviorSubject([]);

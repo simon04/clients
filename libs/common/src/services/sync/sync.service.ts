@@ -10,6 +10,7 @@ import { MessagingService } from "../../abstractions/messaging.service";
 import { InternalOrganizationService } from "../../abstractions/organization/organization.service.abstraction";
 import { InternalPolicyService } from "../../abstractions/policy/policy.service.abstraction";
 import { ProviderService } from "../../abstractions/provider.service";
+import { SendApiService } from "../../abstractions/send/send-api.service.abstraction";
 import { InternalSendService } from "../../abstractions/send/send.service.abstraction";
 import { SettingsService } from "../../abstractions/settings.service";
 import { StateService } from "../../abstractions/state.service";
@@ -34,7 +35,6 @@ import {
 import { PolicyResponse } from "../../models/response/policy.response";
 import { ProfileResponse } from "../../models/response/profile.response";
 import { SendResponse } from "../../models/response/send.response";
-import { SendApiService } from "../send/send-api.service";
 
 export class SyncService implements SyncServiceAbstraction {
   syncInProgress = false;

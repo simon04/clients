@@ -343,6 +343,11 @@ import { AbstractThemingService } from "./theming/theming.service.abstraction";
       ],
     },
     {
+      provide: SendApiServiceAbstraction,
+      useClass: SendApiService,
+      deps: [ApiServiceAbstraction],
+    },
+    {
       provide: FileUploadServiceAbstraction,
       useClass: FileUploadService,
       deps: [LogService, ApiServiceAbstraction, SendApiServiceAbstraction],
@@ -366,6 +371,7 @@ import { AbstractThemingService } from "./theming/theming.service.abstraction";
         ProviderServiceAbstraction,
         FolderApiServiceAbstraction,
         OrganizationServiceAbstraction,
+        SendApiServiceAbstraction,
         LOGOUT_CALLBACK,
       ],
     },
@@ -495,11 +501,6 @@ import { AbstractThemingService } from "./theming/theming.service.abstraction";
         StateServiceAbstraction,
         OrganizationServiceAbstraction,
       ],
-    },
-    {
-      provide: SendApiServiceAbstraction,
-      useClass: SendApiService,
-      deps: [ApiServiceAbstraction],
     },
     {
       provide: SendServiceAbstraction,

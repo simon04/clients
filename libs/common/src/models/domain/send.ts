@@ -1,3 +1,5 @@
+import { Jsonify } from "type-fest";
+
 import { SendType } from "../../enums/sendType";
 import { Utils } from "../../misc/utils";
 import { SendData } from "../data/send.data";
@@ -101,5 +103,10 @@ export class Send extends Domain {
     }
 
     return model;
+  }
+
+  static fromJSON(obj: Jsonify<Send>) {
+    const revisionDate = obj.revisionDate == null ? null : new Date(obj.revisionDate);
+    return Object.assign(new Send(), obj, { name: EncString.fromJSON(obj.name), revisionDate });
   }
 }

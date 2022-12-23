@@ -1563,7 +1563,7 @@
     "message": "Uusi pääsalasanasi ei täytä käytännön määrittämiä vaatimuksia."
   },
   "acceptPolicies": {
-    "message": "Valitsemalla tämän ruudun hyväksyt seuraavat:"
+    "message": "Valitsemalla tämän hyväksyt seuraavat:"
   },
   "acceptPoliciesRequired": {
     "message": "Palveluehtoja ja tietosuojakäytäntöä ei ole vahvistettu."
@@ -1778,6 +1778,15 @@
   },
   "disabled": {
     "message": "Poistettu käytöstä"
+  },
+  "removePassword": {
+    "message": "Poista salasana"
+  },
+  "removedPassword": {
+    "message": "Salasana poistettiin"
+  },
+  "removePasswordConfirmation": {
+    "message": "Haluatko varmasti poistaa salasanan?"
   },
   "maxAccessCountReached": {
     "message": "Käyttökertojen enimmäismäärä on saavutettu"
@@ -2048,5 +2057,9 @@
   },
   "logInWithAnotherDevice": {
     "message": "Kirjaudu toisella laitteella"
+  },
+  "toggleCharacterCount": {
+    "message": "Kytke merkkimäärä",
+    "description": "'Character count' describes a feature that displays a number next to each character of the password."
   }
 }

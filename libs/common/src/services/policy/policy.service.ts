@@ -16,7 +16,7 @@ import { ListResponse } from "../../models/response/list.response";
 import { PolicyResponse } from "../../models/response/policy.response";
 
 export class PolicyService implements InternalPolicyServiceAbstraction {
-  private _policies: BehaviorSubject<Policy[]> = new BehaviorSubject([]);
+  protected _policies: BehaviorSubject<Policy[]> = new BehaviorSubject([]);
 
   policies$ = this._policies.asObservable();
 
@@ -222,11 +222,13 @@ export class PolicyService implements InternalPolicyServiceAbstraction {
     policies[policy.id] = policy;
 
     await this.updateObservables(policies);
+    await this.stateService.setDecryptedPolicies(null);
     await this.stateService.setEncryptedPolicies(policies);
   }
 
   async replace(policies: { [id: string]: PolicyData }): Promise<void> {
     await this.updateObservables(policies);
+    await this.stateService.setDecryptedPolicies(null);
     await this.stateService.setEncryptedPolicies(policies);
   }
 
@@ -234,6 +236,7 @@ export class PolicyService implements InternalPolicyServiceAbstraction {
     if (userId == null || userId == (await this.stateService.getUserId())) {
       this._policies.next([]);
     }
+    await this.stateService.setDecryptedPolicies(null, { userId: userId });
     await this.stateService.setEncryptedPolicies(null, { userId: userId });
   }
 
@@ -265,7 +268,6 @@ export class PolicyService implements InternalPolicyServiceAbstraction {
 
     return organizations.some(
       (o) =>
-        o.enabled &&
         o.status >= OrganizationUserStatusType.Accepted &&
         o.usePolicies &&
         policySet.has(o.id) &&

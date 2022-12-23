@@ -10,6 +10,7 @@ import { Importer } from "../importer";
 import { EnpassJsonFile, EnpassFolder, EnpassField } from "./types/enpass-json-type";
 
 type EnpassFolderTreeItem = EnpassFolder & { children: EnpassFolderTreeItem[] };
+const androidUrlRegex = new RegExp("androidapp://.*==@", "g");
 
 export class EnpassJsonImporter extends BaseImporter implements Importer {
   parse(data: string): Promise<ImportResult> {
@@ -89,6 +90,13 @@ export class EnpassJsonImporter extends BaseImporter implements Importer {
         cipher.login.totp = field.value;
       } else if (field.type === "url") {
         urls.push(field.value);
+      } else if (field.type === ".Android#") {
+        let cleanedValue = field.value.startsWith("androidapp://")
+          ? field.value
+          : "androidapp://" + field.value;
+        cleanedValue = cleanedValue.replace("android://", "");
+        cleanedValue = cleanedValue.replace(androidUrlRegex, "androidapp://");
+        urls.push(cleanedValue);
       } else {
         this.processKvp(
           cipher,

@@ -5,6 +5,7 @@ import { FieldView } from "@bitwarden/common/models/view/field.view";
 import { creditCard } from "./test-data/json/credit-card";
 import { folders } from "./test-data/json/folders";
 import { login } from "./test-data/json/login";
+import { loginAndroidUrl } from "./test-data/json/login-android-url";
 import { note } from "./test-data/json/note";
 
 function validateCustomField(fields: FieldView[], fieldName: string, expectedValue: any) {
@@ -60,6 +61,24 @@ describe("Enpass JSON Importer", () => {
     validateCustomField(cipher.fields, "Phone number", "12345678");
     validateCustomField(cipher.fields, "Security question", "SECURITY_QUESTION");
     validateCustomField(cipher.fields, "Security answer", "SECURITY_ANSWER");
+  });
+
+  it("should parse login items with Android Autofill information", async () => {
+    const importer = new Importer();
+    const testDataString = JSON.stringify(loginAndroidUrl);
+    const result = await importer.parse(testDataString);
+    expect(result != null).toBe(true);
+
+    const cipher = result.ciphers.shift();
+    expect(cipher.type).toEqual(CipherType.Login);
+    expect(cipher.name).toEqual("Amazon");
+
+    expect(cipher.login.uris.length).toEqual(5);
+    expect(cipher.login.uris[0].uri).toEqual("https://www.amazon.com");
+    expect(cipher.login.uris[1].uri).toEqual("androidapp://com.amazon.0");
+    expect(cipher.login.uris[2].uri).toEqual("androidapp://com.amazon.1");
+    expect(cipher.login.uris[3].uri).toEqual("androidapp://com.amazon.2");
+    expect(cipher.login.uris[4].uri).toEqual("androidapp://com.amazon.3");
   });
 
   it("should parse credit card items", async () => {

@@ -8,6 +8,7 @@ import { SendView } from "../../models/view/send.view";
 
 export abstract class SendService {
   sends$: Observable<Send[]>;
+  sendViews$: Observable<SendView[]>;
 
   encrypt: (
     model: SendView,
@@ -16,8 +17,18 @@ export abstract class SendService {
     key?: SymmetricCryptoKey
   ) => Promise<[Send, EncArrayBuffer]>;
   get: (id: string) => Promise<Send>;
+  /**
+   * @deprecated Do not call this, use the sends$ observable collection
+   */
   getAll: () => Promise<Send[]>;
-  getAllDecrypted: () => Promise<SendView[]>;
+  /**
+   * @deprecated Only use in CLI
+   */
+  getFromState: (id: string) => Promise<Send>;
+  /**
+   * @deprecated Only use in CLI
+   */
+  getAllDecryptedFromState: () => Promise<SendView[]>;
   delete: (id: string | string[]) => Promise<any>;
   removePasswordWithServer: (id: string) => Promise<any>;
   deleteWithServer: (id: string) => Promise<any>;
@@ -26,6 +37,6 @@ export abstract class SendService {
 
 export abstract class InternalSendService extends SendService {
   upsert: (send: SendData | SendData[]) => Promise<any>;
-  replace: (sends: { [id: string]: SendData }) => Promise<any>;
+  replace: (sends: { [id: string]: SendData }) => Promise<void>;
   clear: (userId: string) => Promise<any>;
 }

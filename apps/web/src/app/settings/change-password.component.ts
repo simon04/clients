@@ -220,7 +220,7 @@ export class ChangePasswordComponent extends BaseChangePasswordComponent {
       request.ciphers.push(new CipherWithIdRequest(cipher));
     }
 
-    const sends = await this.sendService.getAll();
+    const sends = await firstValueFrom(this.sendService.sends$);
     await Promise.all(
       sends.map(async (send) => {
         const cryptoKey = await this.cryptoService.decryptToBytes(send.key, null);

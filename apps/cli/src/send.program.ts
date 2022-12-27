@@ -109,7 +109,8 @@ export class SendProgram extends Program {
           this.main.cryptoService,
           this.main.cryptoFunctionService,
           this.main.platformUtilsService,
-          this.main.environmentService
+          this.main.environmentService,
+          this.main.sendApiService
         );
         const response = await cmd.run(url, options);
         this.processResponse(response);

@@ -14,7 +14,7 @@ export class SendListCommand {
   ) {}
 
   async run(cmdOptions: Record<string, any>): Promise<Response> {
-    let sends = await this.sendService.getAllDecrypted();
+    let sends = await this.sendService.getAllDecryptedFromState();
 
     const normalizedOptions = new Options(cmdOptions);
     if (normalizedOptions.search != null && normalizedOptions.search.trim() !== "") {

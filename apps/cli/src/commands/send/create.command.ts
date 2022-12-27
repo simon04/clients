@@ -121,7 +121,7 @@ export class SendCreateCommand {
       encSend.expirationDate = sendView.expirationDate;
 
       await this.sendService.saveWithServer([encSend, fileData]);
-      const newSend = await this.sendService.get(encSend.id);
+      const newSend = await this.sendService.getFromState(encSend.id);
       const decSend = await newSend.decrypt();
       const res = new SendResponse(decSend, this.environmentService.getWebVaultUrl());
       return Response.success(res);

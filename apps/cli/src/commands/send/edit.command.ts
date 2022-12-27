@@ -45,7 +45,7 @@ export class SendEditCommand {
       req.id = req.id.toLowerCase();
     }
 
-    const send = await this.sendService.get(req.id);
+    const send = await this.sendService.getFromState(req.id);
 
     if (send == null) {
       return Response.notFound();

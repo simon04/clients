@@ -6,7 +6,7 @@ export class SendDeleteCommand {
   constructor(private sendService: SendService) {}
 
   async run(id: string) {
-    const send = await this.sendService.get(id);
+    const send = await this.sendService.getFromState(id);
 
     if (send == null) {
       return Response.notFound();

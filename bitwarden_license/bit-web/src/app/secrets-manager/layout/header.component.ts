@@ -12,6 +12,7 @@ import { AccountProfile } from "@bitwarden/common/models/domain/account";
 export class HeaderComponent {
   @Input() title: string;
   @Input() searchTitle: string;
+  @Input() hideSearchAndNewMenu: string;
 
   protected routeData$: Observable<{ title: string; searchTitle: string }>;
   protected account$: Observable<AccountProfile>;

@@ -115,7 +115,7 @@ export class SendService implements InternalSendServiceAbstraction {
     return [send, fileData];
   }
 
-  async get(id: string): Promise<Send> {
+  get(id: string): Send {
     const sends = this._sends.getValue();
     return sends.find((send) => send.id === id);
   }

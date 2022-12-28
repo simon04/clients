@@ -127,7 +127,7 @@ export class AddEditComponent implements OnInit, OnDestroy {
 
     if (this.send == null) {
       if (this.editMode) {
-        const send = await this.loadSend();
+        const send = this.loadSend();
         this.send = await send.decrypt();
       } else {
         this.send = new SendView();
@@ -281,7 +281,7 @@ export class AddEditComponent implements OnInit, OnDestroy {
     this.showOptions = !this.showOptions;
   }
 
-  protected async loadSend(): Promise<Send> {
+  protected loadSend(): Send {
     return this.sendService.get(this.sendId);
   }
 

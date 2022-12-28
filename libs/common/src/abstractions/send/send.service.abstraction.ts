@@ -16,7 +16,7 @@ export abstract class SendService {
     password: string,
     key?: SymmetricCryptoKey
   ) => Promise<[Send, EncArrayBuffer]>;
-  get: (id: string) => Promise<Send>;
+  get: (id: string) => Send;
   /**
    * @deprecated Do not call this, use the sends$ observable collection
    */

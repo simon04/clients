@@ -35,6 +35,11 @@ import { LogService } from "@bitwarden/common/abstractions/log.service";
 import { LoginService as LoginServiceAbstraction } from "@bitwarden/common/abstractions/login.service";
 import { MessagingService as MessagingServiceAbstraction } from "@bitwarden/common/abstractions/messaging.service";
 import { NotificationsService as NotificationsServiceAbstraction } from "@bitwarden/common/abstractions/notifications.service";
+import { OrgDomainApiServiceAbstraction } from "@bitwarden/common/abstractions/organization-domain/org-domain-api.service.abstraction";
+import {
+  OrgDomainServiceAbstraction,
+  OrgDomainInternalServiceAbstraction,
+} from "@bitwarden/common/abstractions/organization-domain/org-domain.service.abstraction";
 import { OrganizationUserService } from "@bitwarden/common/abstractions/organization-user/organization-user.service";
 import { OrganizationApiServiceAbstraction } from "@bitwarden/common/abstractions/organization/organization-api.service.abstraction";
 import {
@@ -97,6 +102,8 @@ import { FormValidationErrorsService } from "@bitwarden/common/services/formVali
 import { KeyConnectorService } from "@bitwarden/common/services/keyConnector.service";
 import { LoginService } from "@bitwarden/common/services/login.service";
 import { NotificationsService } from "@bitwarden/common/services/notifications.service";
+import { OrgDomainApiService } from "@bitwarden/common/services/organization-domain/org-domain-api.service";
+import { OrgDomainService } from "@bitwarden/common/services/organization-domain/org-domain.service";
 import { OrganizationUserServiceImplementation } from "@bitwarden/common/services/organization-user/organization-user.service.implementation";
 import { OrganizationApiService } from "@bitwarden/common/services/organization/organization-api.service";
 import { OrganizationService } from "@bitwarden/common/services/organization/organization.service";
@@ -606,6 +613,20 @@ import { AbstractThemingService } from "./theming/theming.service.abstraction";
       provide: LoginServiceAbstraction,
       useClass: LoginService,
       deps: [StateServiceAbstraction],
+    },
+    {
+      provide: OrgDomainServiceAbstraction,
+      useClass: OrgDomainService,
+      deps: [PlatformUtilsServiceAbstraction, I18nServiceAbstraction],
+    },
+    {
+      provide: OrgDomainInternalServiceAbstraction,
+      useExisting: OrgDomainServiceAbstraction,
+    },
+    {
+      provide: OrgDomainApiServiceAbstraction,
+      useClass: OrgDomainApiService,
+      deps: [OrgDomainServiceAbstraction, ApiServiceAbstraction],
     },
   ],
 })

@@ -9,6 +9,13 @@
       <div class="box-content">
         <div class="box-content-row box-content-row-flex" appBoxRow>
           <div class="row-main">
+            <input id="email" type="text" formControlName="email" [hidden]="true" />
+            <input
+              id="rememberEmail"
+              type="checkbox"
+              formControlName="rememberEmail"
+              [hidden]="true"
+            />
             <label for="masterPassword">{{ "masterPass" | i18n }}</label>
             <input
               id="masterPassword"

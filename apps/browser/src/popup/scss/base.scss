@@ -640,6 +640,9 @@ main {
 
   .resend-notification {
     padding-bottom: 1rem;
+    a {
+      cursor: pointer;
+    }
   }
 
   .footer {

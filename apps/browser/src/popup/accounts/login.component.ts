@@ -25,7 +25,6 @@ import { flagEnabled } from "../../flags";
   templateUrl: "login.component.html",
 })
 export class LoginComponent extends BaseLoginComponent {
-  protected skipRememberEmail = true;
   showPasswordless = false;
   constructor(
     apiService: ApiService,
@@ -69,18 +68,12 @@ export class LoginComponent extends BaseLoginComponent {
     };
     super.successRoute = "/tabs/vault";
     this.showPasswordless = flagEnabled("showPasswordless");
-  }
 
-  async startPasswordlessLogin() {
-    this.formGroup.get("masterPassword")?.clearValidators();
-    this.formGroup.get("masterPassword")?.updateValueAndValidity();
-
-    if (!this.formGroup.valid) {
-      return;
+    if (this.showPasswordless) {
+      this.formGroup.controls.email.setValue(this.loginService.getEmail());
+      this.formGroup.controls.rememberEmail.setValue(this.loginService.getRememberEmail());
+      this.validateEmail();
     }
-
-    this.setFormValues();
-    this.router.navigate(["/login-with-device"]);
   }
 
   settings() {

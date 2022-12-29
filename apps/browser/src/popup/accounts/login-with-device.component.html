@@ -24,9 +24,7 @@
       </div>
 
       <div class="resend-notification" *ngIf="showResendNotification">
-        <a [routerLink]="[]" disabled="true" (click)="startPasswordlessLogin()">{{
-          "resendNotification" | i18n
-        }}</a>
+        <a (click)="startPasswordlessLogin()">{{ "resendNotification" | i18n }}</a>
       </div>
 
       <div class="footer">

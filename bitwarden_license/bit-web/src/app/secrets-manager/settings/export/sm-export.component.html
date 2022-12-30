@@ -1,3 +1,29 @@
 <sm-header hideSearchAndNewMenu="true"></sm-header>
 
-<p>hello export</p>
+<form [formGroup]="formGroup" [bitSubmit]="submit">
+  <bit-form-field>
+    <bit-label>{{ "fileFormat" | i18n }}</bit-label>
+    <select bitInput disabled required>
+      <option selected value="json">json</option>
+    </select>
+  </bit-form-field>
+
+  <bit-form-field class="tw-mb-0">
+    <bit-label>{{ "masterPassword" | i18n }}</bit-label>
+    <input bitInput required type="password" name="masterPassword" />
+  </bit-form-field>
+
+  <div>
+    <small class="form-text text-muted">{{ "confirmIdentity" | i18n }}</small>
+  </div>
+
+  <div class="tw-my-4">
+    <app-callout type="info" title="{{ 'exportingOrganizationSecretDataTitle' | i18n }}">
+      {{ "exportingOrganizationSecretDataDescription" | i18n: orgName }}
+    </app-callout>
+  </div>
+
+  <button bitButton bitFormButton type="submit" buttonType="primary">
+    {{ "exportData" | i18n }}
+  </button>
+</form>

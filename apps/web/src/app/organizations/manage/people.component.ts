@@ -525,6 +525,7 @@ export class PeopleComponent
     }
   }
 
+  // TODO: don't forget to remove these.
   // Setup scenarios:
   simpleDialogPrimaryOpts: SimpleDialogOptions = {
     title: "Primary title (localized)",
@@ -532,8 +533,8 @@ export class PeopleComponent
     type: SimpleDialogType.PRIMARY,
     icon: undefined,
     isLocalized: true,
-    acceptButtonText: undefined,
-    cancelButtonText: undefined,
+    acceptButtonText: "Test",
+    cancelButtonText: "Special Cancel",
     disableClose: undefined,
   };
 
@@ -541,7 +542,7 @@ export class PeopleComponent
     title: "Success title (localized)",
     content: "Success content (localized)",
     type: SimpleDialogType.SUCCESS,
-    icon: undefined,
+    icon: "bwi bwi-lg bwi-fw bwi-spinner bwi-spin",
     isLocalized: true,
     acceptButtonText: undefined,
     cancelButtonText: undefined,
@@ -579,6 +580,21 @@ export class PeopleComponent
     acceptButtonText: undefined,
     cancelButtonText: undefined,
     disableClose: undefined,
+  };
+
+  simpleDialogPrimaryNonLocalizedOpts: SimpleDialogOptions = {
+    title: "vaultTimeoutPolicyInEffect",
+    content: "vaultTimeoutPolicyInEffect",
+    type: SimpleDialogType.PRIMARY,
+    icon: undefined,
+    isLocalized: false,
+    acceptButtonText: "vaultTimeoutPolicyInEffect",
+    cancelButtonText: "vaultTimeoutPolicyInEffect",
+    disableClose: undefined,
+    titleI18nPlaceholderValues: [55, 65],
+    contentI18nPlaceholderValues: [55, 65],
+    acceptButtonTextI18nPlaceholderValues: [55, 65],
+    cancelButtonTextI18nPlaceholderValues: [55, 65],
   };
 
   openSimpleDialog(simpleDialogOpts: SimpleDialogOptions) {

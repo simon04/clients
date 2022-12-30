@@ -41,17 +41,12 @@
         </ng-container>
       </ng-container>
 
-      <!-- TODO: how can I support non-localized items with parameters with the current opts API -->
       <h1 bitDialogTitleContainer class="tw-mb-0 tw-text-base tw-font-semibold">
-        {{
-          simpleDialogOpts.isLocalized ? simpleDialogOpts.title : (simpleDialogOpts.title | i18n)
-        }}
+        {{ simpleDialogOpts.title }}
       </h1>
     </div>
     <div [class]="dialogContentContainerClasses">
-      {{
-        simpleDialogOpts.isLocalized ? simpleDialogOpts.content : (simpleDialogOpts.content | i18n)
-      }}
+      {{ simpleDialogOpts.content }}
     </div>
     <div [class]="dialogFooterContainerClasses">
       <button
@@ -60,11 +55,7 @@
         (click)="dialogRef.close(SimpleDialogCloseType.ACCEPT)"
       >
         <ng-container *ngIf="simpleDialogOpts.acceptButtonText">
-          {{
-            simpleDialogOpts.isLocalized
-              ? simpleDialogOpts.acceptButtonText
-              : (simpleDialogOpts.acceptButtonText | i18n)
-          }}
+          {{ simpleDialogOpts.acceptButtonText }}
         </ng-container>
         <ng-container *ngIf="!simpleDialogOpts.acceptButtonText">
           {{ "yes" | i18n }}
@@ -76,11 +67,7 @@
         (click)="dialogRef.close(SimpleDialogCloseType.CANCEL)"
       >
         <ng-container *ngIf="simpleDialogOpts.cancelButtonText">
-          {{
-            simpleDialogOpts.isLocalized
-              ? simpleDialogOpts.cancelButtonText
-              : (simpleDialogOpts.cancelButtonText | i18n)
-          }}
+          {{ simpleDialogOpts.cancelButtonText }}
         </ng-container>
         <ng-container *ngIf="!simpleDialogOpts.cancelButtonText">
           <!--  if cancelButtonText empty, default to "No", unless acceptButtonText is overriden, 

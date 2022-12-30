@@ -5,6 +5,7 @@ import { ButtonModule } from "../button";
 import { IconButtonModule } from "../icon-button";
 import { SharedModule } from "../shared";
 
+import { ConfigurableSimpleDialogComponent } from "./configurable-simple-dialog/configurable-simple-dialog.component";
 import { DialogService } from "./dialog.service";
 import { DialogComponent } from "./dialog/dialog.component";
 import { DialogCloseDirective } from "./directives/dialog-close.directive";
@@ -18,6 +19,7 @@ import { IconDirective, SimpleDialogComponent } from "./simple-dialog/simple-dia
     DialogTitleContainerDirective,
     DialogComponent,
     SimpleDialogComponent,
+    ConfigurableSimpleDialogComponent,
     IconDirective,
   ],
   exports: [
@@ -26,6 +28,7 @@ import { IconDirective, SimpleDialogComponent } from "./simple-dialog/simple-dia
     SimpleDialogComponent,
     DialogCloseDirective,
     IconDirective,
+    ConfigurableSimpleDialogComponent,
   ],
   providers: [DialogService],
 })

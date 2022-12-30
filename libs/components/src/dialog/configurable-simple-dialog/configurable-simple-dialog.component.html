@@ -1,0 +1,149 @@
+<!--
+  Separate component approach:
+  Doing something like this completely decouples this comp from simple dialog. Introduces maintenance issues -->
+<!-- <div class="tw-flex tw-flex-col tw-items-center tw-gap-2 tw-px-4 tw-pt-4 tw-text-center">
+  <ng-container [ngSwitch]="simpleDialogOpts.type">
+    <ng-container *ngSwitchCase="SimpleDialogType.PRIMARY">
+      <i
+        class="bwi tw-text-3xl tw-text-primary-500"
+        [ngClass]="simpleDialogOpts.icon ? simpleDialogOpts.icon : 'bwi-business'"
+        aria-hidden="true"
+      ></i>
+    </ng-container>
+    <ng-container *ngSwitchCase="SimpleDialogType.SUCCESS">
+      <i
+        class="bwi tw-text-3xl tw-text-success"
+        [ngClass]="simpleDialogOpts.icon ? simpleDialogOpts.icon : 'bwi-star'"
+        aria-hidden="true"
+      ></i>
+    </ng-container>
+    <ng-container *ngSwitchCase="SimpleDialogType.INFO">
+      <i
+        class="bwi tw-text-3xl tw-text-info"
+        [ngClass]="simpleDialogOpts.icon ? simpleDialogOpts.icon : 'bwi-info-circle'"
+        aria-hidden="true"
+      ></i>
+    </ng-container>
+    <ng-container *ngSwitchCase="SimpleDialogType.WARNING">
+      <i
+        class="bwi tw-text-3xl tw-text-warning"
+        [ngClass]="simpleDialogOpts.icon ? simpleDialogOpts.icon : 'bwi-exclamation-triangle'"
+        aria-hidden="true"
+      ></i>
+    </ng-container>
+    <ng-container *ngSwitchCase="SimpleDialogType.DANGER">
+      <i
+        class="bwi tw-text-3xl tw-text-danger"
+        [ngClass]="simpleDialogOpts.icon ? simpleDialogOpts.icon : 'bwi-error'"
+        aria-hidden="true"
+      ></i>
+    </ng-container>
+  </ng-container>
+
+  <h1 bitDialogTitleContainer class="tw-mb-0 tw-text-base tw-font-semibold">
+    {{ simpleDialogOpts.title }}
+  </h1>
+</div>
+<div class="tw-overflow-y-auto tw-px-4 tw-pt-2 tw-pb-4 tw-text-center tw-text-base">
+  {{ simpleDialogOpts.content }}
+</div>
+<div class="tw-border-0 tw-border-t tw-border-solid tw-border-secondary-300 tw-p-4">
+  <button bitButton buttonType="primary" (click)="dialogRef.close(SimpleDialogCloseType.ACCEPT)">
+    <ng-container *ngIf="simpleDialogOpts.acceptButtonText">
+      {{ simpleDialogOpts.acceptButtonText }}
+    </ng-container>
+    <ng-container *ngIf="!simpleDialogOpts.acceptButtonText">
+      {{ "yes" | i18n }}
+    </ng-container>
+  </button>
+  <button bitButton buttonType="secondary" (click)="dialogRef.close(SimpleDialogCloseType.CANCEL)">
+    <ng-container *ngIf="simpleDialogOpts.cancelButtonText">
+      {{ simpleDialogOpts.cancelButtonText }}
+    </ng-container>
+    <ng-container *ngIf="!simpleDialogOpts.cancelButtonText">
+      {{ simpleDialogOpts.acceptButtonText ? ("cancel" | i18n) : ("no" | i18n) }}
+    </ng-container>
+  </button>
+</div> -->
+
+<!-- Approach using new component AND simple dialog.
+    This approach could keep simple dialog more lightweight in the html
+    However, it complicates the .ts files... as both inject 
+    DIALOG_DATA. However, it is a separation of concerns. 
+    Feels a bit like overkill. It's not meant to be used directly.
+-->
+
+<bit-simple-dialog>
+  <ng-container [ngSwitch]="simpleDialogOpts.type">
+    <ng-container *ngSwitchCase="SimpleDialogType.PRIMARY">
+      <i
+        bit-dialog-icon
+        class="bwi tw-text-3xl tw-text-primary-500"
+        [ngClass]="simpleDialogOpts.icon ? simpleDialogOpts.icon : 'bwi-business'"
+        aria-hidden="true"
+      ></i>
+    </ng-container>
+    <ng-container *ngSwitchCase="SimpleDialogType.SUCCESS">
+      <i
+        bit-dialog-icon
+        class="bwi tw-text-3xl tw-text-success"
+        [ngClass]="simpleDialogOpts.icon ? simpleDialogOpts.icon : 'bwi-star'"
+        aria-hidden="true"
+      ></i>
+    </ng-container>
+    <ng-container *ngSwitchCase="SimpleDialogType.INFO">
+      <i
+        bit-dialog-icon
+        class="bwi tw-text-3xl tw-text-info"
+        [ngClass]="simpleDialogOpts.icon ? simpleDialogOpts.icon : 'bwi-info-circle'"
+        aria-hidden="true"
+      ></i>
+    </ng-container>
+    <ng-container *ngSwitchCase="SimpleDialogType.WARNING">
+      <i
+        bit-dialog-icon
+        class="bwi tw-text-3xl tw-text-warning"
+        [ngClass]="simpleDialogOpts.icon ? simpleDialogOpts.icon : 'bwi-exclamation-triangle'"
+        aria-hidden="true"
+      ></i>
+    </ng-container>
+    <ng-container *ngSwitchCase="SimpleDialogType.DANGER">
+      <i
+        bit-dialog-icon
+        class="bwi tw-text-3xl tw-text-danger"
+        [ngClass]="simpleDialogOpts.icon ? simpleDialogOpts.icon : 'bwi-error'"
+        aria-hidden="true"
+      ></i>
+    </ng-container>
+  </ng-container>
+
+  <span bitDialogTitle>
+    {{ simpleDialogOpts.title }}
+  </span>
+  <div bitDialogContent>{{ simpleDialogOpts.content }}</div>
+
+  <div bitDialogFooter>
+    <button bitButton buttonType="primary" (click)="dialogRef.close(SimpleDialogCloseType.ACCEPT)">
+      <ng-container *ngIf="simpleDialogOpts.acceptButtonText">
+        {{ simpleDialogOpts.acceptButtonText }}
+      </ng-container>
+      <ng-container *ngIf="!simpleDialogOpts.acceptButtonText">
+        {{ "yes" | i18n }}
+      </ng-container>
+    </button>
+    <button
+      bitButton
+      buttonType="secondary"
+      (click)="dialogRef.close(SimpleDialogCloseType.CANCEL)"
+    >
+      <ng-container *ngIf="simpleDialogOpts.cancelButtonText">
+        {{ simpleDialogOpts.cancelButtonText }}
+      </ng-container>
+      <ng-container *ngIf="!simpleDialogOpts.cancelButtonText">
+        <!--  if cancelButtonText empty, default to "No", unless acceptButtonText is overriden, 
+            in which case default to "Cancel" -->
+        {{ simpleDialogOpts.acceptButtonText ? ("cancel" | i18n) : ("no" | i18n) }}
+      </ng-container>
+    </button>
+  </div>
+</bit-simple-dialog>

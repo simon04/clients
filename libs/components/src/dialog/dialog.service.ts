@@ -2,8 +2,10 @@ import { Dialog, DialogConfig, DialogRef } from "@angular/cdk/dialog";
 import { ComponentType } from "@angular/cdk/overlay";
 import { Injectable, TemplateRef } from "@angular/core";
 
+// import { ConfigurableSimpleDialogComponent } from "./configurable-simple-dialog/configurable-simple-dialog.component";
 import { SimpleDialogOptions } from "./simple-dialog/simple-dialog-options";
 import { SimpleDialogComponent } from "./simple-dialog/simple-dialog.component";
+// import { SimpleDialogComponent } from "./simple-dialog/simple-dialog.component";
 
 @Injectable()
 export class DialogService extends Dialog {
@@ -28,13 +30,9 @@ export class DialogService extends Dialog {
   }
 
   openSimpleDialog(simpleDialogOptions: SimpleDialogOptions): DialogRef {
-    // Assume localized
-    if (simpleDialogOptions.isLocalized === undefined) {
-      simpleDialogOptions.isLocalized = true;
-    }
-
     // Method needs to return dialog reference so devs can sub to closed and get results.
     return this.open(SimpleDialogComponent, {
+      // return this.open(ConfigurableSimpleDialogComponent, {
       data: simpleDialogOptions,
       disableClose: simpleDialogOptions.disableClose,
       backdropClass: this.backDropClasses,

@@ -1,62 +1,36 @@
 import { DialogRef, DIALOG_DATA } from "@angular/cdk/dialog";
-import { Component, ContentChild, Directive, Inject } from "@angular/core";
+import { Component, Inject } from "@angular/core";
 
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 
 import {
-  isSimpleDialogOptions,
+  SimpleDialogType,
   SimpleDialogCloseType,
   SimpleDialogOptions,
-  SimpleDialogType,
-} from "./simple-dialog-options";
-
-@Directive({ selector: "[bit-dialog-icon]" })
-export class IconDirective {}
+} from "../simple-dialog/simple-dialog-options";
 
 @Component({
-  selector: "bit-simple-dialog",
-  templateUrl: "./simple-dialog.component.html",
+  selector: "bit-configurable-simple-dialog",
+  templateUrl: "./configurable-simple-dialog.component.html",
 })
-export class SimpleDialogComponent {
-  @ContentChild(IconDirective) icon!: IconDirective;
-
-  get hasIcon() {
-    return this.icon != null;
-  }
-
-  dialogHeaderContainerClasses =
-    "tw-flex tw-flex-col tw-items-center tw-gap-2 tw-px-4 tw-pt-4 tw-text-center";
-
-  dialogContentContainerClasses =
-    "tw-overflow-y-auto tw-px-4 tw-pt-2 tw-pb-4 tw-text-center tw-text-base";
-
-  dialogFooterContainerClasses =
-    "tw-border-0 tw-border-t tw-border-solid tw-border-secondary-300 tw-p-4";
-
-  simpleDialogOpts?: SimpleDialogOptions;
+export class ConfigurableSimpleDialogComponent {
   SimpleDialogType = SimpleDialogType;
   SimpleDialogCloseType = SimpleDialogCloseType;
 
   constructor(
     public dialogRef: DialogRef,
     private i18nService: I18nService,
-    @Inject(DIALOG_DATA) public data?: any
+    @Inject(DIALOG_DATA) public simpleDialogOpts?: SimpleDialogOptions
   ) {
-    // console.log("simple dialog data: ", data);
     // All existing data objects get passed in here so, we have to be sure that
     // we have a simple dialog config obj.
 
-    // TODO: if testing out configurable simple dialog comp, must comment this out.
-    if (isSimpleDialogOptions(data)) {
-      this.simpleDialogOpts = data;
-
-      // Assume localized
-      if (this.simpleDialogOpts.isLocalized === undefined) {
-        this.simpleDialogOpts.isLocalized = true;
-      } else if (!this.simpleDialogOpts.isLocalized) {
-        // Must localize title, content, and button texts.
-        this.localizeText();
-      }
+    // Assume localized
+    if (this.simpleDialogOpts.isLocalized === undefined) {
+      this.simpleDialogOpts.isLocalized = true;
+    } else if (!this.simpleDialogOpts.isLocalized) {
+      // Must localize title, content, and button texts.
+      this.localizeText();
     }
   }
 
@@ -89,8 +63,4 @@ export class SimpleDialogComponent {
       );
     }
   }
-
-  // what are the benefits of allowing non-translated strings to be sent to the modal?
-  // it bloats the dialog options type and complicates the handling...
-  // see task desc for more detail
 }

@@ -185,13 +185,10 @@ jobs:
           --endpoint-url https://${CF_ACCOUNT}.r2.cloudflarestorage.com
 
       - name: Get checksum files
-        env:
-          RELEASE_CHANNEL: ${{ steps.release-channel.outputs.channel }}
-        run: |
-            python scripts/export_sha_to_files.py apps/desktop/artifacts/${{ env.RELEASE_CHANNEL }}.yml \
-            apps/desktop/artifacts/${{ env.RELEASE_CHANNEL }}-linux.yml \
-            apps/desktop/artifacts/${{ env.RELEASE_CHANNEL }}-mac.yml \
-            -o apps/desktop/artifacts
+        uses: bitwarden/gh-actions/get-checksum@DEVOPS-853-Host_asset_hashes_somewhere_else
+        with:
+          packages_dir: "apps/desktop/artifacts"
+          file_path: "apps/desktop/artifacts/sha256-checksums.txt"
 
       - name: Create Release
         uses: ncipollo/release-action@95215a3cb6e6a1908b3c44e00b4fdb15548b1e09
@@ -221,15 +218,7 @@ jobs:
             apps/desktop/artifacts/Bitwarden-${{ env.PKG_VERSION }}-universal.dmg,
             apps/desktop/artifacts/Bitwarden-${{ env.PKG_VERSION }}-universal.dmg.blockmap,
             apps/desktop/artifacts/Bitwarden-${{ env.PKG_VERSION }}-universal.pkg.archive,
-            apps/desktop/artifacts/Bitwarden-${{ env.PKG_VERSION }}-universal-mac.zip-sha512.txt,
-            apps/desktop/artifacts/Bitwarden-${{ env.PKG_VERSION }}-universal.dmg-sha512.txt,
-            apps/desktop/artifacts/Bitwarden-${{ env.PKG_VERSION }}-universal.dmg-sha512.txt,
-            apps/desktop/artifacts/Bitwarden-${{ env.PKG_VERSION }}-universal.dmg-sha512.txt,
-            apps/desktop/artifacts/Bitwarden-${{ env.RELEASE_CHANNEL }}-x86_64.AppImage-sha512.txt,
-            apps/desktop/artifacts/bitwarden-${{ env.RELEASE_CHANNEL }}-ia32.nsis.7z-sha512.txt,
-            apps/desktop/artifacts/bitwarden-${{ env.RELEASE_CHANNEL }}-x64.nsis.7z-sha512.txt,
-            apps/desktop/artifacts/bitwarden-${{ env.RELEASE_CHANNEL }}-arm64.nsis.7z-sha512.txt,
-            apps/desktop/artifacts/Bitwarden-Installer-${{ env.RELEASE_CHANNEL }}.exe-sha512.txt"
+            apps/desktop/artifacts/sha256-checksums.txt"
           commit: ${{ github.sha }}
           tag: desktop-v${{ env.PKG_VERSION }}
           name: Desktop v${{ env.PKG_VERSION }}

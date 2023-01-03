@@ -66,6 +66,7 @@ import { DeleteAccountComponent } from "./accounts/delete-account.component";
 import { EnvironmentComponent } from "./accounts/environment.component";
 import { HintComponent } from "./accounts/hint.component";
 import { LockComponent } from "./accounts/lock.component";
+import { LoginApprovalComponent } from "./accounts/login/login-approval.component";
 import { LoginModule } from "./accounts/login/login.module";
 import { PremiumComponent } from "./accounts/premium.component";
 import { RegisterComponent } from "./accounts/register.component";
@@ -207,6 +208,7 @@ registerLocaleData(localeZhTw, "zh-TW");
     VaultTimeoutInputComponent,
     ViewComponent,
     ViewCustomFieldsComponent,
+    LoginApprovalComponent,
   ],
   bootstrap: [AppComponent],
 })

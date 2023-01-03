@@ -1,11 +1,16 @@
 import { coerceBooleanProperty } from "@angular/cdk/coercion";
 import { Input, HostBinding, Component } from "@angular/core";
 
-import { ButtonLikeAbstraction } from "../shared/button-like.abstraction";
+import { ButtonLikeAbstraction, ButtonType } from "../shared/button-like.abstraction";
 
-export type ButtonTypes = "primary" | "secondary" | "danger";
+const focusRing = [
+  "focus-visible:tw-ring",
+  "focus-visible:tw-ring-offset-2",
+  "focus-visible:tw-ring-primary-700",
+  "focus-visible:tw-z-10",
+];
 
-const buttonStyles: Record<ButtonTypes, string[]> = {
+const buttonStyles: Record<ButtonType, string[]> = {
   primary: [
     "tw-border-primary-500",
     "tw-bg-primary-500",
@@ -16,6 +21,7 @@ const buttonStyles: Record<ButtonTypes, string[]> = {
     "disabled:tw-border-primary-500/60",
     "disabled:!tw-text-contrast/60",
     "disabled:tw-bg-clip-padding",
+    ...focusRing,
   ],
   secondary: [
     "tw-bg-transparent",
@@ -27,6 +33,7 @@ const buttonStyles: Record<ButtonTypes, string[]> = {
     "disabled:tw-bg-transparent",
     "disabled:tw-border-text-muted/60",
     "disabled:!tw-text-muted/60",
+    ...focusRing,
   ],
   danger: [
     "tw-bg-transparent",
@@ -38,7 +45,9 @@ const buttonStyles: Record<ButtonTypes, string[]> = {
     "disabled:tw-bg-transparent",
     "disabled:tw-border-danger-500/60",
     "disabled:!tw-text-danger/60",
+    ...focusRing,
   ],
+  unstyled: [],
 };
 
 @Component({
@@ -59,10 +68,6 @@ export class ButtonComponent implements ButtonLikeAbstraction {
       "tw-text-center",
       "hover:tw-no-underline",
       "focus:tw-outline-none",
-      "focus-visible:tw-ring",
-      "focus-visible:tw-ring-offset-2",
-      "focus-visible:tw-ring-primary-700",
-      "focus-visible:tw-z-10",
     ]
       .concat(this.block ? ["tw-w-full", "tw-block"] : ["tw-inline-block"])
       .concat(buttonStyles[this.buttonType ?? "secondary"]);
@@ -74,7 +79,7 @@ export class ButtonComponent implements ButtonLikeAbstraction {
     return disabled || this.loading ? true : null;
   }
 
-  @Input() buttonType: ButtonTypes = null;
+  @Input() buttonType: ButtonType;
 
   private _block = false;
 
@@ -91,9 +96,7 @@ export class ButtonComponent implements ButtonLikeAbstraction {
 
   @Input() disabled = false;
 
-  @Input("bitIconButton") icon: string;
-
-  get iconClass() {
-    return [this.icon, "!tw-m-0"];
+  setButtonType(value: "primary" | "secondary" | "danger" | "unstyled") {
+    this.buttonType = value;
   }
 }

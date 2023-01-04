@@ -37,6 +37,7 @@ import { SendResponse } from "../../models/response/send.response";
 
 export class SyncService implements SyncServiceAbstraction {
   syncInProgress = false;
+  shouldForceSync = false;
 
   constructor(
     private apiService: ApiService,
@@ -85,7 +86,7 @@ export class SyncService implements SyncServiceAbstraction {
     const now = new Date();
     let needsSync = false;
     try {
-      needsSync = await this.needsSyncing(forceSync);
+      needsSync = await this.needsSyncing(forceSync || this.shouldForceSync);
     } catch (e) {
       if (allowThrowOnError) {
         throw e;
@@ -98,6 +99,7 @@ export class SyncService implements SyncServiceAbstraction {
     }
 
     try {
+      this.shouldForceSync = false;
       await this.apiService.refreshIdentityToken();
       const response = await this.apiService.getSync();
 

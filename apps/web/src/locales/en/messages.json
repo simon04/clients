@@ -5863,5 +5863,17 @@
         "example": "2"
       }
     }
+  },
+    "projectPeopleDescription": {
+    "message": "Grant groups or people access to this project. Permissions set for people will override permissions set by groups."
+  },
+    "projectPeopleSelectHint": {
+    "message": "Type or select people or groups"
+  },
+  "projectPeopleSelectLabel": {
+    "message": "People to add"
+  },
+  "projectServiceAccountsDescription": {
+    "message": "Grant service accounts access to this project."
   }
 }

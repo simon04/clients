@@ -188,7 +188,7 @@ jobs:
         uses: bitwarden/gh-actions/get-checksum@fix-get-checksum-action
         with:
           packages_dir: "apps/desktop/artifacts"
-          file_path: "apps/desktop/artifacts"
+          file_path: "apps/desktop/artifacts/sha256-checksums.txt"
 
       - name: Create Release
         uses: ncipollo/release-action@95215a3cb6e6a1908b3c44e00b4fdb15548b1e09

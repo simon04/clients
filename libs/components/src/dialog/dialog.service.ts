@@ -29,6 +29,14 @@ export class DialogService extends Dialog {
     return super.open(componentOrTemplateRef, config);
   }
 
+  /**
+   * Opens a simple dialog.
+   *
+   * @param {SimpleDialogOptions} simpleDialogOptions - An object containing options for the dialog.
+   * @returns `DialogRef` - The reference to the opened dialog.
+   * Contains a closed observable which can be subscribed to for determining which button
+   * a user pressed (see `SimpleDialogCloseType`)
+   */
   openSimpleDialog(simpleDialogOptions: SimpleDialogOptions): DialogRef {
     // Method needs to return dialog reference so devs can sub to closed and get results.
     return this.open(SimpleDialogComponent, {

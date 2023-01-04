@@ -72,8 +72,6 @@ export class BitInputDirective implements BitFormFieldControl {
   @Input() hasPrefix = false;
   @Input() hasSuffix = false;
 
-  @Input() showErrorsWhenDisabled? = false;
-
   get labelForId(): string {
     return this.id;
   }
@@ -84,21 +82,13 @@ export class BitInputDirective implements BitFormFieldControl {
     this.isOnBlur = true;
   }
 
-  @HostListener("focus")
-  onFocus() {
+  @HostListener("input")
+  onInput() {
     this.isOnBlur = false;
   }
 
   get hasError() {
-    if (this.showErrorsWhenDisabled) {
-      return (
-        (this.ngControl?.status === "INVALID" || this.ngControl?.status === "DISABLED") &&
-        this.ngControl?.touched &&
-        this.ngControl?.errors != null
-      );
-    } else {
-      return this.ngControl?.status === "INVALID" && this.ngControl?.dirty && this.isOnBlur;
-    }
+    return this.ngControl?.status === "INVALID" && this.ngControl?.dirty && this.isOnBlur;
   }
 
   get error(): [string, any] {

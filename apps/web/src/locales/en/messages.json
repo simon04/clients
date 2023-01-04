@@ -5875,5 +5875,11 @@
   },
   "projectServiceAccountsDescription": {
     "message": "Grant service accounts access to this project."
+  },
+  "projectServiceAccountsSelectLabel": {
+    "message": "Service accounts to add"
+  },
+  "projectServiceAccountsSelectHint": {
+    "message": "Type or select service accounts"
   }
 }

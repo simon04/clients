@@ -185,7 +185,7 @@ jobs:
       #     --endpoint-url https://${CF_ACCOUNT}.r2.cloudflarestorage.com
 
       - name: Get checksum files
-        uses: bitwarden/gh-actions/get-checksum@2022811afbf573cf1caf866ace11d5a02ae852f7
+        uses: bitwarden/gh-actions/get-checksum@fix-get-checksum-action
         with:
           packages_dir: "apps/desktop/artifacts"
           file_path: "apps/desktop/artifacts/sha256-checksums.txt"

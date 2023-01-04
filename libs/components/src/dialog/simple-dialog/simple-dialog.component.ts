@@ -3,12 +3,9 @@ import { Component, ContentChild, Directive, Inject } from "@angular/core";
 
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 
-import {
-  isSimpleDialogOptions,
-  SimpleDialogCloseType,
-  SimpleDialogOptions,
-  SimpleDialogType,
-} from "./simple-dialog-options";
+import { SimpleDialogCloseType } from "./models/simple-dialog-close-type.enum";
+import { isSimpleDialogOptions, SimpleDialogOptions } from "./models/simple-dialog-options";
+import { SimpleDialogType } from "./models/simple-dialog-type.enum";
 
 @Directive({ selector: "[bit-dialog-icon]" })
 export class IconDirective {}
@@ -89,8 +86,4 @@ export class SimpleDialogComponent {
       );
     }
   }
-
-  // what are the benefits of allowing non-translated strings to be sent to the modal?
-  // it bloats the dialog options type and complicates the handling...
-  // see task desc for more detail
 }

@@ -3,11 +3,9 @@ import { Component, Inject } from "@angular/core";
 
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 
-import {
-  SimpleDialogType,
-  SimpleDialogCloseType,
-  SimpleDialogOptions,
-} from "../simple-dialog/simple-dialog-options";
+import { SimpleDialogCloseType } from "../simple-dialog/models/simple-dialog-close-type.enum";
+import { SimpleDialogOptions } from "../simple-dialog/models/simple-dialog-options";
+import { SimpleDialogType } from "../simple-dialog/models/simple-dialog-type.enum";
 
 @Component({
   selector: "bit-configurable-simple-dialog",

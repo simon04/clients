@@ -3,7 +3,7 @@ import { ComponentType } from "@angular/cdk/overlay";
 import { Injectable, TemplateRef } from "@angular/core";
 
 // import { ConfigurableSimpleDialogComponent } from "./configurable-simple-dialog/configurable-simple-dialog.component";
-import { SimpleDialogOptions } from "./simple-dialog/simple-dialog-options";
+import { SimpleDialogOptions } from "./simple-dialog/models/simple-dialog-options";
 import { SimpleDialogComponent } from "./simple-dialog/simple-dialog.component";
 // import { SimpleDialogComponent } from "./simple-dialog/simple-dialog.component";
 

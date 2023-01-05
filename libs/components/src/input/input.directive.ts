@@ -76,19 +76,19 @@ export class BitInputDirective implements BitFormFieldControl {
     return this.id;
   }
 
-  private isOnBlur = false;
+  private isActive = true;
   @HostListener("blur")
   onBlur() {
-    this.isOnBlur = true;
+    this.isActive = true;
   }
 
   @HostListener("input")
   onInput() {
-    this.isOnBlur = false;
+    this.isActive = false;
   }
 
   get hasError() {
-    return this.ngControl?.status === "INVALID" && this.ngControl?.dirty && this.isOnBlur;
+    return this.ngControl?.status === "INVALID" && this.ngControl?.touched && this.isActive;
   }
 
   get error(): [string, any] {

@@ -23,15 +23,15 @@ import { BillingSyncApiKeyComponent } from "./billing-sync-api-key.component";
 export class OrganizationSubscriptionCloudComponent implements OnInit, OnDestroy {
   sub: OrganizationSubscriptionResponse;
   organizationId: string;
-  loading: boolean;
   userOrg: Organization;
-
-  firstLoaded = false;
   showChangePlan = false;
   showDownloadLicense = false;
   adjustStorageAdd = true;
   showAdjustStorage = false;
   hasBillingSyncToken: boolean;
+
+  firstLoaded = false;
+  loading: boolean;
 
   private destroy$ = new Subject<void>();
 
@@ -47,6 +47,10 @@ export class OrganizationSubscriptionCloudComponent implements OnInit, OnDestroy
   ) {}
 
   async ngOnInit() {
+    if (this.route.snapshot.queryParamMap.get("upgrade")) {
+      this.changePlan();
+    }
+
     this.route.params
       .pipe(
         concatMap(async (params) => {
@@ -57,17 +61,6 @@ export class OrganizationSubscriptionCloudComponent implements OnInit, OnDestroy
         takeUntil(this.destroy$)
       )
       .subscribe();
-
-    if (this.route.snapshot.queryParamMap.get("upgrade")) {
-      this.changePlan();
-    }
-
-    const apiKeyResponse = await this.organizationApiService.getApiKeyInformation(
-      this.organizationId
-    );
-    this.hasBillingSyncToken = apiKeyResponse.data.some(
-      (i) => i.keyType === OrganizationApiKeyType.BillingSync
-    );
   }
 
   ngOnDestroy() {
@@ -84,6 +77,13 @@ export class OrganizationSubscriptionCloudComponent implements OnInit, OnDestroy
     if (this.userOrg.canManageBilling) {
       this.sub = await this.organizationApiService.getSubscription(this.organizationId);
     }
+
+    const apiKeyResponse = await this.organizationApiService.getApiKeyInformation(
+      this.organizationId
+    );
+    this.hasBillingSyncToken = apiKeyResponse.data.some(
+      (i) => i.keyType === OrganizationApiKeyType.BillingSync
+    );
 
     this.loading = false;
   }

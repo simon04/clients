@@ -23,13 +23,13 @@ export class OrganizationSubscriptionSelfhostComponent implements OnInit, OnDest
   sub: OrganizationSubscriptionResponse;
   organizationId: string;
   userOrg: Organization;
-
-  firstLoaded = false;
-
-  loading = false;
   showUpdateLicense = false;
   showBillingSyncKey = false;
-  existingBillingSyncConnection: OrganizationConnectionResponse<BillingSyncConfigApi>;
+
+  firstLoaded = false;
+  loading = false;
+
+  private existingBillingSyncConnection: OrganizationConnectionResponse<BillingSyncConfigApi>;
 
   private destroy$ = new Subject<void>();
 

@@ -6,7 +6,7 @@ export type SortDirection = "asc" | "desc";
 export type Sort = {
   column?: string;
   direction: SortDirection;
-  fn?: (a: any, b: any, direction: SortDirection) => number;
+  fn?: (a: any, b: any) => number;
 };
 
 // Loosely based on CDK TableDataSource
@@ -118,7 +118,7 @@ export class TableDataSource<T> extends DataSource<T> {
     return data.sort((a, b) => {
       // If a custom sort function is provided, use it instead of the default.
       if (sort.fn) {
-        return sort.fn(a, b, direction);
+        return sort.fn(a, b) * (direction == "asc" ? 1 : -1);
       }
 
       let valueA = this.sortingDataAccessor(a, column);

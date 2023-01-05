@@ -1,7 +1,7 @@
 import { coerceBooleanProperty } from "@angular/cdk/coercion";
 import { Component, HostListener, Input, OnInit } from "@angular/core";
 
-import { SortDirection } from "./table-data-source";
+import { Sort } from "./table-data-source";
 import { TableComponent } from "./table.component";
 
 @Component({
@@ -35,7 +35,7 @@ export class SortableComponent implements OnInit {
    * @example
    * fn = (a, b) => a.name.localeCompare(b.name)
    */
-  @Input() fn: (a: any, b: any, direction: SortDirection) => number;
+  @Input() fn: Sort["fn"];
 
   constructor(private table: TableComponent) {}
 

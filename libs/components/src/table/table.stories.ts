@@ -1,7 +1,7 @@
 import { ScrollingModule } from "@angular/cdk/scrolling";
 import { Meta, moduleMetadata, Story } from "@storybook/angular";
 
-import { SortDirection, TableDataSource } from "./table-data-source";
+import { TableDataSource } from "./table-data-source";
 import { TableModule } from "./table.module";
 
 export default {
@@ -73,8 +73,7 @@ data.data = [...Array(5).keys()].map((i) => ({
 const DataSourceTemplate: Story = (args) => ({
   props: {
     dataSource: data,
-    sortFn: (a: any, b: any, direction: SortDirection) =>
-      a.id > b.id && direction == "asc" ? 1 : -1,
+    sortFn: (a: any, b: any) => a.id - b.id,
   },
   template: `
     <bit-table [dataSource]="dataSource">
@@ -109,6 +108,7 @@ data2.data = [...Array(100).keys()].map((i) => ({
 const ScrollableTemplate: Story = (args) => ({
   props: {
     dataSource: data2,
+    sortFn: (a: any, b: any) => a.id - b.id,
   },
   template: `
     <cdk-virtual-scroll-viewport scrollWindow itemSize="47">

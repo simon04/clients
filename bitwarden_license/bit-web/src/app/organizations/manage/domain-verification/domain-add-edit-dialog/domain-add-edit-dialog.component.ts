@@ -206,9 +206,13 @@ export class DomainAddEditDialogComponent implements OnInit, OnDestroy {
             message: this.i18nService.t("domainNotVerified", this.domainNameCtrl.value),
           },
         });
+        // Update this item so the last checked date gets updated.
+        await this.updateOrgDomain();
       }
     } catch (e) {
       this.handleVerifyDomainError(e, this.domainNameCtrl.value);
+      // Update this item so the last checked date gets updated.
+      await this.updateOrgDomain();
     }
   };
 
@@ -231,6 +235,14 @@ export class DomainAddEditDialogComponent implements OnInit, OnDestroy {
           break;
       }
     }
+  }
+
+  private async updateOrgDomain() {
+    // Update this item so the last checked date gets updated.
+    await this.orgDomainApiService.getByOrgIdAndOrgDomainId(
+      this.data.organizationId,
+      this.data.orgDomain.id
+    );
   }
 
   deleteDomain = async (): Promise<void> => {

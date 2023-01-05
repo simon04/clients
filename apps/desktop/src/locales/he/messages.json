@@ -1780,13 +1780,13 @@
     "message": "מושבת"
   },
   "removePassword": {
-    "message": "הסרת סיסמה"
+    "message": "Remove password"
   },
   "removedPassword": {
-    "message": "הסיסמה הוסרה"
+    "message": "Password removed"
   },
   "removePasswordConfirmation": {
-    "message": "להסיר את הסיסמה?"
+    "message": "Are you sure you want to remove the password?"
   },
   "maxAccessCountReached": {
     "message": "מספר הגישות המרבי הושג"
@@ -2057,9 +2057,5 @@
   },
   "logInWithAnotherDevice": {
     "message": "התחבר עם מכשיר אחר"
-  },
-  "toggleCharacterCount": {
-    "message": "החלפת מצב ספירת תווים",
-    "description": "'Character count' describes a feature that displays a number next to each character of the password."
   }
 }

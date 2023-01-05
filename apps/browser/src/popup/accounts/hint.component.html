@@ -24,7 +24,6 @@
             id="email"
             type="text"
             name="Email"
-            aria-describedby="emailHelp"
             [(ngModel)]="email"
             required
             appAutofocus
@@ -33,7 +32,7 @@
           />
         </div>
       </div>
-      <div id="emailHelp" class="box-footer">
+      <div class="box-footer">
         {{ "enterEmailToGetHint" | i18n }}
       </div>
     </div>

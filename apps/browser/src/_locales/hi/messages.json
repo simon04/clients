@@ -104,7 +104,7 @@
     "message": "Unlock your vault"
   },
   "loginToVaultMenu": {
-    "message": "अपने अकाउंट में लॉगिन करें"
+    "message": "Log in to your vault"
   },
   "autoFillInfo": {
     "message": "इस ब्राउज़र टैब के लिए स्वत: भरण लॉगिन उपलब्ध नहीं है।"
@@ -131,10 +131,10 @@
     "message": "Send a verification code to your email"
   },
   "sendCode": {
-    "message": "कोड भेजें"
+    "message": "Send code"
   },
   "codeSent": {
-    "message": "कोड भेजा गया है"
+    "message": "Code sent"
   },
   "verificationCode": {
     "message": "Verification Code"
@@ -339,7 +339,7 @@
     "message": "आपका वेब ब्राउज़र आसान क्लिपबोर्ड कॉपीिंग का समर्थन नहीं करता है। इसके बजाय इसे मैन्युअल रूप से कॉपी करें।"
   },
   "verifyIdentity": {
-    "message": "पहचान सत्यापित करें"
+    "message": "Verify identity"
   },
   "yourVaultIsLocked": {
     "message": "आपकी वॉल्ट लॉक हो गई है। जारी रखने के लिए अपने मास्टर पासवर्ड को सत्यापित करें।"
@@ -1133,10 +1133,10 @@
     "message": "Last Name"
   },
   "fullName": {
-    "message": "पूरा नाम"
+    "message": "Full name"
   },
   "identityName": {
-    "message": "पहचान का नाम"
+    "message": "Identity Name"
   },
   "company": {
     "message": "कंपनी"
@@ -1887,7 +1887,7 @@
     "message": "Master password removed"
   },
   "leaveOrganizationConfirmation": {
-    "message": "क्या आप सुनिश्चित हैं कि आप इस संगठन को छोड़ना चाहते हैं?"
+    "message": "Are you sure you want to leave this organization?"
   },
   "leftOrganization": {
     "message": "You have left the organization."
@@ -1911,13 +1911,13 @@
     }
   },
   "error": {
-    "message": "एरर"
+    "message": "Error"
   },
   "regenerateUsername": {
     "message": "Regenerate username"
   },
   "generateUsername": {
-    "message": "उपयोगकर्ता नाम बनाएँ"
+    "message": "Generate username"
   },
   "usernameType": {
     "message": "Username type"
@@ -1942,7 +1942,7 @@
     "message": "Random word"
   },
   "websiteName": {
-    "message": "वेबसाइट का नाम"
+    "message": "Website name"
   },
   "whatWouldYouLikeToGenerate": {
     "message": "What would you like to generate?"
@@ -1997,7 +1997,7 @@
     "message": "Settings have been edited"
   },
   "environmentEditedClick": {
-    "message": "यहाँ क्लिक करें"
+    "message": "Click here"
   },
   "environmentEditedReset": {
     "message": "to reset to pre-configured settings"
@@ -2042,6 +2042,6 @@
     "message": "New around here?"
   },
   "rememberEmail": {
-    "message": "ईमेल याद रखें"
+    "message": "Remember email"
   }
 }

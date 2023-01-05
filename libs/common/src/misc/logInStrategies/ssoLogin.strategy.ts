@@ -43,7 +43,7 @@ export class SsoLogInStrategy extends LogInStrategy {
     );
   }
 
-  async setUserKey(tokenResponse: IdentityTokenResponse) {
+  async onSuccessfulLogin(tokenResponse: IdentityTokenResponse) {
     const newSsoUser = tokenResponse.key == null;
 
     if (tokenResponse.keyConnectorUrl != null) {

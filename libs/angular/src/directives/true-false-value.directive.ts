@@ -13,8 +13,8 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
   ],
 })
 export class TrueFalseValueDirective implements ControlValueAccessor {
-  @Input() trueValue: boolean | string = true;
-  @Input() falseValue: boolean | string = false;
+  @Input() trueValue = true;
+  @Input() falseValue = false;
 
   constructor(private elementRef: ElementRef, private renderer: Renderer2) {}
 

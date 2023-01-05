@@ -7,7 +7,6 @@
           <select
             id="deletionDate"
             name="DeletionDateSelect"
-            aria-describedby="deletionDateHelp"
             formControlName="selectedDeletionDatePreset"
             required
           >
@@ -23,7 +22,7 @@
         <ng-container *ngTemplateOutlet="deletionDateCustom"></ng-container>
       </div>
     </div>
-    <div id="deletionDateHelp" class="box-footer">
+    <div class="box-footer">
       {{ "deletionDateDesc" | i18n }}
       <ng-container
         *ngIf="
@@ -46,7 +45,6 @@
           <select
             id="expirationDate"
             name="ExpirationDateSelect"
-            aria-describedby="expirationDateHelp"
             formControlName="selectedExpirationDatePreset"
             required
           >
@@ -69,7 +67,7 @@
         <ng-container *ngTemplateOutlet="expirationDateCustom"></ng-container>
       </div>
     </div>
-    <div id="expirationDateHelp" class="box-footer">
+    <div class="box-footer">
       {{ "expirationDateDesc" | i18n }}
       <ng-container
         *ngIf="
@@ -92,7 +90,6 @@
             id="deletionDateCustomFallback"
             type="date"
             name="DeletionDateFallback"
-            aria-describedby="deletionDateHelp"
             formControlName="fallbackDeletionDate"
             required
             placeholder="MM/DD/YYYY"
@@ -116,7 +113,6 @@
             id="deletionDateCustomFallback"
             type="date"
             name="DeletionDateFallback"
-            aria-describedby="deletionDateHelp"
             formControlName="fallbackDeletionDate"
             required
             placeholder="MM/DD/YYYY"
@@ -139,7 +135,6 @@
           id="deletionDateCustom"
           type="datetime-local"
           name="DeletionDate"
-          aria-describedby="deletionDateHelp"
           formControlName="defaultDeletionDateTime"
           required
           placeholder="MM/DD/YYYY HH:MM AM/PM"
@@ -155,7 +150,6 @@
             id="expirationDateCustomFallback"
             type="date"
             name="ExpirationDateFallback"
-            aria-describedby="expirationDateHelp"
             formControlName="fallbackExpirationDate"
             [required]="!editMode"
             placeholder="MM/DD/YYYY"
@@ -179,7 +173,6 @@
             id="expirationDateCustomFallback"
             type="date"
             name="ExpirationDateFallback"
-            aria-describedby="expirationDateHelp"
             formControlName="fallbackExpirationDate"
             [required]="!editMode"
             placeholder="MM/DD/YYYY"
@@ -205,7 +198,6 @@
           id="expirationDateCustom"
           type="datetime-local"
           name="ExpirationDate"
-          aria-describedby="expirationDateHelp"
           formControlName="defaultExpirationDateTime"
           required
           placeholder="MM/DD/YYYY HH:MM AM/PM"

@@ -44,7 +44,7 @@ export class UserApiLogInStrategy extends LogInStrategy {
     );
   }
 
-  async setUserKey(tokenResponse: IdentityTokenResponse) {
+  async onSuccessfulLogin(tokenResponse: IdentityTokenResponse) {
     if (tokenResponse.apiUseKeyConnector) {
       const keyConnectorUrl = this.environmentService.getKeyConnectorUrl();
       await this.keyConnectorService.getAndSetKey(keyConnectorUrl);

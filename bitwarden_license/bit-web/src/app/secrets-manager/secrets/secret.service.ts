@@ -119,9 +119,7 @@ export class SecretService {
     request.key = key.encryptedString;
     request.value = value.encryptedString;
     request.note = note.encryptedString;
-    request.projectIds = [];
-
-    secretView.projects?.forEach((e) => request.projectIds.push(e.id));
+    request.projectIds = await this.getProjectIds(secretView.projects);
 
     return request;
   }
@@ -154,12 +152,16 @@ export class SecretService {
     secretView.value = value;
     secretView.note = note;
 
+    let projectsMappedToSecretsView: SecretProjectView[] = [];
+
     if (secretResponse.projects != null) {
-      secretView.projects = await this.decryptProjectsMappedToSecrets(
+      projectsMappedToSecretsView = await this.decryptProjectsMappedToSecrets(
         orgKey,
         secretResponse.projects
       );
     }
+
+    secretView.projects = await projectsMappedToSecretsView;
 
     return secretView;
   }
@@ -170,7 +172,7 @@ export class SecretService {
   ): Promise<SecretListView[]> {
     const orgKey = await this.getOrganizationKey(organizationId);
 
-    const projectsMappedToSecretsView = await this.decryptProjectsMappedToSecrets(
+    const projectsMappedToSecretsView = this.decryptProjectsMappedToSecrets(
       orgKey,
       secrets.projects
     );
@@ -187,11 +189,12 @@ export class SecretService {
         secretListView.creationDate = s.creationDate;
         secretListView.revisionDate = s.revisionDate;
 
-        const projectIds = s.projects?.map((p) => p.id);
-        secretListView.projects = projectsMappedToSecretsView.filter((p) =>
-          projectIds.includes(p.id)
-        );
+        const projectsMappedToSecret = await projectsMappedToSecretsView;
 
+        const projectIds: string[] = [];
+        s.projects?.forEach((e) => projectIds.push(e.id));
+
+        secretListView.projects = projectsMappedToSecret.filter((p) => projectIds.includes(p.id));
         return secretListView;
       })
     );

@@ -1,4 +1,5 @@
-import { mock, MockProxy } from "jest-mock-extended";
+// eslint-disable-next-line no-restricted-imports
+import { Arg, Substitute, SubstituteOf } from "@fluffy-spoon/substitute";
 
 import { ApiService } from "@bitwarden/common/abstractions/api.service";
 import { AppIdService } from "@bitwarden/common/abstractions/appId.service";
@@ -17,21 +18,23 @@ import { SsoLogInCredentials } from "@bitwarden/common/models/domain/log-in-cred
 import { identityTokenResponseFactory } from "./logIn.strategy.spec";
 
 describe("SsoLogInStrategy", () => {
-  let cryptoService: MockProxy<CryptoService>;
-  let apiService: MockProxy<ApiService>;
-  let tokenService: MockProxy<TokenService>;
-  let appIdService: MockProxy<AppIdService>;
-  let platformUtilsService: MockProxy<PlatformUtilsService>;
-  let messagingService: MockProxy<MessagingService>;
-  let logService: MockProxy<LogService>;
-  let stateService: MockProxy<StateService>;
-  let twoFactorService: MockProxy<TwoFactorService>;
-  let keyConnectorService: MockProxy<KeyConnectorService>;
+  let cryptoService: SubstituteOf<CryptoService>;
+  let apiService: SubstituteOf<ApiService>;
+  let tokenService: SubstituteOf<TokenService>;
+  let appIdService: SubstituteOf<AppIdService>;
+  let platformUtilsService: SubstituteOf<PlatformUtilsService>;
+  let messagingService: SubstituteOf<MessagingService>;
+  let logService: SubstituteOf<LogService>;
+  let keyConnectorService: SubstituteOf<KeyConnectorService>;
+  let stateService: SubstituteOf<StateService>;
+  let twoFactorService: SubstituteOf<TwoFactorService>;
 
   let ssoLogInStrategy: SsoLogInStrategy;
   let credentials: SsoLogInCredentials;
 
   const deviceId = Utils.newGuid();
+  const encKey = "ENC_KEY";
+  const privateKey = "PRIVATE_KEY";
   const keyConnectorUrl = "KEY_CONNECTOR_URL";
 
   const ssoCode = "SSO_CODE";
@@ -40,20 +43,19 @@ describe("SsoLogInStrategy", () => {
   const ssoOrgId = "SSO_ORG_ID";
 
   beforeEach(async () => {
-    cryptoService = mock<CryptoService>();
-    apiService = mock<ApiService>();
-    tokenService = mock<TokenService>();
-    appIdService = mock<AppIdService>();
-    platformUtilsService = mock<PlatformUtilsService>();
-    messagingService = mock<MessagingService>();
-    logService = mock<LogService>();
-    stateService = mock<StateService>();
-    twoFactorService = mock<TwoFactorService>();
-    keyConnectorService = mock<KeyConnectorService>();
+    cryptoService = Substitute.for<CryptoService>();
+    apiService = Substitute.for<ApiService>();
+    tokenService = Substitute.for<TokenService>();
+    appIdService = Substitute.for<AppIdService>();
+    platformUtilsService = Substitute.for<PlatformUtilsService>();
+    messagingService = Substitute.for<MessagingService>();
+    logService = Substitute.for<LogService>();
+    stateService = Substitute.for<StateService>();
+    keyConnectorService = Substitute.for<KeyConnectorService>();
+    twoFactorService = Substitute.for<TwoFactorService>();
 
-    tokenService.getTwoFactorToken.mockResolvedValue(null);
-    appIdService.getAppId.mockResolvedValue(deviceId);
-    tokenService.decodeToken.mockResolvedValue({});
+    tokenService.getTwoFactorToken().resolves(null);
+    appIdService.getAppId().resolves(deviceId);
 
     ssoLogInStrategy = new SsoLogInStrategy(
       cryptoService,
@@ -71,22 +73,21 @@ describe("SsoLogInStrategy", () => {
   });
 
   it("sends SSO information to server", async () => {
-    apiService.postIdentityToken.mockResolvedValue(identityTokenResponseFactory());
+    apiService.postIdentityToken(Arg.any()).resolves(identityTokenResponseFactory());
 
     await ssoLogInStrategy.logIn(credentials);
 
-    expect(apiService.postIdentityToken).toHaveBeenCalledWith(
-      expect.objectContaining({
-        code: ssoCode,
-        codeVerifier: ssoCodeVerifier,
-        redirectUri: ssoRedirectUrl,
-        device: expect.objectContaining({
-          identifier: deviceId,
-        }),
-        twoFactor: expect.objectContaining({
-          provider: null,
-          token: null,
-        }),
+    apiService.received(1).postIdentityToken(
+      Arg.is((actual) => {
+        const ssoTokenRequest = actual as any;
+        return (
+          ssoTokenRequest.code === ssoCode &&
+          ssoTokenRequest.codeVerifier === ssoCodeVerifier &&
+          ssoTokenRequest.redirectUri === ssoRedirectUrl &&
+          ssoTokenRequest.device.identifier === deviceId &&
+          ssoTokenRequest.twoFactor.provider == null &&
+          ssoTokenRequest.twoFactor.token == null
+        );
       })
     );
   });
@@ -94,23 +95,23 @@ describe("SsoLogInStrategy", () => {
   it("does not set keys for new SSO user flow", async () => {
     const tokenResponse = identityTokenResponseFactory();
     tokenResponse.key = null;
-    apiService.postIdentityToken.mockResolvedValue(tokenResponse);
+    apiService.postIdentityToken(Arg.any()).resolves(tokenResponse);
 
     await ssoLogInStrategy.logIn(credentials);
 
-    expect(cryptoService.setEncPrivateKey).not.toHaveBeenCalled();
-    expect(cryptoService.setEncKey).not.toHaveBeenCalled();
+    cryptoService.didNotReceive().setEncPrivateKey(privateKey);
+    cryptoService.didNotReceive().setEncKey(encKey);
   });
 
   it("gets and sets KeyConnector key for enrolled user", async () => {
     const tokenResponse = identityTokenResponseFactory();
     tokenResponse.keyConnectorUrl = keyConnectorUrl;
 
-    apiService.postIdentityToken.mockResolvedValue(tokenResponse);
+    apiService.postIdentityToken(Arg.any()).resolves(tokenResponse);
 
     await ssoLogInStrategy.logIn(credentials);
 
-    expect(keyConnectorService.getAndSetKey).toHaveBeenCalledWith(keyConnectorUrl);
+    keyConnectorService.received(1).getAndSetKey(keyConnectorUrl);
   });
 
   it("converts new SSO user to Key Connector on first login", async () => {
@@ -118,13 +119,10 @@ describe("SsoLogInStrategy", () => {
     tokenResponse.keyConnectorUrl = keyConnectorUrl;
     tokenResponse.key = null;
 
-    apiService.postIdentityToken.mockResolvedValue(tokenResponse);
+    apiService.postIdentityToken(Arg.any()).resolves(tokenResponse);
 
     await ssoLogInStrategy.logIn(credentials);
 
-    expect(keyConnectorService.convertNewSsoUserToKeyConnector).toHaveBeenCalledWith(
-      tokenResponse,
-      ssoOrgId
-    );
+    keyConnectorService.received(1).convertNewSsoUserToKeyConnector(tokenResponse, ssoOrgId);
   });
 });

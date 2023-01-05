@@ -1,4 +1,3 @@
-import { AvatarUpdateService as AvatarUpdateServiceAbstraction } from "@bitwarden/common/abstractions/account/avatar-update.service";
 import { ApiService as ApiServiceAbstraction } from "@bitwarden/common/abstractions/api.service";
 import { AppIdService as AppIdServiceAbstraction } from "@bitwarden/common/abstractions/appId.service";
 import { AuditService as AuditServiceAbstraction } from "@bitwarden/common/abstractions/audit.service";
@@ -46,7 +45,6 @@ import { CipherType } from "@bitwarden/common/enums/cipherType";
 import { StateFactory } from "@bitwarden/common/factories/stateFactory";
 import { GlobalState } from "@bitwarden/common/models/domain/global-state";
 import { CipherView } from "@bitwarden/common/models/view/cipher.view";
-import { AvatarUpdateService } from "@bitwarden/common/services/account/avatar-update.service";
 import { ApiService } from "@bitwarden/common/services/api.service";
 import { AppIdService } from "@bitwarden/common/services/appId.service";
 import { AuditService } from "@bitwarden/common/services/audit.service";
@@ -170,7 +168,6 @@ export default class MainBackground {
   policyApiService: PolicyApiServiceAbstraction;
   userVerificationApiService: UserVerificationApiServiceAbstraction;
   syncNotifierService: SyncNotifierServiceAbstraction;
-  avatarUpdateService: AvatarUpdateServiceAbstraction;
 
   // Passed to the popup for Safari to workaround issues with theming, downloading, etc.
   backgroundWindow = window;
@@ -561,8 +558,6 @@ export default class MainBackground {
       this.stateService,
       this.apiService
     );
-
-    this.avatarUpdateService = new AvatarUpdateService(this.apiService, this.stateService);
   }
 
   async bootstrap() {
@@ -601,9 +596,7 @@ export default class MainBackground {
     return new Promise<void>((resolve) => {
       setTimeout(async () => {
         await this.environmentService.setUrlsFromStorage();
-        if (!this.isPrivateMode) {
-          await this.refreshBadge();
-        }
+        await this.refreshBadge();
         this.fullSync(true);
         setTimeout(() => this.notificationsService.init(), 2500);
         resolve();

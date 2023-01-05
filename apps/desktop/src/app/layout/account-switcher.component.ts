@@ -16,7 +16,6 @@ type ActiveAccount = {
   id: string;
   name: string;
   email: string;
-  avatarColor: string;
 };
 
 export class SwitcherAccount extends Account {
@@ -27,8 +26,6 @@ export class SwitcherAccount extends Account {
         "https://bitwarden.com"
     );
   }
-
-  avatarColor: string;
 
   private removeWebProtocolFromString(urlString: string) {
     const regex = /http(s)?(:)?(\/\/)?|(\/\/)?(www\.)?/g;
@@ -115,7 +112,6 @@ export class AccountSwitcherComponent implements OnInit, OnDestroy {
               id: await this.tokenService.getUserId(),
               name: (await this.tokenService.getName()) ?? (await this.tokenService.getEmail()),
               email: await this.tokenService.getEmail(),
-              avatarColor: await this.stateService.getAvatarColor(),
             };
           } catch {
             this.activeAccount = undefined;
@@ -166,9 +162,6 @@ export class AccountSwitcherComponent implements OnInit, OnDestroy {
         userId: userId,
       });
       switcherAccounts[userId] = new SwitcherAccount(baseAccounts[userId]);
-      switcherAccounts[userId].avatarColor = await this.stateService.getAvatarColor({
-        userId: userId,
-      });
     }
     return switcherAccounts;
   }

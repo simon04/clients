@@ -1780,13 +1780,13 @@
     "message": "Онемогућено"
   },
   "removePassword": {
-    "message": "Уклони лозинку"
+    "message": "Remove password"
   },
   "removedPassword": {
-    "message": "Лозинка је уклоњена"
+    "message": "Password removed"
   },
   "removePasswordConfirmation": {
-    "message": "Да ли сте сигурни да желите уклонити лозинку?"
+    "message": "Are you sure you want to remove the password?"
   },
   "maxAccessCountReached": {
     "message": "Достигнут максималан број приступа"
@@ -2057,9 +2057,5 @@
   },
   "logInWithAnotherDevice": {
     "message": "Пријавите се са другим уређајем"
-  },
-  "toggleCharacterCount": {
-    "message": "Пребаци бројање слова",
-    "description": "'Character count' describes a feature that displays a number next to each character of the password."
   }
 }

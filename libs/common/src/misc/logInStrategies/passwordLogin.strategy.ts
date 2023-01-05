@@ -56,7 +56,7 @@ export class PasswordLogInStrategy extends LogInStrategy {
     );
   }
 
-  async setUserKey() {
+  async onSuccessfulLogin() {
     await this.cryptoService.setKey(this.key);
     await this.cryptoService.setKeyHash(this.localHashedPassword);
   }

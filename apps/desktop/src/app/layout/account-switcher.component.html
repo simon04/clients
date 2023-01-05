@@ -12,7 +12,6 @@
     <app-avatar
       [text]="activeAccount.name"
       [id]="activeAccount.id"
-      [color]="activeAccount.avatarColor"
       [size]="25"
       [circle]="true"
       [fontSize]="14"
@@ -66,7 +65,6 @@
           [circle]="true"
           [fontSize]="14"
           [dynamic]="true"
-          [color]="a.value.avatarColor"
           *ngIf="a.value.profile.email != null"
           aria-hidden="true"
         ></app-avatar>

@@ -19,9 +19,7 @@ import { MenuComponent } from "./menu.component";
 })
 export class MenuTriggerForDirective implements OnDestroy {
   @HostBinding("attr.aria-expanded") isOpen = false;
-  @HostBinding("attr.aria-haspopup") get hasPopup(): "menu" | "dialog" {
-    return this.menu?.ariaRole || "menu";
-  }
+  @HostBinding("attr.aria-haspopup") hasPopup = "menu";
   @HostBinding("attr.role") role = "button";
 
   @Input("bitMenuTriggerFor") menu: MenuComponent;
@@ -88,11 +86,9 @@ export class MenuTriggerForDirective implements OnDestroy {
       }
       this.destroyMenu();
     });
-    this.keyDownEventsSub =
-      this.menu.keyManager &&
-      this.overlayRef
-        .keydownEvents()
-        .subscribe((event: KeyboardEvent) => this.menu.keyManager.onKeydown(event));
+    this.keyDownEventsSub = this.overlayRef
+      .keydownEvents()
+      .subscribe((event: KeyboardEvent) => this.menu.keyManager.onKeydown(event));
   }
 
   private destroyMenu() {
@@ -106,12 +102,9 @@ export class MenuTriggerForDirective implements OnDestroy {
 
   private getClosedEvents(): Observable<any> {
     const detachments = this.overlayRef.detachments();
-    const escKey = this.overlayRef.keydownEvents().pipe(
-      filter((event: KeyboardEvent) => {
-        const keys = this.menu.ariaRole === "menu" ? ["Escape", "Tab"] : ["Escape"];
-        return keys.includes(event.key);
-      })
-    );
+    const escKey = this.overlayRef
+      .keydownEvents()
+      .pipe(filter((event: KeyboardEvent) => event.key === "Escape" || event.key === "Tab"));
     const backdrop = this.overlayRef.backdropClick();
     const menuClosed = this.menu.closed;
 

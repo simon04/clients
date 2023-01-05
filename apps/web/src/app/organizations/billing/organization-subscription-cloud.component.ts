@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { concatMap, Subject, takeUntil } from "rxjs";
 
@@ -7,6 +7,7 @@ import { ApiService } from "@bitwarden/common/abstractions/api.service";
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { LogService } from "@bitwarden/common/abstractions/log.service";
 import { OrganizationApiServiceAbstraction } from "@bitwarden/common/abstractions/organization/organization-api.service.abstraction";
+import { OrganizationService } from "@bitwarden/common/abstractions/organization/organization.service.abstraction";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { OrganizationApiKeyType } from "@bitwarden/common/enums/organizationApiKeyType";
 import { PlanType } from "@bitwarden/common/enums/planType";
@@ -20,12 +21,12 @@ import { BillingSyncApiKeyComponent } from "./billing-sync-api-key.component";
   templateUrl: "organization-subscription-cloud.component.html",
 })
 export class OrganizationSubscriptionCloudComponent implements OnInit, OnDestroy {
-  @Input() sub: OrganizationSubscriptionResponse;
-  @Input() organizationId: string;
-  @Input() loading: boolean;
-  @Input() userOrg: Organization;
-  @Output() reload = new EventEmitter();
+  sub: OrganizationSubscriptionResponse;
+  organizationId: string;
+  loading: boolean;
+  userOrg: Organization;
 
+  firstLoaded = false;
   showChangePlan = false;
   showDownloadLicense = false;
   adjustStorageAdd = true;
@@ -40,11 +41,23 @@ export class OrganizationSubscriptionCloudComponent implements OnInit, OnDestroy
     private i18nService: I18nService,
     private logService: LogService,
     private modalService: ModalService,
+    private organizationService: OrganizationService,
     private organizationApiService: OrganizationApiServiceAbstraction,
     private route: ActivatedRoute
   ) {}
 
   async ngOnInit() {
+    this.route.params
+      .pipe(
+        concatMap(async (params) => {
+          this.organizationId = params.organizationId;
+          await this.load();
+          this.firstLoaded = true;
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
+
     if (this.route.snapshot.queryParamMap.get("upgrade")) {
       this.changePlan();
     }
@@ -252,8 +265,17 @@ export class OrganizationSubscriptionCloudComponent implements OnInit, OnDestroy
     }
   }
 
-  load() {
-    this.reload.emit();
+  async load() {
+    if (this.loading) {
+      return;
+    }
+    this.loading = true;
+    this.userOrg = this.organizationService.get(this.organizationId);
+    if (this.userOrg.canManageBilling) {
+      this.sub = await this.organizationApiService.getSubscription(this.organizationId);
+    }
+
+    this.loading = false;
   }
 
   removeSponsorship = async () => {

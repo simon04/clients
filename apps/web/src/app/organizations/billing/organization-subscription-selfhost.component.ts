@@ -1,8 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import { concatMap, takeUntil, Subject } from "rxjs";
 
 import { ModalService } from "@bitwarden/angular/services/modal.service";
 import { ApiService } from "@bitwarden/common/abstractions/api.service";
 import { MessagingService } from "@bitwarden/common/abstractions/messaging.service";
+import { OrganizationApiServiceAbstraction } from "@bitwarden/common/abstractions/organization/organization-api.service.abstraction";
+import { OrganizationService } from "@bitwarden/common/abstractions/organization/organization.service.abstraction";
 import { OrganizationConnectionType } from "@bitwarden/common/enums/organizationConnectionType";
 import { BillingSyncConfigApi } from "@bitwarden/common/models/api/billing-sync-config.api";
 import { Organization } from "@bitwarden/common/models/domain/organization";
@@ -15,21 +19,27 @@ import { BillingSyncKeyComponent } from "../../settings/billing-sync-key.compone
   selector: "app-org-subscription-selfhost",
   templateUrl: "organization-subscription-selfhost.component.html",
 })
-export class OrganizationSubscriptionSelfhostComponent implements OnInit {
-  @Input() sub: OrganizationSubscriptionResponse;
-  @Input() organizationId: string;
-  @Input() userOrg: Organization;
-  @Output() reload = new EventEmitter();
+export class OrganizationSubscriptionSelfhostComponent implements OnInit, OnDestroy {
+  sub: OrganizationSubscriptionResponse;
+  organizationId: string;
+  userOrg: Organization;
+
+  firstLoaded = false;
 
   loading = false;
   showUpdateLicense = false;
   showBillingSyncKey = false;
   existingBillingSyncConnection: OrganizationConnectionResponse<BillingSyncConfigApi>;
 
+  private destroy$ = new Subject<void>();
+
   constructor(
     private modalService: ModalService,
     private messagingService: MessagingService,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private organizationService: OrganizationService,
+    private route: ActivatedRoute,
+    private organizationApiService: OrganizationApiServiceAbstraction
   ) {}
 
   get isExpired() {
@@ -39,6 +49,17 @@ export class OrganizationSubscriptionSelfhostComponent implements OnInit {
   }
 
   async ngOnInit() {
+    this.route.params
+      .pipe(
+        concatMap(async (params) => {
+          this.organizationId = params.organizationId;
+          await this.load();
+          this.firstLoaded = true;
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
+
     this.showBillingSyncKey = await this.apiService.getCloudCommunicationsEnabled();
 
     if (this.showBillingSyncKey) {
@@ -48,6 +69,24 @@ export class OrganizationSubscriptionSelfhostComponent implements OnInit {
         BillingSyncConfigApi
       );
     }
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  async load() {
+    if (this.loading) {
+      return;
+    }
+    this.loading = true;
+    this.userOrg = this.organizationService.get(this.organizationId);
+    if (this.userOrg.canManageBilling) {
+      this.sub = await this.organizationApiService.getSubscription(this.organizationId);
+    }
+
+    this.loading = false;
   }
 
   updateLicense() {
@@ -60,7 +99,7 @@ export class OrganizationSubscriptionSelfhostComponent implements OnInit {
   closeUpdateLicense(updated: boolean) {
     this.showUpdateLicense = false;
     if (updated) {
-      this.reload.emit();
+      this.load();
       this.messagingService.send("updatedOrgLicense");
     }
   }

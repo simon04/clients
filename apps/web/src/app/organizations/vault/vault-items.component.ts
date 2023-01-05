@@ -219,6 +219,21 @@ export class VaultItemsComponent extends BaseVaultItemsComponent implements OnDe
     }
   }
 
+  get showMissingCollectionPermissionMessage(): boolean {
+    // Not filtering by collections, so no need to show message
+    if (this.activeFilter.selectedCollectionNode == null) {
+      return false;
+    }
+
+    // Filtering by all collections, so no need to show message
+    if (this.activeFilter.selectedCollectionNode.node.id == "AllCollections") {
+      return false;
+    }
+
+    // Filtering by a collection, so show message if user is not assigned
+    return !this.activeFilter.selectedCollectionNode.node.assigned;
+  }
+
   canDeleteCollection(c: CollectionAdminView): boolean {
     // Only delete collections if we're in the org vault and not deleting "Unassigned"
     if (this.organization === undefined || c.id === null) {

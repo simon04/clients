@@ -539,6 +539,11 @@ export class VaultItemsComponent extends BaseVaultItemsComponent implements OnDe
     // TODO: This should be removed but is needed since we reuse the same template
   }
 
+  get showMissingCollectionPermissionMessage(): boolean {
+    // TODO: This should be removed but is needed since we reuse the same template
+    return false; // Always return false for non org vault
+  }
+
   protected updateSearchedCollections(collections: TreeNode<CollectionFilter>[]) {
     if (this.searchService.isSearchable(this.searchText)) {
       this.searchedCollections = this.searchPipe.transform(

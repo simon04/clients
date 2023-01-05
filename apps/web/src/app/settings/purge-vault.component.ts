@@ -36,7 +36,7 @@ export class PurgeVaultComponent {
         .then((request) => this.apiService.postPurgeCiphers(request, this.organizationId));
       await this.formPromise;
       this.platformUtilsService.showToast("success", null, this.i18nService.t("vaultPurged"));
-      this.syncService.shouldForceSync = true;
+      this.syncService.fullSync(true);
       if (this.organizationId != null) {
         this.router.navigate(["organizations", this.organizationId, "vault"]);
       } else {

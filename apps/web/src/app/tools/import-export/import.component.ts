@@ -135,7 +135,7 @@ export class ImportComponent implements OnInit {
 
       //No errors, display success message
       this.platformUtilsService.showToast("success", null, this.i18nService.t("importSuccess"));
-      this.syncService.shouldForceSync = true;
+      this.syncService.fullSync(true);
       this.router.navigate(this.successNavigate);
     } catch (e) {
       this.logService.error(e);

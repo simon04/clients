@@ -1,5 +1,5 @@
 import { coerceBooleanProperty } from "@angular/cdk/coercion";
-import { Component, HostListener, Input, OnInit } from "@angular/core";
+import { Component, HostBinding, HostListener, Input, OnInit } from "@angular/core";
 
 import { Sort } from "./table-data-source";
 import { TableComponent } from "./table.component";
@@ -7,7 +7,10 @@ import { TableComponent } from "./table.component";
 @Component({
   selector: "th[bitSortable]",
   template: `
-    <button class="tw-border-none tw-bg-transparent tw-p-0 tw-font-bold tw-text-muted">
+    <button
+      class="tw-border-none tw-bg-transparent tw-p-0 tw-font-bold tw-text-muted"
+      [attr.aria-pressed]="isActive.toString()"
+    >
       <ng-content></ng-content>
     </button>
     <i *ngIf="isActive" class="bwi tw-ml-2 tw-w-0" [ngClass]="icon"></i>
@@ -43,6 +46,13 @@ export class SortableComponent implements OnInit {
     if (this._default && !this.isActive) {
       this.setActive();
     }
+  }
+
+  @HostBinding("attr.aria-sort") get ariaSort() {
+    if (!this.isActive) {
+      return undefined;
+    }
+    return this.sort.direction === "asc" ? "ascending" : "descending";
   }
 
   @HostListener("click") onClick() {

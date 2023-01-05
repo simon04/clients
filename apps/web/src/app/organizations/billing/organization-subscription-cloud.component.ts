@@ -75,6 +75,19 @@ export class OrganizationSubscriptionCloudComponent implements OnInit, OnDestroy
     this.destroy$.complete();
   }
 
+  async load() {
+    if (this.loading) {
+      return;
+    }
+    this.loading = true;
+    this.userOrg = this.organizationService.get(this.organizationId);
+    if (this.userOrg.canManageBilling) {
+      this.sub = await this.organizationApiService.getSubscription(this.organizationId);
+    }
+
+    this.loading = false;
+  }
+
   get subscription() {
     return this.sub != null ? this.sub.subscription : null;
   }
@@ -228,7 +241,7 @@ export class OrganizationSubscriptionCloudComponent implements OnInit, OnDestroy
   }
 
   async manageBillingSync() {
-    const modalRef = await this.modalService.open(BillingSyncApiKeyComponent, {
+    const modalRef = this.modalService.open(BillingSyncApiKeyComponent, {
       data: {
         organizationId: this.organizationId,
         hasBillingToken: this.hasBillingSyncToken,
@@ -263,19 +276,6 @@ export class OrganizationSubscriptionCloudComponent implements OnInit, OnDestroy
     if (load) {
       this.load();
     }
-  }
-
-  async load() {
-    if (this.loading) {
-      return;
-    }
-    this.loading = true;
-    this.userOrg = this.organizationService.get(this.organizationId);
-    if (this.userOrg.canManageBilling) {
-      this.sub = await this.organizationApiService.getSubscription(this.organizationId);
-    }
-
-    this.loading = false;
   }
 
   removeSponsorship = async () => {

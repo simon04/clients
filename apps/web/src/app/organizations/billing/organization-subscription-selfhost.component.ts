@@ -42,12 +42,6 @@ export class OrganizationSubscriptionSelfhostComponent implements OnInit, OnDest
     private organizationApiService: OrganizationApiServiceAbstraction
   ) {}
 
-  get isExpired() {
-    return (
-      this.sub != null && this.sub.expiration != null && new Date(this.sub.expiration) < new Date()
-    );
-  }
-
   async ngOnInit() {
     this.route.params
       .pipe(

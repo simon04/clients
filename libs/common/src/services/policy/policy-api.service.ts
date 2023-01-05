@@ -56,7 +56,7 @@ export class PolicyApiService implements PolicyApiServiceAbstraction {
         "token=" +
         encodeURIComponent(token) +
         "&email=" +
-        encodeURIComponent(email) +
+        encodeURIComponent(email).replace(/'/g, "%27") +
         "&organizationUserId=" +
         organizationUserId,
       null,

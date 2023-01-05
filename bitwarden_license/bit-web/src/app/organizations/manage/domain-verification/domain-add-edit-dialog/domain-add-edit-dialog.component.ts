@@ -206,6 +206,9 @@ export class DomainAddEditDialogComponent implements OnInit, OnDestroy {
             message: this.i18nService.t("domainNotVerified", this.domainNameCtrl.value),
           },
         });
+        // For the case where user opens dialog and reverifies when domain name formControl disabled.
+        // The input directive only shows error if touched, so must manually mark as touched.
+        this.domainNameCtrl.markAsTouched();
         // Update this item so the last checked date gets updated.
         await this.updateOrgDomain();
       }

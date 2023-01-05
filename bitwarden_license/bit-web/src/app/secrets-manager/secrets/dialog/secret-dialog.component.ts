@@ -51,7 +51,6 @@ export class SecretDialogComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    // Load projects for the project secret association area
     this.projects = await this.projectService.getProjects(this.data.organizationId);
 
     if (this.data.operation === OperationType.Edit && this.data.secretId) {
@@ -71,11 +70,7 @@ export class SecretDialogComponent implements OnInit {
     this.loading = true;
     const secret: SecretView = await this.secretService.getBySecretId(this.data.secretId);
     this.loading = false;
-
-    if (secret != null) {
-      this.selectedProjects = secret.projects;
-    }
-
+    this.selectedProjects = secret.projects;
     this.loading = false;
     this.formGroup.setValue({
       name: secret.name,
@@ -87,19 +82,19 @@ export class SecretDialogComponent implements OnInit {
 
   ngOnDestroy(): void {
     this.destroy$.next();
+    this.destroy$.complete();
   }
 
   get title() {
     return this.data.operation === OperationType.Add ? "newSecret" : "editSecret";
   }
 
-  removeProjectAssociation = async (id: string) => {
-    // Filter the list to remove that ID
+  async removeProjectAssociation(id: string) {
     this.selectedProjects = this.selectedProjects.filter((e) => e.id != id);
-  };
+    this.formGroup.get("project").setValue("");
+  }
 
   updateProjectList() {
-    // Remove current project list, only one project association allowed.
     const newList: SecretProjectView[] = [];
     const projectId = this.formGroup.get("project").value;
 

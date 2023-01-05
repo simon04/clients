@@ -54,10 +54,6 @@ export class BillingSubscriptionResponse extends BaseResponse {
       this.items = items.map((i: any) => new BillingSubscriptionItemResponse(i));
     }
   }
-
-  get markedForCancel() {
-    return !this.cancelled && this.cancelAtEndDate;
-  }
 }
 
 export class BillingSubscriptionItemResponse extends BaseResponse {

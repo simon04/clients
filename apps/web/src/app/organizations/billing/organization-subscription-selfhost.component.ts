@@ -114,4 +114,8 @@ export class OrganizationSubscriptionSelfhostComponent implements OnInit, OnDest
   get billingSyncSetUp() {
     return this.existingBillingSyncConnection?.id != null;
   }
+
+  get isExpired() {
+    return this.sub?.expiration != null && new Date(this.sub.expiration) < new Date();
+  }
 }

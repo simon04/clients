@@ -32,7 +32,7 @@
   <bit-callout
     type="warning"
     title="{{ 'pendingCancellation' | i18n }}"
-    *ngIf="subscription?.markedForCancel"
+    *ngIf="subscriptionMarkedForCancel"
   >
     <p>{{ "subscriptionPendingCanceled" | i18n }}</p>
     <button bitButton buttonType="secondary" [bitAction]="reinstate" type="button">
@@ -51,7 +51,7 @@
             <span class="text-capitalize">{{
               isSponsoredSubscription ? "sponsored" : subscription.status || "-"
             }}</span>
-            <span bitBadge badgeType="warning" *ngIf="subscription?.markedForCancel">{{
+            <span bitBadge badgeType="warning" *ngIf="subscriptionMarkedForCancel">{{
               "pendingCancellation" | i18n
             }}</span>
           </dd>
@@ -112,7 +112,7 @@
   <p class="mb-4">{{ subscriptionDesc }}</p>
   <ng-container
     *ngIf="
-      subscription && canAdjustSeats && !subscription.cancelled && !subscription?.markedForCancel
+      subscription && canAdjustSeats && !subscription.cancelled && !subscriptionMarkedForCancel
     "
   >
     <div class="mt-3">
@@ -150,7 +150,7 @@
       {{ storagePercentage / 100 | percent }}
     </div>
   </div>
-  <ng-container *ngIf="subscription && !subscription.cancelled && !subscription?.markedForCancel">
+  <ng-container *ngIf="subscription && !subscription.cancelled && !subscriptionMarkedForCancel">
     <div class="mt-3">
       <div class="d-flex" *ngIf="!showAdjustStorage">
         <button bitButton buttonType="secondary" type="button" (click)="adjustStorage(true)">
@@ -222,7 +222,7 @@
       [bitAction]="cancel"
       type="button"
       class="ml-1"
-      *ngIf="subscription && !subscription.cancelled && !subscription?.markedForCancel"
+      *ngIf="subscription && !subscription.cancelled && !subscriptionMarkedForCancel"
     >
       {{ "cancelSubscription" | i18n }}
     </button>

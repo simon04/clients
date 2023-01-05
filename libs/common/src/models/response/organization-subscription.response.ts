@@ -24,8 +24,4 @@ export class OrganizationSubscriptionResponse extends OrganizationResponse {
         : new BillingSubscriptionUpcomingInvoiceResponse(upcomingInvoice);
     this.expiration = this.getResponseProperty("Expiration");
   }
-
-  isExpired() {
-    return this.expiration != null && new Date(this.expiration) < new Date();
-  }
 }

@@ -175,6 +175,12 @@ export class OrganizationSubscriptionCloudComponent implements OnInit, OnDestroy
     }
   }
 
+  get subscriptionMarkedForCancel() {
+    return (
+      this.subscription != null && !this.subscription.cancelled && this.subscription.cancelAtEndDate
+    );
+  }
+
   cancel = async () => {
     if (this.loading) {
       return;

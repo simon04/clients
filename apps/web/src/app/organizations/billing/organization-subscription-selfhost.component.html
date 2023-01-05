@@ -29,7 +29,7 @@
     <dt>{{ "expiration" | i18n }}</dt>
     <dd *ngIf="sub.expiration">
       {{ sub.expiration | date: "mediumDate" }}
-      <span *ngIf="sub.isExpired()" class="text-danger ml-2">
+      <span *ngIf="isExpired" class="text-danger ml-2">
         <i class="bwi bwi-exclamation-triangle" aria-hidden="true"></i>
         {{ "licenseIsExpired" | i18n }}
       </span>

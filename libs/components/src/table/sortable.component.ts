@@ -1,5 +1,5 @@
 import { coerceBooleanProperty } from "@angular/cdk/coercion";
-import { Component, HostBinding, HostListener, Input, OnInit } from "@angular/core";
+import { Component, HostBinding, Input, OnInit } from "@angular/core";
 
 import { Sort } from "./table-data-source";
 import { TableComponent } from "./table.component";
@@ -8,15 +8,14 @@ import { TableComponent } from "./table.component";
   selector: "th[bitSortable]",
   template: `
     <button
-      class="tw-border-none tw-bg-transparent tw-p-0 tw-font-bold tw-text-muted"
+      class="tw-flex tw-h-full tw-w-full tw-items-center tw-border-none tw-bg-transparent tw-p-0 tw-font-bold tw-text-muted"
       [attr.aria-pressed]="isActive.toString()"
+      (click)="setActive()"
     >
       <ng-content></ng-content>
+      <i class="bwi tw-ml-2 tw-w-0" [ngClass]="icon"></i>
     </button>
-    <i *ngIf="isActive" class="bwi tw-ml-2 tw-w-0" [ngClass]="icon"></i>
-    <i *ngIf="!isActive" class="-tw-w-0 tw-ml-2"></i>
   `,
-  // The 2nd <i> is to prevent the column from shifting when the icon is added
 })
 export class SortableComponent implements OnInit {
   /**
@@ -55,11 +54,7 @@ export class SortableComponent implements OnInit {
     return this.sort.direction === "asc" ? "ascending" : "descending";
   }
 
-  @HostListener("click") onClick() {
-    this.setActive();
-  }
-
-  private setActive() {
+  protected setActive() {
     if (this.table.dataSource) {
       const direction = this.isActive && this.direction === "asc" ? "desc" : "asc";
       this.table.dataSource.sort = { column: this.bitSortable, direction: direction, fn: this.fn };
@@ -79,6 +74,9 @@ export class SortableComponent implements OnInit {
   }
 
   get icon() {
-    return this.direction === "asc" ? "bwi-arrow-circle-down" : "bwi-arrow-circle-up";
+    if (!this.isActive) {
+      return "";
+    }
+    return this.direction === "asc" ? "bwi-chevron-up" : "bwi-angle-down";
   }
 }

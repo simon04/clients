@@ -10,13 +10,13 @@ import { SelectItemView } from "@bitwarden/components/src/multi-select/models/se
 import { ServiceAccountService } from "../../service-accounts/service-account.service";
 
 @Component({
-  selector: "sm-project-access-selector",
-  templateUrl: "./project-access-selector.component.html",
+  selector: "sm-access-selector",
+  templateUrl: "./access-selector.component.html",
 })
-export class ProjectAccessSelectorComponent implements OnInit, OnDestroy {
+export class AccessSelectorComponent implements OnInit, OnDestroy {
   @Input() label: string;
   @Input() hint: string;
-  @Input() selectorType: "people" | "service-accounts";
+  @Input() selectorType: "projectPeople" | "projectServiceAccounts";
 
   formGroup = new FormGroup({
     multiSelect: new FormControl([], [Validators.required]),
@@ -57,7 +57,7 @@ export class ProjectAccessSelectorComponent implements OnInit, OnDestroy {
   };
 
   private async setMultiSelect(organizationId: string): Promise<void> {
-    if (this.selectorType === "people") {
+    if (this.selectorType === "projectPeople") {
       const orgUsers = await this.getUserDetails(organizationId);
       const orgGroups = await this.getGroupDetails(organizationId);
       this.baseItems = [...orgUsers, ...orgGroups];

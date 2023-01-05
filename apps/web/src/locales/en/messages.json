@@ -5881,5 +5881,11 @@
   },
   "projectServiceAccountsSelectHint": {
     "message": "Type or select service accounts"
+  },
+  "projectEmptyPeopleAccessPolicies": {
+    "message": "Add people or groups to start collaborating"
+  },
+  "groupSlashUser": {
+    "message": "Group/User"
   }
 }

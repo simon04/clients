@@ -4,7 +4,6 @@ import { SecretsManagerSharedModule } from "../shared/sm-shared.module";
 
 import { ProjectDeleteDialogComponent } from "./dialog/project-delete-dialog.component";
 import { ProjectDialogComponent } from "./dialog/project-dialog.component";
-import { ProjectAccessSelectorComponent } from "./project/project-access-selector.component";
 import { ProjectPeopleComponent } from "./project/project-people.component";
 import { ProjectSecretsComponent } from "./project/project-secrets.component";
 import { ProjectServiceAccountsComponent } from "./project/project-service-accounts.component";
@@ -19,7 +18,6 @@ import { ProjectsComponent } from "./projects/projects.component";
     ProjectsComponent,
     ProjectsListComponent,
     ProjectDialogComponent,
-    ProjectAccessSelectorComponent,
     ProjectDeleteDialogComponent,
     ProjectPeopleComponent,
     ProjectServiceAccountsComponent,

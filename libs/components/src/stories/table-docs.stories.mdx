@@ -68,8 +68,7 @@ the `default`.
 It's also possible to define a custom sorting function by setting the `fn` input.
 
 ```ts
-const sortFn = (a: T, b: T, direction: SortDirection) =>
-  a.id > b.id && direction == "asc" ? 1 : -1;
+const sortFn = (a: T, b: T) => (a.id > b.id ? 1 : -1);
 ```
 
 ### Virtual Scrolling

@@ -11,7 +11,6 @@ import { OrganizationBillingRoutingModule } from "./organization-billing-routing
 import { OrganizationBillingTabComponent } from "./organization-billing-tab.component";
 import { OrganizationSubscriptionCloudComponent } from "./organization-subscription-cloud.component";
 import { OrganizationSubscriptionSelfhostComponent } from "./organization-subscription-selfhost.component";
-import { OrganizationSubscriptionComponent } from "./organization-subscription.component";
 import { SubscriptionHiddenComponent } from "./subscription-hidden.component";
 
 @NgModule({
@@ -22,7 +21,6 @@ import { SubscriptionHiddenComponent } from "./subscription-hidden.component";
     ChangePlanComponent,
     DownloadLicenseComponent,
     OrganizationBillingTabComponent,
-    OrganizationSubscriptionComponent,
     OrgBillingHistoryViewComponent,
     OrganizationSubscriptionSelfhostComponent,
     OrganizationSubscriptionCloudComponent,

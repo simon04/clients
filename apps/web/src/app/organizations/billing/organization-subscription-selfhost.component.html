@@ -58,13 +58,17 @@
     {{ "manageSubscription" | i18n }}
   </a>
   <form>
-    <bit-radio-group>
+    <bit-radio-group [formControl]="licenseOptionsControl">
       <h2 class="mt-5">
         {{ "licenseAndBillingManagement" | i18n }}
       </h2>
-      <bit-radio-button id="automatic-sync" class="tw-block">{{
-        "automaticSync" | i18n
-      }}</bit-radio-button>
+      <bit-radio-button
+        id="automatic-sync"
+        [value]="licenseOptions.SYNC"
+        [attr.disabled]="disableLicenseSyncControl"
+        class="tw-block"
+        >{{ "automaticSync" | i18n }}</bit-radio-button
+      >
       <p>
         {{ "billingSyncDesc" | i18n }}
       </p>
@@ -80,7 +84,7 @@
         {{ "syncLicense" | i18n }}
       </button>
 
-      <bit-radio-button id="manual-upload" class="tw-block">{{
+      <bit-radio-button id="manual-upload" [value]="licenseOptions.UPLOAD" class="tw-block">{{
         "manualUpload" | i18n
       }}</bit-radio-button>
       <p>

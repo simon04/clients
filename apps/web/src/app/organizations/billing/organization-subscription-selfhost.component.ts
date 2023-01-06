@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
+import { FormControl } from "@angular/forms";
 import { ActivatedRoute } from "@angular/router";
 import { concatMap, takeUntil, Subject } from "rxjs";
 
@@ -20,6 +21,11 @@ import {
   BillingSyncKeyModalData,
 } from "../../settings/billing-sync-key.component";
 
+enum LicenseOptions {
+  SYNC = 0,
+  UPLOAD = 1,
+}
+
 @Component({
   selector: "app-org-subscription-selfhost",
   templateUrl: "organization-subscription-selfhost.component.html",
@@ -29,7 +35,10 @@ export class OrganizationSubscriptionSelfhostComponent implements OnInit, OnDest
   organizationId: string;
   userOrg: Organization;
   showUpdateLicense = false;
-  showBillingSyncKey = false;
+
+  licenseOptionsControl = new FormControl<LicenseOptions>(LicenseOptions.SYNC);
+  licenseOptions = LicenseOptions;
+  disableLicenseSyncControl = true;
 
   firstLoaded = false;
   loading = false;
@@ -61,14 +70,20 @@ export class OrganizationSubscriptionSelfhostComponent implements OnInit, OnDest
       )
       .subscribe();
 
-    this.showBillingSyncKey = await this.apiService.getCloudCommunicationsEnabled();
+    const cloudCommunicationEnabled = await this.apiService.getCloudCommunicationsEnabled();
 
-    if (this.showBillingSyncKey) {
+    if (cloudCommunicationEnabled) {
       this.existingBillingSyncConnection = await this.apiService.getOrganizationConnection(
         this.organizationId,
         OrganizationConnectionType.CloudBillingSync,
         BillingSyncConfigApi
       );
+
+      if (this.existingBillingSyncConnection != null) {
+        this.licenseOptionsControl.setValue(LicenseOptions.SYNC);
+      }
+    } else {
+      this.disableLicenseSyncControl = true;
     }
   }
 

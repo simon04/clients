@@ -179,11 +179,7 @@ export class LoginComponent extends BaseLoginComponent implements OnDestroy {
   }
 
   private async checkSelfHosted() {
-    const baseUrl = this.environmentService.getUrls().base;
-
-    this.selfHosted = this.environmentService.hasBaseUrl()
-      ? baseUrl !== "http://vault.qa.bitwarden.pw" && baseUrl != "https://vault.qa.bitwarden.pw"
-      : false;
+    this.selfHosted = this.environmentService.isSelfHosted();
 
     await this.getLoginWithDevice(this.loggedEmail);
   }

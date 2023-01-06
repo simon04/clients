@@ -4,9 +4,11 @@ import { concatMap, takeUntil, Subject } from "rxjs";
 
 import { ModalConfig, ModalService } from "@bitwarden/angular/services/modal.service";
 import { ApiService } from "@bitwarden/common/abstractions/api.service";
+import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { MessagingService } from "@bitwarden/common/abstractions/messaging.service";
 import { OrganizationApiServiceAbstraction } from "@bitwarden/common/abstractions/organization/organization-api.service.abstraction";
 import { OrganizationService } from "@bitwarden/common/abstractions/organization/organization.service.abstraction";
+import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { OrganizationConnectionType } from "@bitwarden/common/enums/organizationConnectionType";
 import { BillingSyncConfigApi } from "@bitwarden/common/models/api/billing-sync-config.api";
 import { Organization } from "@bitwarden/common/models/domain/organization";
@@ -42,7 +44,9 @@ export class OrganizationSubscriptionSelfhostComponent implements OnInit, OnDest
     private apiService: ApiService,
     private organizationService: OrganizationService,
     private route: ActivatedRoute,
-    private organizationApiService: OrganizationApiServiceAbstraction
+    private organizationApiService: OrganizationApiServiceAbstraction,
+    private platformUtilsService: PlatformUtilsService,
+    private i18nService: I18nService
   ) {}
 
   async ngOnInit() {
@@ -114,6 +118,11 @@ export class OrganizationSubscriptionSelfhostComponent implements OnInit, OnDest
     };
 
     this.modalService.open(BillingSyncKeyComponent, modalConfig);
+  }
+
+  async syncLicense() {
+    await this.organizationApiService.selfHostedSyncLicense(this.organizationId);
+    this.platformUtilsService.showToast("success", null, this.i18nService.t("syncLicenseSuccess"));
   }
 
   get billingSyncSetUp() {

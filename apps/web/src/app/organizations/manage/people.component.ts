@@ -583,18 +583,19 @@ export class PeopleComponent
   };
 
   simpleDialogPrimaryNonLocalizedOpts: SimpleDialogOptions = {
-    title: "vaultTimeoutPolicyInEffect",
-    content: "vaultTimeoutPolicyInEffect",
+    title: {
+      key: "vaultTimeoutPolicyInEffect",
+      placeholderValues: [55, 66],
+    },
+    content: {
+      key: "premiumPrice",
+    },
     type: SimpleDialogType.PRIMARY,
     icon: undefined,
     isLocalized: false,
     acceptButtonText: "vaultTimeoutPolicyInEffect",
     cancelButtonText: "vaultTimeoutPolicyInEffect",
     disableClose: undefined,
-    titleI18nPlaceholderValues: [55, 65],
-    contentI18nPlaceholderValues: [55, 65],
-    acceptButtonTextI18nPlaceholderValues: [55, 65],
-    cancelButtonTextI18nPlaceholderValues: [55, 65],
   };
 
   openSimpleDialog(simpleDialogOpts: SimpleDialogOptions) {

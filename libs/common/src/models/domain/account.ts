@@ -234,6 +234,7 @@ export class AccountSettings {
   vaultTimeoutAction?: string = "lock";
   serverConfig?: ServerConfigData;
   approveLoginRequests?: boolean;
+  avatarColor?: string;
 
   static fromJSON(obj: Jsonify<AccountSettings>): AccountSettings {
     if (obj == null) {

@@ -98,8 +98,8 @@ export class OrganizationSubscriptionSelfhostComponent implements OnInit, OnDest
     }
   }
 
-  async manageBillingSyncSelfHosted() {
-    await this.modalService.open(BillingSyncKeyComponent, {
+  manageBillingSyncSelfHosted() {
+    this.modalService.open(BillingSyncKeyComponent, {
       data: {
         entityId: this.organizationId,
         existingConnectionId: this.existingBillingSyncConnection?.id,

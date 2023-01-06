@@ -1,100 +1,19 @@
 <div
   class="tw-my-4 tw-flex tw-max-h-screen tw-w-96 tw-max-w-90vw tw-flex-col tw-overflow-hidden tw-rounded tw-border tw-border-solid tw-border-secondary-300 tw-bg-text-contrast tw-text-main"
 >
-  <ng-container *ngIf="simpleDialogOpts; else fallBackLayout">
-    <div [class]="dialogHeaderContainerClasses">
-      <ng-container [ngSwitch]="simpleDialogOpts.type">
-        <ng-container *ngSwitchCase="SimpleDialogType.PRIMARY">
-          <i
-            class="bwi tw-text-3xl tw-text-primary-500"
-            [ngClass]="simpleDialogOpts.icon ? simpleDialogOpts.icon : 'bwi-business'"
-            aria-hidden="true"
-          ></i>
-        </ng-container>
-        <ng-container *ngSwitchCase="SimpleDialogType.SUCCESS">
-          <i
-            class="bwi tw-text-3xl tw-text-success"
-            [ngClass]="simpleDialogOpts.icon ? simpleDialogOpts.icon : 'bwi-star'"
-            aria-hidden="true"
-          ></i>
-        </ng-container>
-        <ng-container *ngSwitchCase="SimpleDialogType.INFO">
-          <i
-            class="bwi tw-text-3xl tw-text-info"
-            [ngClass]="simpleDialogOpts.icon ? simpleDialogOpts.icon : 'bwi-info-circle'"
-            aria-hidden="true"
-          ></i>
-        </ng-container>
-        <ng-container *ngSwitchCase="SimpleDialogType.WARNING">
-          <i
-            class="bwi tw-text-3xl tw-text-warning"
-            [ngClass]="simpleDialogOpts.icon ? simpleDialogOpts.icon : 'bwi-exclamation-triangle'"
-            aria-hidden="true"
-          ></i>
-        </ng-container>
-        <ng-container *ngSwitchCase="SimpleDialogType.DANGER">
-          <i
-            class="bwi tw-text-3xl tw-text-danger"
-            [ngClass]="simpleDialogOpts.icon ? simpleDialogOpts.icon : 'bwi-error'"
-            aria-hidden="true"
-          ></i>
-        </ng-container>
-      </ng-container>
-
-      <h1 bitDialogTitleContainer class="tw-mb-0 tw-text-base tw-font-semibold">
-        {{ simpleDialogOpts.title }}
-      </h1>
-    </div>
-    <div [class]="dialogContentContainerClasses">
-      {{ simpleDialogOpts.content }}
-    </div>
-    <div [class]="dialogFooterContainerClasses">
-      <button
-        bitButton
-        buttonType="primary"
-        (click)="dialogRef.close(SimpleDialogCloseType.ACCEPT)"
-      >
-        <ng-container *ngIf="simpleDialogOpts.acceptButtonText">
-          {{ simpleDialogOpts.acceptButtonText }}
-        </ng-container>
-        <ng-container *ngIf="!simpleDialogOpts.acceptButtonText">
-          {{ "yes" | i18n }}
-        </ng-container>
-      </button>
-      <button
-        *ngIf="simpleDialogOpts.cancelButtonText !== null"
-        bitButton
-        buttonType="secondary"
-        (click)="dialogRef.close(SimpleDialogCloseType.CANCEL)"
-      >
-        <ng-container *ngIf="simpleDialogOpts.cancelButtonText">
-          {{ simpleDialogOpts.cancelButtonText }}
-        </ng-container>
-        <ng-container *ngIf="!simpleDialogOpts.cancelButtonText">
-          <!--  if cancelButtonText empty, default to "No", unless acceptButtonText is overriden, 
-            in which case default to "Cancel" -->
-          {{ simpleDialogOpts.acceptButtonText ? ("cancel" | i18n) : ("no" | i18n) }}
-        </ng-container>
-      </button>
-    </div>
-  </ng-container>
-
-  <!-- Backwards compatible layout -->
-  <ng-template #fallBackLayout>
-    <div [class]="dialogHeaderContainerClasses">
-      <ng-content *ngIf="hasIcon; else elseBlock" select="[bit-dialog-icon]"></ng-content>
-      <ng-template #elseBlock>
-        <i class="bwi bwi-exclamation-triangle tw-text-3xl tw-text-warning" aria-hidden="true"></i>
-      </ng-template>
-      <h1 bitDialogTitleContainer class="tw-mb-0 tw-text-base tw-font-semibold">
-        <ng-content select="[bitDialogTitle]"></ng-content>
-      </h1>
-    </div>
-    <div [class]="dialogContentContainerClasses">
-      <ng-content select="[bitDialogContent]"></ng-content>
-    </div>
-    <div [class]="dialogFooterContainerClasses">
-      <ng-content select="[bitDialogFooter]"></ng-content>
-    </div>
-  </ng-template>
+  <div class="tw-flex tw-flex-col tw-items-center tw-gap-2 tw-px-4 tw-pt-4 tw-text-center">
+    <ng-content *ngIf="hasIcon; else elseBlock" select="[bit-dialog-icon]"></ng-content>
+    <ng-template #elseBlock>
+      <i class="bwi bwi-exclamation-triangle tw-text-3xl tw-text-warning" aria-hidden="true"></i>
+    </ng-template>
+    <h1 bitDialogTitleContainer class="tw-mb-0 tw-text-base tw-font-semibold">
+      <ng-content select="[bitDialogTitle]"></ng-content>
+    </h1>
+  </div>
+  <div class="tw-overflow-y-auto tw-px-4 tw-pt-2 tw-pb-4 tw-text-center tw-text-base">
+    <ng-content select="[bitDialogContent]"></ng-content>
+  </div>
+  <div class="tw-border-0 tw-border-t tw-border-solid tw-border-secondary-300 tw-p-4">
+    <ng-content select="[bitDialogFooter]"></ng-content>
+  </div>
 </div>

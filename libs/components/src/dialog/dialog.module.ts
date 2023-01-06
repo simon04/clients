@@ -28,7 +28,6 @@ import { IconDirective, SimpleDialogComponent } from "./simple-dialog/simple-dia
     SimpleDialogComponent,
     DialogCloseDirective,
     IconDirective,
-    ConfigurableSimpleDialogComponent,
   ],
   providers: [DialogService],
 })

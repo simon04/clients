@@ -3,10 +3,11 @@ import { DataSource } from "@angular/cdk/collections";
 import { BehaviorSubject, combineLatest, map, Observable, Subscription } from "rxjs";
 
 export type SortDirection = "asc" | "desc";
+export type SortFn = (a: any, b: any) => number;
 export type Sort = {
   column?: string;
   direction: SortDirection;
-  fn?: (a: any, b: any) => number;
+  fn?: SortFn;
 };
 
 // Loosely based on CDK TableDataSource
@@ -118,7 +119,7 @@ export class TableDataSource<T> extends DataSource<T> {
     return data.sort((a, b) => {
       // If a custom sort function is provided, use it instead of the default.
       if (sort.fn) {
-        return sort.fn(a, b) * (direction == "asc" ? 1 : -1);
+        return sort.fn(a, b) * (direction === "asc" ? 1 : -1);
       }
 
       let valueA = this.sortingDataAccessor(a, column);
@@ -157,7 +158,7 @@ export class TableDataSource<T> extends DataSource<T> {
         comparatorResult = -1;
       }
 
-      return comparatorResult * (direction == "asc" ? 1 : -1);
+      return comparatorResult * (direction === "asc" ? 1 : -1);
     });
   }
 }

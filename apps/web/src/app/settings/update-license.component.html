@@ -1,8 +1,7 @@
-<button (click)="test()">Test</button>
 <form #form (ngSubmit)="submit()" [appApiAction]="formPromise" ngNativeValidate>
   <div class="form-group">
     <label for="file" class="sr-only">{{ "licenseFile" | i18n }}</label>
-    <input type="file" id="file" class="form-control-file" name="file" />
+    <input type="file" id="file" class="form-control-file" name="file" required />
     <small class="form-text text-muted">{{
       "licenseFileDesc"
         | i18n

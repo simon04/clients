@@ -25,10 +25,6 @@ export class UpdateLicenseComponent {
     private organizationApiService: OrganizationApiServiceAbstraction
   ) {}
 
-  async test() {
-    await this.organizationApiService.selfHostedSyncLicense(this.organizationId);
-  }
-
   async submit() {
     const fileEl = document.getElementById("file") as HTMLInputElement;
     const files = fileEl.files;

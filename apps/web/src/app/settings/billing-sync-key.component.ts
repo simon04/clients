@@ -10,6 +10,13 @@ import { BillingSyncConfigRequest } from "@bitwarden/common/models/request/billi
 import { OrganizationConnectionRequest } from "@bitwarden/common/models/request/organization-connection.request";
 import { OrganizationConnectionResponse } from "@bitwarden/common/models/response/organization-connection.response";
 
+export interface BillingSyncKeyModalData {
+  entityId: string;
+  existingConnectionId: string;
+  billingSyncKey: string;
+  setParentConnection: (connection: OrganizationConnectionResponse<BillingSyncConfigApi>) => void;
+}
+
 @Component({
   selector: "app-billing-sync-key",
   templateUrl: "billing-sync-key.component.html",
@@ -26,9 +33,9 @@ export class BillingSyncKeyComponent {
     private apiService: ApiService,
     private logService: LogService,
     protected modalRef: ModalRef,
-    config: ModalConfig
+    config: ModalConfig<BillingSyncKeyModalData>
   ) {
-    this.entityId = config.data.organizationId;
+    this.entityId = config.data.entityId;
     this.existingConnectionId = config.data.existingConnectionId;
     this.billingSyncKey = config.data.billingSyncKey;
     this.setParentConnection = config.data.setParentConnection;

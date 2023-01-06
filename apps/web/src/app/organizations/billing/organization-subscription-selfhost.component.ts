@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { concatMap, takeUntil, Subject } from "rxjs";
 
-import { ModalService } from "@bitwarden/angular/services/modal.service";
+import { ModalConfig, ModalService } from "@bitwarden/angular/services/modal.service";
 import { ApiService } from "@bitwarden/common/abstractions/api.service";
 import { MessagingService } from "@bitwarden/common/abstractions/messaging.service";
 import { OrganizationApiServiceAbstraction } from "@bitwarden/common/abstractions/organization/organization-api.service.abstraction";
@@ -13,7 +13,10 @@ import { Organization } from "@bitwarden/common/models/domain/organization";
 import { OrganizationConnectionResponse } from "@bitwarden/common/models/response/organization-connection.response";
 import { OrganizationSubscriptionResponse } from "@bitwarden/common/models/response/organization-subscription.response";
 
-import { BillingSyncKeyComponent } from "../../settings/billing-sync-key.component";
+import {
+  BillingSyncKeyComponent,
+  BillingSyncKeyModalData,
+} from "../../settings/billing-sync-key.component";
 
 @Component({
   selector: "app-org-subscription-selfhost",
@@ -99,7 +102,7 @@ export class OrganizationSubscriptionSelfhostComponent implements OnInit, OnDest
   }
 
   manageBillingSyncSelfHosted() {
-    this.modalService.open(BillingSyncKeyComponent, {
+    const modalConfig: ModalConfig<BillingSyncKeyModalData> = {
       data: {
         entityId: this.organizationId,
         existingConnectionId: this.existingBillingSyncConnection?.id,
@@ -108,7 +111,9 @@ export class OrganizationSubscriptionSelfhostComponent implements OnInit, OnDest
           this.existingBillingSyncConnection = connection;
         },
       },
-    });
+    };
+
+    this.modalService.open(BillingSyncKeyComponent, modalConfig);
   }
 
   get billingSyncSetUp() {

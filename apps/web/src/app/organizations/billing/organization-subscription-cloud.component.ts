@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { concatMap, Subject, takeUntil } from "rxjs";
 
-import { ModalService } from "@bitwarden/angular/services/modal.service";
+import { ModalConfig, ModalService } from "@bitwarden/angular/services/modal.service";
 import { ApiService } from "@bitwarden/common/abstractions/api.service";
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { LogService } from "@bitwarden/common/abstractions/log.service";
@@ -14,7 +14,10 @@ import { PlanType } from "@bitwarden/common/enums/planType";
 import { Organization } from "@bitwarden/common/models/domain/organization";
 import { OrganizationSubscriptionResponse } from "@bitwarden/common/models/response/organization-subscription.response";
 
-import { BillingSyncApiKeyComponent } from "./billing-sync-api-key.component";
+import {
+  BillingSyncApiKeyComponent,
+  BillingSyncApiModalData,
+} from "./billing-sync-api-key.component";
 
 @Component({
   selector: "app-org-subscription-cloud",
@@ -247,12 +250,13 @@ export class OrganizationSubscriptionCloudComponent implements OnInit, OnDestroy
   }
 
   async manageBillingSync() {
-    const modalRef = this.modalService.open(BillingSyncApiKeyComponent, {
+    const modalConfig: ModalConfig<BillingSyncApiModalData> = {
       data: {
         organizationId: this.organizationId,
         hasBillingToken: this.hasBillingSyncToken,
       },
-    });
+    };
+    const modalRef = this.modalService.open(BillingSyncApiKeyComponent, modalConfig);
 
     modalRef.onClosed
       .pipe(

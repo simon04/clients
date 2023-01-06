@@ -11,6 +11,11 @@ import { OrganizationApiKeyRequest } from "@bitwarden/common/models/request/orga
 import { ApiKeyResponse } from "@bitwarden/common/models/response/api-key.response";
 import { Verification } from "@bitwarden/common/types/verification";
 
+export interface BillingSyncApiModalData {
+  organizationId: string;
+  hasBillingToken: boolean;
+}
+
 @Component({
   selector: "app-billing-sync-api-key",
   templateUrl: "billing-sync-api-key.component.html",
@@ -32,7 +37,7 @@ export class BillingSyncApiKeyComponent {
     private platformUtilsService: PlatformUtilsService,
     private i18nService: I18nService,
     private organizationApiService: OrganizationApiServiceAbstraction,
-    modalConfig: ModalConfig
+    modalConfig: ModalConfig<BillingSyncApiModalData>
   ) {
     this.organizationId = modalConfig.data.organizationId;
     this.hasBillingToken = modalConfig.data.hasBillingToken;

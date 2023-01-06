@@ -59,7 +59,6 @@ import { MultithreadEncryptServiceImplementation } from "@bitwarden/common/servi
 import { EventCollectionService } from "@bitwarden/common/services/event/event-collection.service";
 import { EventUploadService } from "@bitwarden/common/services/event/event-upload.service";
 import { ExportService } from "@bitwarden/common/services/export.service";
-import { FileUploadService } from "@bitwarden/common/services/fileUpload.service";
 import { FolderApiService } from "@bitwarden/common/services/folder/folder-api.service";
 import { KeyConnectorService } from "@bitwarden/common/services/keyConnector.service";
 import { MemoryStorageService } from "@bitwarden/common/services/memoryStorage.service";
@@ -69,6 +68,7 @@ import { PolicyApiService } from "@bitwarden/common/services/policy/policy-api.s
 import { ProviderService } from "@bitwarden/common/services/provider.service";
 import { SearchService } from "@bitwarden/common/services/search.service";
 import { SendApiService } from "@bitwarden/common/services/send/send-api.service";
+import { SendFileUploadService } from "@bitwarden/common/services/send/send-file-upload.service";
 import { StateMigrationService } from "@bitwarden/common/services/stateMigration.service";
 import { SyncService } from "@bitwarden/common/services/sync/sync.service";
 import { SyncNotifierService } from "@bitwarden/common/services/sync/syncNotifier.service";
@@ -158,6 +158,7 @@ export default class MainBackground {
   popupUtilsService: PopupUtilsService;
   sendService: InternalSendServiceAbstraction;
   fileUploadService: FileUploadServiceAbstraction;
+  sendFileUploadService: SendFileUploadService;
   organizationService: InternalOrganizationServiceAbstraction;
   providerService: ProviderServiceAbstraction;
   keyConnectorService: KeyConnectorServiceAbstraction;
@@ -305,20 +306,19 @@ export default class MainBackground {
       (expired: boolean) => this.logout(expired)
     );
     this.settingsService = new BrowserSettingsService(this.stateService);
-    this.sendApiService = new SendApiService(this.apiService);
-    this.fileUploadService = new FileUploadService(
-      this.logService,
-      this.apiService,
-      this.sendApiService
-    );
+    this.fileUploadService = new SendFileUploadService(this.logService);
     this.sendService = new BrowserSendService(
       this.cryptoService,
       this.i18nService,
       this.cryptoFunctionService,
-      this.stateService,
-      this.sendApiService,
-      this.fileUploadService
+      this.stateService
     );
+    this.sendApiService = new SendApiService(
+      this.apiService,
+      this.sendFileUploadService,
+      this.sendService
+    );
+    // this.fileUploadService = new FileUploadService(this.logService);
     this.cipherService = new CipherService(
       this.cryptoService,
       this.settingsService,

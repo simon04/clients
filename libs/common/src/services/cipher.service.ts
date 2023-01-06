@@ -740,12 +740,7 @@ export class CipherService implements CipherServiceAbstraction {
     try {
       const uploadDataResponse = await this.apiService.postCipherAttachment(cipher.id, request);
       response = admin ? uploadDataResponse.cipherMiniResponse : uploadDataResponse.cipherResponse;
-      await this.fileUploadService.uploadCipherAttachment(
-        admin,
-        uploadDataResponse,
-        encFileName,
-        encData
-      );
+      // await this.fileUploadService.upload(uploadDataResponse, encFileName, encData);
     } catch (e) {
       if (
         (e instanceof ErrorResponse && (e as ErrorResponse).statusCode === 404) ||

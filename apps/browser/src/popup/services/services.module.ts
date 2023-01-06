@@ -36,7 +36,6 @@ import { PolicyApiServiceAbstraction } from "@bitwarden/common/abstractions/poli
 import { PolicyService } from "@bitwarden/common/abstractions/policy/policy.service.abstraction";
 import { ProviderService } from "@bitwarden/common/abstractions/provider.service";
 import { SearchService as SearchServiceAbstraction } from "@bitwarden/common/abstractions/search.service";
-import { SendApiService } from "@bitwarden/common/abstractions/send/send-api.service.abstraction";
 import { SendService } from "@bitwarden/common/abstractions/send/send.service.abstraction";
 import { SettingsService } from "@bitwarden/common/abstractions/settings.service";
 import { StateService as BaseStateServiceAbstraction } from "@bitwarden/common/abstractions/state.service";
@@ -56,6 +55,7 @@ import { AuthService } from "@bitwarden/common/services/auth.service";
 import { ConsoleLogService } from "@bitwarden/common/services/consoleLog.service";
 import { LoginService } from "@bitwarden/common/services/login.service";
 import { SearchService } from "@bitwarden/common/services/search.service";
+import { SendApiService } from "@bitwarden/common/services/send/send-api.service";
 
 import MainBackground from "../../background/main.background";
 import { BrowserApi } from "../../browser/browserApi";
@@ -236,8 +236,17 @@ function getBgService<T>(service: keyof MainBackground) {
     {
       provide: SendApiService,
       useFactory: getBgService<SendApiService>("sendApiService"),
-      deps: [],
+      deps: [FileUploadService],
     },
+    // provide: SendApiServiceAbstraction,
+    // useFactory: (
+    //   apiService: ApiService,
+    //   fileUploadService: SendFileUploadService,
+    //   sendService: InternalSendService
+    // ) => {
+    //   return new SendApiService(apiService, fileUploadService, sendService);
+    // },
+    // deps: [ApiService, InternalSendService],
     { provide: SyncService, useFactory: getBgService<SyncService>("syncService"), deps: [] },
     {
       provide: SettingsService,
@@ -258,6 +267,23 @@ function getBgService<T>(service: keyof MainBackground) {
       deps: [],
     },
     { provide: ExportService, useFactory: getBgService<ExportService>("exportService"), deps: [] },
+    // {
+    //   provide: InternalSendService,
+    //   useFactory: (
+    //     cryptoService: CryptoService,
+    //     i18nService: I18nService,
+    //     cryptoFunctionService: CryptoFunctionService,
+    //     stateServiceAbstraction: StateServiceAbstraction
+    //   ) => {
+    //     return new BrowserSendService(
+    //       cryptoService,
+    //       i18nService,
+    //       cryptoFunctionService,
+    //       stateServiceAbstraction
+    //     );
+    //   },
+    //   deps: [CryptoService, I18nService, CryptoFunctionService, StateServiceAbstraction],
+    // },
     { provide: SendService, useFactory: getBgService<SendService>("sendService"), deps: [] },
     {
       provide: KeyConnectorService,

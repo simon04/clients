@@ -7,7 +7,7 @@ import { cryptoServiceFactory, CryptoServiceInitOptions } from "./crypto-service
 import { encryptServiceFactory, EncryptServiceInitOptions } from "./encrypt-service.factory";
 import { CachedServices, factory, FactoryOptions } from "./factory-options";
 import {
-  FileUploadServiceInitOptions,
+  SendFileUploadServiceInitOptions,
   fileUploadServiceFactory,
 } from "./file-upload-service.factory";
 import { i18nServiceFactory, I18nServiceInitOptions } from "./i18n-service.factory";
@@ -25,7 +25,7 @@ export type CipherServiceInitOptions = CipherServiceFactoryOptions &
   CryptoServiceInitOptions &
   SettingsServiceInitOptions &
   ApiServiceInitOptions &
-  FileUploadServiceInitOptions &
+  SendFileUploadServiceInitOptions &
   I18nServiceInitOptions &
   LogServiceInitOptions &
   StateServiceInitOptions &

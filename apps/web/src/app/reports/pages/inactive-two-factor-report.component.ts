@@ -8,7 +8,7 @@ import { PasswordRepromptService } from "@bitwarden/common/abstractions/password
 import { StateService } from "@bitwarden/common/abstractions/state.service";
 import { CipherType } from "@bitwarden/common/enums/cipherType";
 import { Utils } from "@bitwarden/common/misc/utils";
-import { CipherView } from "@bitwarden/common/models/view/cipherView";
+import { CipherView } from "@bitwarden/common/models/view/cipher.view";
 
 import { CipherReportComponent } from "./cipher-report.component";
 
@@ -86,7 +86,7 @@ export class InactiveTwoFactorReportComponent extends CipherReportComponent impl
     if (this.services.size > 0) {
       return;
     }
-    const response = await fetch(new Request("https://2fa.directory/api/v3/totp.json"));
+    const response = await fetch(new Request("https://api.2fa.directory/v3/totp.json"));
     if (response.status !== 200) {
       throw new Error();
     }

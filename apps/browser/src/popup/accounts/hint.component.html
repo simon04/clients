@@ -1,7 +1,9 @@
 <form #form (ngSubmit)="submit()" [appApiAction]="formPromise">
   <header>
     <div class="left">
-      <button type="button" routerLink="/login">{{ "cancel" | i18n }}</button>
+      <button type="button" routerLink="/login">
+        {{ "cancel" | i18n }}
+      </button>
     </div>
     <h1 class="center">
       <span class="title">{{ "passwordHint" | i18n }}</span>
@@ -22,6 +24,7 @@
             id="email"
             type="text"
             name="Email"
+            aria-describedby="emailHelp"
             [(ngModel)]="email"
             required
             appAutofocus
@@ -30,7 +33,7 @@
           />
         </div>
       </div>
-      <div class="box-footer">
+      <div id="emailHelp" class="box-footer">
         {{ "enterEmailToGetHint" | i18n }}
       </div>
     </div>

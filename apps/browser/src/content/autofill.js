@@ -40,6 +40,10 @@
   7. Remove "some useful globals" on window
   8. Add ability to autofill span[data-bwautofill] elements
   9. Add new handler, for new command that responds with page details in response callback
+  10. Handle sandbox iframe and sandbox rule in CSP
+  11. Work on array of saved urls instead of just one to determine if we should autofill non-https sites
+  12. Remove setting of attribute com.browser.browser.userEdited on user-inputs
+  13. Handle null value URLs in urlNotSecure
   */
 
   function collect(document, undefined) {
@@ -48,11 +52,6 @@
       // END MODIFICATION
 
       document.elementsByOPID = {};
-      document.addEventListener('input', function (inputevent) {
-          inputevent.a !== false &&
-              inputevent.target.tagName.toLowerCase() === 'input' &&
-              (inputevent.target.dataset['com.bitwarden.browser.userEdited'] = 'yes');
-      }, true);
 
       function getPageDetails(theDoc, oneShotId) {
           // start helpers
@@ -277,8 +276,6 @@
               addProp(field, 'title', getElementAttrValue(el, 'title'));
 
               // START MODIFICATION
-              addProp(field, 'userEdited', !!el.dataset['com.browser.browser.userEdited']);
-
               var elTagName = el.tagName.toLowerCase();
               addProp(field, 'tagName', elTagName);
 
@@ -630,15 +627,21 @@
           animateTheFilling = true;
 
       // Check if URL is not secure when the original saved one was
-      function urlNotSecure(savedURL) {
+      function urlNotSecure(savedURLs) {
           var passwordInputs = null;
-          if (!savedURL) {
+          if (!savedURLs) {
               return false;
           }
 
-          return 0 === savedURL.indexOf('https://') && 'http:' === document.location.protocol && (passwordInputs = document.querySelectorAll('input[type=password]'),
-              0 < passwordInputs.length && (confirmResult = confirm('Warning: This is an unsecured HTTP page, and any information you submit can potentially be seen and changed by others. This Login was originally saved on a secure (HTTPS) page.\\n\\nDo you still wish to fill this login?'),
+          return savedURLs.some(url => url?.indexOf('https://') === 0) && 'http:' === document.location.protocol && (passwordInputs = document.querySelectorAll('input[type=password]'),
+              0 < passwordInputs.length && (confirmResult = confirm('Warning: This is an unsecured HTTP page, and any information you submit can potentially be seen and changed by others. This Login was originally saved on a secure (HTTPS) page.\n\nDo you still wish to fill this login?'),
                   0 == confirmResult)) ? true : false;
+      }
+
+      // Detect if within an iframe, and the iframe is sandboxed
+      function isSandboxed() {
+          // self.origin is 'null' if inside a frame with sandboxed csp or iframe tag
+          return self.origin == null || self.origin === 'null';
       }
 
       function doFill(fillScript) {
@@ -653,7 +656,7 @@
               fillScriptProperties.delay_between_operations &&
               (operationDelayMs = fillScriptProperties.delay_between_operations);
 
-          if (urlNotSecure(fillScript.savedURL)) {
+          if (isSandboxed() || urlNotSecure(fillScript.savedUrls)) {
               return;
           }
 

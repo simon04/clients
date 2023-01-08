@@ -5,13 +5,16 @@ import { CipherService } from "@bitwarden/common/abstractions/cipher.service";
 import { CollectionService } from "@bitwarden/common/abstractions/collection.service";
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { LogService } from "@bitwarden/common/abstractions/log.service";
-import { OrganizationService } from "@bitwarden/common/abstractions/organization/organization.service.abstraction";
+import {
+  isNotProviderUser,
+  OrganizationService,
+} from "@bitwarden/common/abstractions/organization/organization.service.abstraction";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { OrganizationUserStatusType } from "@bitwarden/common/enums/organizationUserStatusType";
 import { Utils } from "@bitwarden/common/misc/utils";
 import { Organization } from "@bitwarden/common/models/domain/organization";
-import { CipherView } from "@bitwarden/common/models/view/cipherView";
-import { CollectionView } from "@bitwarden/common/models/view/collectionView";
+import { CipherView } from "@bitwarden/common/models/view/cipher.view";
+import { CollectionView } from "@bitwarden/common/models/view/collection.view";
 import { Checkable, isChecked } from "@bitwarden/common/types/checkable";
 
 @Directive()
@@ -54,7 +57,10 @@ export class ShareComponent implements OnInit, OnDestroy {
     this.organizations$ = this.organizationService.organizations$.pipe(
       map((orgs) => {
         return orgs
-          .filter((o) => o.enabled && o.status === OrganizationUserStatusType.Confirmed)
+          .filter(
+            (o) =>
+              o.enabled && o.status === OrganizationUserStatusType.Confirmed && isNotProviderUser(o)
+          )
           .sort(Utils.getSortFunction(this.i18nService, "name"));
       })
     );

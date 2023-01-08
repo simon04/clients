@@ -9,11 +9,18 @@ const buttonTypes: IconButtonType[] = [
   "primary",
   "secondary",
   "danger",
+  "light",
 ];
 
 export default {
   title: "Component Library/Icon Button",
   component: BitIconButtonComponent,
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/file/Zt3YSeb6E6lebAffrNLa0h/Tailwind-Component-Library?node-id=4369%3A16686",
+    },
+  },
   args: {
     bitIconButton: "bwi-plus",
     size: "default",
@@ -32,15 +39,15 @@ const Template: Story<BitIconButtonComponent> = (args: BitIconButtonComponent) =
       <tr>
         <td></td>
         <td *ngFor="let buttonType of buttonTypes" class="tw-capitalize tw-font-bold tw-p-4"
-          [class.tw-text-contrast]="buttonType === 'contrast'"
-          [class.tw-bg-primary-500]="buttonType === 'contrast'">{{buttonType}}</td>
+          [class.tw-text-contrast]="['contrast', 'light'].includes(buttonType)"
+          [class.tw-bg-primary-500]="['contrast', 'light'].includes(buttonType)">{{buttonType}}</td>
       </tr>
     </thead>
 
     <tbody>
       <tr>
         <td class="tw-font-bold tw-p-4 tw-text-left">Default</td>
-          <td *ngFor="let buttonType of buttonTypes" class="tw-p-2" [class.tw-bg-primary-500]="buttonType === 'contrast'">
+          <td *ngFor="let buttonType of buttonTypes" class="tw-p-2" [class.tw-bg-primary-500]="['contrast', 'light'].includes(buttonType)">
             <button
               [bitIconButton]="bitIconButton"
               [buttonType]="buttonType"
@@ -52,7 +59,7 @@ const Template: Story<BitIconButtonComponent> = (args: BitIconButtonComponent) =
 
       <tr>
         <td class="tw-font-bold tw-p-4 tw-text-left">Disabled</td>
-          <td *ngFor="let buttonType of buttonTypes" class="tw-p-2" [class.tw-bg-primary-500]="buttonType === 'contrast'">
+          <td *ngFor="let buttonType of buttonTypes" class="tw-p-2" [class.tw-bg-primary-500]="['contrast', 'light'].includes(buttonType)">
             <button
               [bitIconButton]="bitIconButton"
               [buttonType]="buttonType"
@@ -65,7 +72,7 @@ const Template: Story<BitIconButtonComponent> = (args: BitIconButtonComponent) =
 
       <tr>
         <td class="tw-font-bold tw-p-4 tw-text-left">Loading</td>
-          <td *ngFor="let buttonType of buttonTypes" class="tw-p-2" [class.tw-bg-primary-500]="buttonType === 'contrast'">
+          <td *ngFor="let buttonType of buttonTypes" class="tw-p-2" [class.tw-bg-primary-500]="['contrast', 'light'].includes(buttonType)">
             <button
               [bitIconButton]="bitIconButton"
               [buttonType]="buttonType"

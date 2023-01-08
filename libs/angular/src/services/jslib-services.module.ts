@@ -1,8 +1,11 @@
 import { Injector, LOCALE_ID, NgModule } from "@angular/core";
 
-import { AbstractEncryptService } from "@bitwarden/common/abstractions/abstractEncrypt.service";
-import { AccountApiService as AccountApiServiceAbstraction } from "@bitwarden/common/abstractions/account/account-api.service.abstraction";
-import { AccountService as AccountServiceAbstraction } from "@bitwarden/common/abstractions/account/account.service.abstraction";
+import { AccountApiService as AccountApiServiceAbstraction } from "@bitwarden/common/abstractions/account/account-api.service";
+import {
+  AccountService as AccountServiceAbstraction,
+  InternalAccountService,
+} from "@bitwarden/common/abstractions/account/account.service";
+import { AvatarUpdateService as AccountUpdateServiceAbstraction } from "@bitwarden/common/abstractions/account/avatar-update.service";
 import { AnonymousHubService as AnonymousHubServiceAbstraction } from "@bitwarden/common/abstractions/anonymousHub.service";
 import { ApiService as ApiServiceAbstraction } from "@bitwarden/common/abstractions/api.service";
 import { AppIdService as AppIdServiceAbstraction } from "@bitwarden/common/abstractions/appId.service";
@@ -15,8 +18,10 @@ import { ConfigApiServiceAbstraction } from "@bitwarden/common/abstractions/conf
 import { ConfigServiceAbstraction } from "@bitwarden/common/abstractions/config/config.service.abstraction";
 import { CryptoService as CryptoServiceAbstraction } from "@bitwarden/common/abstractions/crypto.service";
 import { CryptoFunctionService as CryptoFunctionServiceAbstraction } from "@bitwarden/common/abstractions/cryptoFunction.service";
+import { EncryptService } from "@bitwarden/common/abstractions/encrypt.service";
 import { EnvironmentService as EnvironmentServiceAbstraction } from "@bitwarden/common/abstractions/environment.service";
-import { EventService as EventServiceAbstraction } from "@bitwarden/common/abstractions/event.service";
+import { EventCollectionService as EventCollectionServiceAbstraction } from "@bitwarden/common/abstractions/event/event-collection.service";
+import { EventUploadService as EventUploadServiceAbstraction } from "@bitwarden/common/abstractions/event/event-upload.service";
 import { ExportService as ExportServiceAbstraction } from "@bitwarden/common/abstractions/export.service";
 import { FileUploadService as FileUploadServiceAbstraction } from "@bitwarden/common/abstractions/fileUpload.service";
 import { FolderApiServiceAbstraction } from "@bitwarden/common/abstractions/folder/folder-api.service.abstraction";
@@ -28,17 +33,22 @@ import { FormValidationErrorsService as FormValidationErrorsServiceAbstraction }
 import { I18nService as I18nServiceAbstraction } from "@bitwarden/common/abstractions/i18n.service";
 import { KeyConnectorService as KeyConnectorServiceAbstraction } from "@bitwarden/common/abstractions/keyConnector.service";
 import { LogService } from "@bitwarden/common/abstractions/log.service";
+import { LoginService as LoginServiceAbstraction } from "@bitwarden/common/abstractions/login.service";
 import { MessagingService as MessagingServiceAbstraction } from "@bitwarden/common/abstractions/messaging.service";
 import { NotificationsService as NotificationsServiceAbstraction } from "@bitwarden/common/abstractions/notifications.service";
+import { OrganizationUserService } from "@bitwarden/common/abstractions/organization-user/organization-user.service";
 import { OrganizationApiServiceAbstraction } from "@bitwarden/common/abstractions/organization/organization-api.service.abstraction";
-import { OrganizationService as OrganizationServiceAbstraction } from "@bitwarden/common/abstractions/organization/organization.service.abstraction";
+import {
+  InternalOrganizationService,
+  OrganizationService as OrganizationServiceAbstraction,
+} from "@bitwarden/common/abstractions/organization/organization.service.abstraction";
 import { PasswordGenerationService as PasswordGenerationServiceAbstraction } from "@bitwarden/common/abstractions/passwordGeneration.service";
 import { PasswordRepromptService as PasswordRepromptServiceAbstraction } from "@bitwarden/common/abstractions/passwordReprompt.service";
 import { PlatformUtilsService as PlatformUtilsServiceAbstraction } from "@bitwarden/common/abstractions/platformUtils.service";
 import { PolicyApiServiceAbstraction } from "@bitwarden/common/abstractions/policy/policy-api.service.abstraction";
 import {
-  PolicyService as PolicyServiceAbstraction,
   InternalPolicyService,
+  PolicyService as PolicyServiceAbstraction,
 } from "@bitwarden/common/abstractions/policy/policy.service.abstraction";
 import { ProviderService as ProviderServiceAbstraction } from "@bitwarden/common/abstractions/provider.service";
 import { SearchService as SearchServiceAbstraction } from "@bitwarden/common/abstractions/search.service";
@@ -59,10 +69,12 @@ import { ValidationService as ValidationServiceAbstraction } from "@bitwarden/co
 import { VaultTimeoutService as VaultTimeoutServiceAbstraction } from "@bitwarden/common/abstractions/vaultTimeout/vaultTimeout.service";
 import { VaultTimeoutSettingsService as VaultTimeoutSettingsServiceAbstraction } from "@bitwarden/common/abstractions/vaultTimeout/vaultTimeoutSettings.service";
 import { StateFactory } from "@bitwarden/common/factories/stateFactory";
+import { flagEnabled } from "@bitwarden/common/misc/flags";
 import { Account } from "@bitwarden/common/models/domain/account";
-import { GlobalState } from "@bitwarden/common/models/domain/globalState";
-import { AccountApiService } from "@bitwarden/common/services/account/account-api.service";
-import { AccountService } from "@bitwarden/common/services/account/account.service";
+import { GlobalState } from "@bitwarden/common/models/domain/global-state";
+import { AccountApiServiceImplementation } from "@bitwarden/common/services/account/account-api.service";
+import { AccountServiceImplementation } from "@bitwarden/common/services/account/account.service";
+import { AvatarUpdateService } from "@bitwarden/common/services/account/avatar-update.service";
 import { AnonymousHubService } from "@bitwarden/common/services/anonymousHub.service";
 import { ApiService } from "@bitwarden/common/services/api.service";
 import { AppIdService } from "@bitwarden/common/services/appId.service";
@@ -74,16 +86,20 @@ import { ConfigApiService } from "@bitwarden/common/services/config/config-api.s
 import { ConfigService } from "@bitwarden/common/services/config/config.service";
 import { ConsoleLogService } from "@bitwarden/common/services/consoleLog.service";
 import { CryptoService } from "@bitwarden/common/services/crypto.service";
-import { EncryptService } from "@bitwarden/common/services/encrypt.service";
+import { EncryptServiceImplementation } from "@bitwarden/common/services/cryptography/encrypt.service.implementation";
+import { MultithreadEncryptServiceImplementation } from "@bitwarden/common/services/cryptography/multithread-encrypt.service.implementation";
 import { EnvironmentService } from "@bitwarden/common/services/environment.service";
-import { EventService } from "@bitwarden/common/services/event.service";
+import { EventCollectionService } from "@bitwarden/common/services/event/event-collection.service";
+import { EventUploadService } from "@bitwarden/common/services/event/event-upload.service";
 import { ExportService } from "@bitwarden/common/services/export.service";
 import { FileUploadService } from "@bitwarden/common/services/fileUpload.service";
 import { FolderApiService } from "@bitwarden/common/services/folder/folder-api.service";
 import { FolderService } from "@bitwarden/common/services/folder/folder.service";
 import { FormValidationErrorsService } from "@bitwarden/common/services/formValidationErrors.service";
 import { KeyConnectorService } from "@bitwarden/common/services/keyConnector.service";
+import { LoginService } from "@bitwarden/common/services/login.service";
 import { NotificationsService } from "@bitwarden/common/services/notifications.service";
+import { OrganizationUserServiceImplementation } from "@bitwarden/common/services/organization-user/organization-user.service.implementation";
 import { OrganizationApiService } from "@bitwarden/common/services/organization/organization-api.service";
 import { OrganizationService } from "@bitwarden/common/services/organization/organization.service";
 import { PasswordGenerationService } from "@bitwarden/common/services/passwordGeneration.service";
@@ -114,16 +130,16 @@ import { UnauthGuard } from "../guards/unauth.guard";
 
 import { BroadcasterService } from "./broadcaster.service";
 import {
-  WINDOW,
+  LOCALES_DIRECTORY,
+  LOCKED_CALLBACK,
+  LOG_MAC_FAILURES,
+  LOGOUT_CALLBACK,
   MEMORY_STORAGE,
   SECURE_STORAGE,
   STATE_FACTORY,
   STATE_SERVICE_USE_CACHE,
-  LOGOUT_CALLBACK,
-  LOCKED_CALLBACK,
-  LOCALES_DIRECTORY,
   SYSTEM_LANGUAGE,
-  LOG_MAC_FAILURES,
+  WINDOW,
 } from "./injection-tokens";
 import { ModalService } from "./modal.service";
 import { PasswordRepromptService } from "./passwordReprompt.service";
@@ -213,7 +229,8 @@ import { AbstractThemingService } from "./theming/theming.service.abstraction";
         i18nService: I18nServiceAbstraction,
         injector: Injector,
         logService: LogService,
-        stateService: StateServiceAbstraction
+        stateService: StateServiceAbstraction,
+        encryptService: EncryptService
       ) =>
         new CipherService(
           cryptoService,
@@ -223,7 +240,8 @@ import { AbstractThemingService } from "./theming/theming.service.abstraction";
           i18nService,
           () => injector.get(SearchServiceAbstraction),
           logService,
-          stateService
+          stateService,
+          encryptService
         ),
       deps: [
         CryptoServiceAbstraction,
@@ -234,6 +252,7 @@ import { AbstractThemingService } from "./theming/theming.service.abstraction";
         Injector, // TODO: Get rid of this circular dependency!
         LogService,
         StateServiceAbstraction,
+        EncryptService,
       ],
     },
     {
@@ -257,18 +276,27 @@ import { AbstractThemingService } from "./theming/theming.service.abstraction";
     },
     {
       provide: AccountApiServiceAbstraction,
-      useClass: AccountApiService,
-      deps: [ApiServiceAbstraction],
+      useClass: AccountApiServiceImplementation,
+      deps: [
+        ApiServiceAbstraction,
+        UserVerificationServiceAbstraction,
+        LogService,
+        InternalAccountService,
+      ],
     },
     {
       provide: AccountServiceAbstraction,
-      useClass: AccountService,
-      deps: [
-        AccountApiServiceAbstraction,
-        UserVerificationServiceAbstraction,
-        MessagingServiceAbstraction,
-        LogService,
-      ],
+      useClass: AccountServiceImplementation,
+      deps: [MessagingServiceAbstraction, LogService],
+    },
+    {
+      provide: InternalAccountService,
+      useExisting: AccountServiceAbstraction,
+    },
+    {
+      provide: AccountUpdateServiceAbstraction,
+      useClass: AvatarUpdateService,
+      deps: [ApiServiceAbstraction, StateServiceAbstraction],
     },
     { provide: LogService, useFactory: () => new ConsoleLogService(false) },
     {
@@ -292,7 +320,7 @@ import { AbstractThemingService } from "./theming/theming.service.abstraction";
       useClass: CryptoService,
       deps: [
         CryptoFunctionServiceAbstraction,
-        AbstractEncryptService,
+        EncryptService,
         PlatformUtilsServiceAbstraction,
         LogService,
         StateServiceAbstraction,
@@ -342,7 +370,7 @@ import { AbstractThemingService } from "./theming/theming.service.abstraction";
         StateServiceAbstraction,
         ProviderServiceAbstraction,
         FolderApiServiceAbstraction,
-        SyncNotifierServiceAbstraction,
+        OrganizationServiceAbstraction,
         LOGOUT_CALLBACK,
       ],
     },
@@ -435,19 +463,23 @@ import { AbstractThemingService } from "./theming/theming.service.abstraction";
       deps: [WINDOW],
     },
     {
-      provide: AbstractEncryptService,
-      useClass: EncryptService,
+      provide: EncryptService,
+      useFactory: encryptServiceFactory,
       deps: [CryptoFunctionServiceAbstraction, LogService, LOG_MAC_FAILURES],
     },
     {
-      provide: EventServiceAbstraction,
-      useClass: EventService,
+      provide: EventUploadServiceAbstraction,
+      useClass: EventUploadService,
+      deps: [ApiServiceAbstraction, StateServiceAbstraction, LogService],
+    },
+    {
+      provide: EventCollectionServiceAbstraction,
+      useClass: EventCollectionService,
       deps: [
-        ApiServiceAbstraction,
         CipherServiceAbstraction,
         StateServiceAbstraction,
-        LogService,
         OrganizationServiceAbstraction,
+        EventUploadServiceAbstraction,
       ],
     },
     {
@@ -492,6 +524,8 @@ import { AbstractThemingService } from "./theming/theming.service.abstraction";
         LogService,
         OrganizationServiceAbstraction,
         CryptoFunctionServiceAbstraction,
+        SyncNotifierServiceAbstraction,
+        MessagingServiceAbstraction,
         LOGOUT_CALLBACK,
       ],
     },
@@ -508,7 +542,16 @@ import { AbstractThemingService } from "./theming/theming.service.abstraction";
     {
       provide: OrganizationServiceAbstraction,
       useClass: OrganizationService,
-      deps: [StateServiceAbstraction, SyncNotifierServiceAbstraction],
+      deps: [StateServiceAbstraction],
+    },
+    {
+      provide: InternalOrganizationService,
+      useExisting: OrganizationServiceAbstraction,
+    },
+    {
+      provide: OrganizationUserService,
+      useClass: OrganizationUserServiceImplementation,
+      deps: [ApiServiceAbstraction],
     },
     {
       provide: ProviderServiceAbstraction,
@@ -566,6 +609,21 @@ import { AbstractThemingService } from "./theming/theming.service.abstraction";
       useClass: ValidationService,
       deps: [I18nServiceAbstraction, PlatformUtilsServiceAbstraction],
     },
+    {
+      provide: LoginServiceAbstraction,
+      useClass: LoginService,
+      deps: [StateServiceAbstraction],
+    },
   ],
 })
 export class JslibServicesModule {}
+
+function encryptServiceFactory(
+  cryptoFunctionservice: CryptoFunctionServiceAbstraction,
+  logService: LogService,
+  logMacFailures: boolean
+): EncryptService {
+  return flagEnabled("multithreadDecryption")
+    ? new MultithreadEncryptServiceImplementation(cryptoFunctionservice, logService, logMacFailures)
+    : new EncryptServiceImplementation(cryptoFunctionservice, logService, logMacFailures);
+}

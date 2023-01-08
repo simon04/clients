@@ -92,13 +92,13 @@
     "message": "Autouzupełnianie"
   },
   "generatePasswordCopied": {
-    "message": "Generuj hasło (do schowka)"
+    "message": "Wygeneruj hasło (do schowka)"
   },
   "copyElementIdentifier": {
     "message": "Kopiuj nazwę pola niestandardowego"
   },
   "noMatchingLogins": {
-    "message": "Brak pasujących danych logowania."
+    "message": "Brak pasujących danych logowania"
   },
   "unlockVaultMenu": {
     "message": "Odblokuj sejf"
@@ -224,10 +224,10 @@
     "message": "Wybierz"
   },
   "generatePassword": {
-    "message": "Generuj hasło"
+    "message": "Wygeneruj hasło"
   },
   "regeneratePassword": {
-    "message": "Wygeneruj hasło ponownie"
+    "message": "Wygeneruj ponownie hasło"
   },
   "options": {
     "message": "Opcje"
@@ -494,7 +494,7 @@
     "message": "Logowanie dwustopniowe sprawia, że konto jest bardziej bezpieczne poprzez wymuszenie potwierdzenia logowania z innego urządzenia, takiego jak z klucza bezpieczeństwa, aplikacji uwierzytelniającej, wiadomości SMS, telefonu lub adresu e-mail. Logowanie dwustopniowe możesz włączyć w sejfie internetowym bitwarden.com. Czy chcesz przejść do tej strony?"
   },
   "editedFolder": {
-    "message": "Folder został zaktualizowany"
+    "message": "Folder został zapisany"
   },
   "deleteFolderConfirmation": {
     "message": "Czy na pewno chcesz usunąć ten folder?"
@@ -537,7 +537,7 @@
     "message": "Element został dodany"
   },
   "editedItem": {
-    "message": "Element został zaktualizowany"
+    "message": "Element został zapisany"
   },
   "deleteItemConfirmation": {
     "message": "Czy na pewno chcesz to usunąć?"
@@ -726,19 +726,19 @@
     "message": "Załącznik został usunięty"
   },
   "newAttachment": {
-    "message": "Dodaj załącznik"
+    "message": "Dodaj nowy załącznik"
   },
   "noAttachments": {
     "message": "Brak załączników."
   },
   "attachmentSaved": {
-    "message": "Załącznik został zapisany."
+    "message": "Załącznik został zapisany"
   },
   "file": {
     "message": "Plik"
   },
   "selectFile": {
-    "message": "Wybierz plik."
+    "message": "Wybierz plik"
   },
   "maxFileSize": {
     "message": "Maksymalny rozmiar pliku to 500 MB."
@@ -810,7 +810,7 @@
     "message": "Odświeżanie zostało zakończone"
   },
   "enableAutoTotpCopy": {
-    "message": "Kopiuj TOTP automatycznie"
+    "message": "Kopiuj kod TOTP automatycznie"
   },
   "disableAutoTotpCopyDesc": {
     "message": "Jeśli dane logowania posiadają dołączony klucz uwierzytelniający TOTP, kod weryfikacyjny jest automatycznie kopiowany do schowka przy każdym autouzupełnianiu danych logowania."
@@ -936,7 +936,7 @@
     "message": "Adres URL serwera"
   },
   "apiUrl": {
-    "message": "Adres URL serwera interfejsu API"
+    "message": "Adres URL serwera API"
   },
   "webVaultUrl": {
     "message": "Adres URL serwera sejfu internetowego"
@@ -951,7 +951,7 @@
     "message": "Adres URL serwera ikon"
   },
   "environmentSaved": {
-    "message": "Adresy URL środowiska zostały zapisane."
+    "message": "Adresy URL środowiska zostały zapisane"
   },
   "enableAutoFillOnPageLoad": {
     "message": "Włącz autouzupełnianie po załadowaniu strony"
@@ -1040,7 +1040,7 @@
     "message": "Pokaż ikony witryn"
   },
   "faviconDesc": {
-    "message": "Pokaż rozpoznawalny obraz obok każdych danych logowania."
+    "message": "Pokaż rozpoznawalny obraz obok danych logowania."
   },
   "enableBadgeCounter": {
     "message": "Pokaż licznik na ikonie"
@@ -1199,7 +1199,7 @@
     "message": "Tożsamość"
   },
   "passwordHistory": {
-    "message": "Historia haseł"
+    "message": "Historia hasła"
   },
   "back": {
     "message": "Powrót"
@@ -1311,8 +1311,12 @@
     "message": "Zaktualizowano",
     "description": "ex. Date this item was updated"
   },
+  "dateCreated": {
+    "message": "Utworzono",
+    "description": "ex. Date this item was created"
+  },
   "datePasswordUpdated": {
-    "message": "Aktualizacja hasła",
+    "message": "Hasło zostało zaktualizowane",
     "description": "ex. Date this password was updated"
   },
   "neverLockWarning": {
@@ -1484,7 +1488,7 @@
     "message": "Zaznaczając tę opcję, akceptujesz:"
   },
   "acceptPoliciesRequired": {
-    "message": "Warunki użytkowania i polityka prywatności nie zostały zaakceptowane."
+    "message": "Regulamin i polityka prywatności nie zostały zaakceptowane."
   },
   "termsOfService": {
     "message": "Regulamin"
@@ -1727,14 +1731,14 @@
     "message": "Obecna liczba dostępów"
   },
   "createSend": {
-    "message": "Utwórz nową wysyłkę",
+    "message": "Nowa wysyłka",
     "description": "'Send' is a noun and the name of a feature called 'Bitwarden Send'. It should not be translated."
   },
   "newPassword": {
     "message": "Nowe hasło"
   },
   "sendDisabled": {
-    "message": "Wysyłka została wyłączona",
+    "message": "Wysyłka została usunięta",
     "description": "'Send' is a noun and the name of a feature called 'Bitwarden Send'. It should not be translated."
   },
   "sendDisabledWarning": {
@@ -1746,7 +1750,7 @@
     "description": "'Send' is a noun and the name of a feature called 'Bitwarden Send'. It should not be translated."
   },
   "editedSend": {
-    "message": "Wysyłka została zaktualizowana",
+    "message": "Wysyłka została zapisana",
     "description": "'Send' is a noun and the name of a feature called 'Bitwarden Send'. It should not be translated."
   },
   "sendLinuxChromiumFileWarning": {
@@ -1819,7 +1823,7 @@
     "message": "Hasło główne zostało zmienione przez administratora Twojej organizacji. Musisz je zaktualizować, aby uzyskać dostęp do sejfu. Ta czynność spowoduje wylogowanie z bieżącej sesji, przez co konieczne będzie ponowne zalogowanie się. Aktywne sesje na innych urządzeniach mogą pozostać aktywne przez maksymalnie godzinę."
   },
   "resetPasswordPolicyAutoEnroll": {
-    "message": "Automatyczne rejestrowanie użytkowników do resetowania hasła"
+    "message": "Automatyczne rejestrowanie użytkowników"
   },
   "resetPasswordAutoEnrollInviteWarning": {
     "message": "Ta organizacja posługuje się zasadą, która automatycznie rejestruje użytkowników do resetowania hasła. Rejestracja umożliwia administratorom organizacji zmianę Twojego hasła głównego."
@@ -1853,10 +1857,10 @@
     "message": "Czas blokowania sejfu przekracza limit określony przez organizację."
   },
   "vaultExportDisabled": {
-    "message": "Eksportowanie sejfu zostało wyłączone"
+    "message": "Eksportowanie sejfu jest niedostępne"
   },
   "personalVaultExportPolicyInEffect": {
-    "message": "Co najmniej jedna zasada organizacji uniemożliwia wyeksportowanie Twojego sejfu."
+    "message": "Co najmniej jedna zasada organizacji uniemożliwia wyeksportowanie osobistego sejfu."
   },
   "copyCustomFieldNameInvalidElement": {
     "message": "Nie można zidentyfikować poprawnego elementu formularza. Spróbuj sprawdzić kod HTML."
@@ -1880,7 +1884,7 @@
     "message": "Usuń hasło główne"
   },
   "removedMasterPassword": {
-    "message": "Hasło główne zostało usunięte."
+    "message": "Hasło główne zostało usunięte"
   },
   "leaveOrganizationConfirmation": {
     "message": "Czy na pewno chcesz opuścić tę organizację?"
@@ -1938,7 +1942,7 @@
     "message": "Losowe słowo"
   },
   "websiteName": {
-    "message": "Nazwa witryny"
+    "message": "Nazwa strony"
   },
   "whatWouldYouLikeToGenerate": {
     "message": "Co chcesz wygenerować?"
@@ -1950,7 +1954,7 @@
     "message": "Usługa"
   },
   "forwardedEmail": {
-    "message": "Alias przekazywanego e-maila"
+    "message": "Alias przekazywanego adresu"
   },
   "forwardedEmailDesc": {
     "message": "Wygeneruj alias adresu e-mail z zewnętrznej usługi przekazywania."
@@ -1963,7 +1967,7 @@
     "message": "Token dostępu API"
   },
   "apiKey": {
-    "message": "Klucz interfejsu API"
+    "message": "Klucz API"
   },
   "ssoKeyConnectorError": {
     "message": "Błąd serwera Key Connector: upewnij się, że serwer Key Connector jest dostępny i działa poprawnie."
@@ -1972,10 +1976,10 @@
     "message": "Wymagana jest subskrypcja Premium"
   },
   "organizationIsDisabled": {
-    "message": "Organizacja jest wyłączona."
+    "message": "Organizacja została zawieszona."
   },
   "disabledOrganizationFilterError": {
-    "message": "Nie można uzyskać dostępu do elementów w wyłączonych organizacjach. Skontaktuj się z właścicielem organizacji, aby uzyskać pomoc."
+    "message": "Nie można uzyskać dostępu do elementów w zawieszonych organizacjach. Skontaktuj się z właścicielem organizacji, aby uzyskać pomoc."
   },
   "cardBrandMir": {
     "message": "Mir"
@@ -1990,7 +1994,7 @@
     }
   },
   "settingsEdited": {
-    "message": "Ustawienia zostały edytowane"
+    "message": "Ustawienia zostały zmienione"
   },
   "environmentEditedClick": {
     "message": "Kliknij tutaj"
@@ -2005,7 +2009,7 @@
     "message": "Samodzielnie hostowany"
   },
   "thirdParty": {
-    "message": "Innego dostawcy"
+    "message": "Inny dostawca"
   },
   "thirdPartyServerMessage": {
     "message": "Połączono z implementacją serwera innego dostawcy, $SERVERNAME$. Zweryfikuj błędy za pomocą oficjalnego serwera lub zgłoś je serwerowi innego dostawcy.",
@@ -2017,12 +2021,27 @@
     }
   },
   "lastSeenOn": {
-    "message": "ostatnio widziano $DATE$",
+    "message": "ostatnio widziany $DATE$",
     "placeholders": {
       "date": {
         "content": "$1",
         "example": "Jun 15, 2015"
       }
     }
+  },
+  "loginWithMasterPassword": {
+    "message": "Logowanie hasłem głównym"
+  },
+  "loggingInAs": {
+    "message": "Logowanie jako"
+  },
+  "notYou": {
+    "message": "To nie Ty?"
+  },
+  "newAroundHere": {
+    "message": "Nowy użytkownik?"
+  },
+  "rememberEmail": {
+    "message": "Zapamiętaj adres e-mail"
   }
 }

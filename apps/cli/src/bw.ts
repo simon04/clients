@@ -5,13 +5,14 @@ import * as program from "commander";
 import * as jsdom from "jsdom";
 
 import { InternalFolderService } from "@bitwarden/common/abstractions/folder/folder.service.abstraction";
+import { OrganizationUserService } from "@bitwarden/common/abstractions/organization-user/organization-user.service";
 import { OrganizationApiServiceAbstraction } from "@bitwarden/common/abstractions/organization/organization-api.service.abstraction";
 import { ClientType } from "@bitwarden/common/enums/clientType";
 import { KeySuffixOptions } from "@bitwarden/common/enums/keySuffixOptions";
 import { LogLevelType } from "@bitwarden/common/enums/logLevelType";
 import { StateFactory } from "@bitwarden/common/factories/stateFactory";
 import { Account } from "@bitwarden/common/models/domain/account";
-import { GlobalState } from "@bitwarden/common/models/domain/globalState";
+import { GlobalState } from "@bitwarden/common/models/domain/global-state";
 import { AppIdService } from "@bitwarden/common/services/appId.service";
 import { AuditService } from "@bitwarden/common/services/audit.service";
 import { AuthService } from "@bitwarden/common/services/auth.service";
@@ -20,7 +21,7 @@ import { CipherService } from "@bitwarden/common/services/cipher.service";
 import { CollectionService } from "@bitwarden/common/services/collection.service";
 import { ContainerService } from "@bitwarden/common/services/container.service";
 import { CryptoService } from "@bitwarden/common/services/crypto.service";
-import { EncryptService } from "@bitwarden/common/services/encrypt.service";
+import { EncryptServiceImplementation } from "@bitwarden/common/services/cryptography/encrypt.service.implementation";
 import { EnvironmentService } from "@bitwarden/common/services/environment.service";
 import { ExportService } from "@bitwarden/common/services/export.service";
 import { FileUploadService } from "@bitwarden/common/services/fileUpload.service";
@@ -30,6 +31,7 @@ import { ImportService } from "@bitwarden/common/services/import.service";
 import { KeyConnectorService } from "@bitwarden/common/services/keyConnector.service";
 import { MemoryStorageService } from "@bitwarden/common/services/memoryStorage.service";
 import { NoopMessagingService } from "@bitwarden/common/services/noopMessaging.service";
+import { OrganizationUserServiceImplementation } from "@bitwarden/common/services/organization-user/organization-user.service.implementation";
 import { OrganizationApiService } from "@bitwarden/common/services/organization/organization-api.service";
 import { OrganizationService } from "@bitwarden/common/services/organization/organization.service";
 import { PasswordGenerationService } from "@bitwarden/common/services/passwordGeneration.service";
@@ -49,16 +51,16 @@ import { UserVerificationApiService } from "@bitwarden/common/services/userVerif
 import { UserVerificationService } from "@bitwarden/common/services/userVerification/userVerification.service";
 import { VaultTimeoutService } from "@bitwarden/common/services/vaultTimeout/vaultTimeout.service";
 import { VaultTimeoutSettingsService } from "@bitwarden/common/services/vaultTimeout/vaultTimeoutSettings.service";
-import { CliPlatformUtilsService } from "@bitwarden/node/cli/services/cliPlatformUtils.service";
-import { ConsoleLogService } from "@bitwarden/node/cli/services/consoleLog.service";
-import { NodeApiService } from "@bitwarden/node/services/nodeApi.service";
-import { NodeCryptoFunctionService } from "@bitwarden/node/services/nodeCryptoFunction.service";
+import { NodeCryptoFunctionService } from "@bitwarden/node/services/node-crypto-function.service";
 
 import { Program } from "./program";
 import { SendProgram } from "./send.program";
+import { CliPlatformUtilsService } from "./services/cli-platform-utils.service";
+import { ConsoleLogService } from "./services/console-log.service";
 import { I18nService } from "./services/i18n.service";
-import { LowdbStorageService } from "./services/lowdbStorage.service";
-import { NodeEnvSecureStorageService } from "./services/nodeEnvSecureStorage.service";
+import { LowdbStorageService } from "./services/lowdb-storage.service";
+import { NodeApiService } from "./services/node-api.service";
+import { NodeEnvSecureStorageService } from "./services/node-env-secure-storage.service";
 import { VaultProgram } from "./vault.program";
 
 // Polyfills
@@ -82,6 +84,7 @@ export class Main {
   settingsService: SettingsService;
   cipherService: CipherService;
   folderService: InternalFolderService;
+  organizationUserService: OrganizationUserService;
   collectionService: CollectionService;
   vaultTimeoutService: VaultTimeoutService;
   vaultTimeoutSettingsService: VaultTimeoutSettingsService;
@@ -94,7 +97,7 @@ export class Main {
   exportService: ExportService;
   searchService: SearchService;
   cryptoFunctionService: NodeCryptoFunctionService;
-  encryptService: EncryptService;
+  encryptService: EncryptServiceImplementation;
   authService: AuthService;
   policyService: PolicyService;
   program: Program;
@@ -140,7 +143,11 @@ export class Main {
       (level) => process.env.BITWARDENCLI_DEBUG !== "true" && level <= LogLevelType.Info
     );
     this.cryptoFunctionService = new NodeCryptoFunctionService();
-    this.encryptService = new EncryptService(this.cryptoFunctionService, this.logService, true);
+    this.encryptService = new EncryptServiceImplementation(
+      this.cryptoFunctionService,
+      this.logService,
+      true
+    );
     this.storageService = new LowdbStorageService(this.logService, null, p, false, true);
     this.secureStorageService = new NodeEnvSecureStorageService(
       this.storageService,
@@ -211,7 +218,8 @@ export class Main {
       this.i18nService,
       null,
       this.logService,
-      this.stateService
+      this.stateService,
+      this.encryptService
     );
 
     this.broadcasterService = new BroadcasterService();
@@ -235,7 +243,9 @@ export class Main {
 
     this.providerService = new ProviderService(this.stateService);
 
-    this.organizationService = new OrganizationService(this.stateService, this.syncNotifierService);
+    this.organizationService = new OrganizationService(this.stateService);
+
+    this.organizationUserService = new OrganizationUserServiceImplementation(this.apiService);
 
     this.policyService = new PolicyService(this.stateService, this.organizationService);
 
@@ -317,7 +327,7 @@ export class Main {
       this.stateService,
       this.providerService,
       this.folderApiService,
-      this.syncNotifierService,
+      this.organizationService,
       async (expired: boolean) => await this.logout()
     );
 

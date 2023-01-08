@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { Component } from "@angular/core";
 import { FormsModule, ReactiveFormsModule, Validators, FormBuilder } from "@angular/forms";
 import { action } from "@storybook/addon-actions";
 import { Meta, moduleMetadata, Story } from "@storybook/angular";
@@ -18,7 +18,7 @@ import { BitSubmitDirective } from "./bit-submit.directive";
 import { BitFormButtonDirective } from "./form-button.directive";
 
 const template = `
-  <form [formGroup]="formObj" [bitSubmit]="submit" [disableFormOnLoading]="disableFormOnLoading">
+  <form [formGroup]="formObj" [bitSubmit]="submit">
     <bit-form-field>
       <bit-label>Name</bit-label>
       <input bitInput formControlName="name" />
@@ -27,6 +27,7 @@ const template = `
     <bit-form-field>
       <bit-label>Email</bit-label>
       <input bitInput formControlName="email" />
+      <button type="button" bitSuffix bitIconButton="bwi-refresh" bitFormButton [bitAction]="refresh"></button>
     </bit-form-field>
 
     <button class="tw-mr-2" type="submit" buttonType="primary" bitButton bitFormButton>Submit</button>
@@ -45,9 +46,13 @@ class PromiseExampleComponent {
     email: ["", [Validators.required, Validators.email]],
   });
 
-  @Input() disableFormOnLoading: boolean;
-
   constructor(private formBuilder: FormBuilder) {}
+
+  refresh = async () => {
+    await new Promise<void>((resolve, reject) => {
+      setTimeout(resolve, 2000);
+    });
+  };
 
   submit = async () => {
     this.formObj.markAllAsTouched();
@@ -78,9 +83,11 @@ class ObservableExampleComponent {
     email: ["", [Validators.required, Validators.email]],
   });
 
-  @Input() disableFormOnLoading: boolean;
-
   constructor(private formBuilder: FormBuilder) {}
+
+  refresh = () => {
+    return of("fake observable").pipe(delay(2000));
+  };
 
   submit = () => {
     this.formObj.markAllAsTouched();
@@ -136,21 +143,18 @@ export default {
       ],
     }),
   ],
-  args: {
-    disableFormOnLoading: false,
-  },
 } as Meta;
 
 const PromiseTemplate: Story<PromiseExampleComponent> = (args: PromiseExampleComponent) => ({
   props: args,
-  template: `<app-promise-example [disableFormOnLoading]="disableFormOnLoading"></app-promise-example>`,
+  template: `<app-promise-example></app-promise-example>`,
 });
 
 export const UsingPromise = PromiseTemplate.bind({});
 
 const ObservableTemplate: Story<PromiseExampleComponent> = (args: PromiseExampleComponent) => ({
   props: args,
-  template: `<app-observable-example [disableFormOnLoading]="disableFormOnLoading"></app-observable-example>`,
+  template: `<app-observable-example></app-observable-example>`,
 });
 
 export const UsingObservable = ObservableTemplate.bind({});

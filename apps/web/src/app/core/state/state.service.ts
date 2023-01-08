@@ -10,11 +10,11 @@ import { LogService } from "@bitwarden/common/abstractions/log.service";
 import { StateMigrationService } from "@bitwarden/common/abstractions/stateMigration.service";
 import { AbstractStorageService } from "@bitwarden/common/abstractions/storage.service";
 import { StateFactory } from "@bitwarden/common/factories/stateFactory";
-import { CipherData } from "@bitwarden/common/models/data/cipherData";
-import { CollectionData } from "@bitwarden/common/models/data/collectionData";
-import { FolderData } from "@bitwarden/common/models/data/folderData";
-import { SendData } from "@bitwarden/common/models/data/sendData";
-import { StorageOptions } from "@bitwarden/common/models/domain/storageOptions";
+import { CipherData } from "@bitwarden/common/models/data/cipher.data";
+import { CollectionData } from "@bitwarden/common/models/data/collection.data";
+import { FolderData } from "@bitwarden/common/models/data/folder.data";
+import { SendData } from "@bitwarden/common/models/data/send.data";
+import { StorageOptions } from "@bitwarden/common/models/domain/storage-options";
 import { StateService as BaseStateService } from "@bitwarden/common/services/state.service";
 
 import { Account } from "./account";
@@ -46,23 +46,6 @@ export class StateService extends BaseStateService<GlobalState, Account> {
     // Apply web overrides to default account values
     account = new Account(account);
     await super.addAccount(account);
-  }
-
-  async getRememberEmail(options?: StorageOptions) {
-    return (
-      await this.getGlobals(this.reconcileOptions(options, await this.defaultOnDiskLocalOptions()))
-    )?.rememberEmail;
-  }
-
-  async setRememberEmail(value: boolean, options?: StorageOptions): Promise<void> {
-    const globals = await this.getGlobals(
-      this.reconcileOptions(options, await this.defaultOnDiskLocalOptions())
-    );
-    globals.rememberEmail = value;
-    await this.saveGlobals(
-      globals,
-      this.reconcileOptions(options, await this.defaultOnDiskLocalOptions())
-    );
   }
 
   async getEncryptedCiphers(options?: StorageOptions): Promise<{ [id: string]: CipherData }> {

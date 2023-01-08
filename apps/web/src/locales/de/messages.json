@@ -188,11 +188,11 @@
   },
   "baseDomain": {
     "message": "Basisdomäne",
-    "description": "Domain name. Ex. website.com"
+    "description": "Domain name. Example: website.com"
   },
   "domainName": {
     "message": "Domain-Name",
-    "description": "Domain name. Ex. website.com"
+    "description": "Domain name. Example: website.com"
   },
   "host": {
     "message": "Host",
@@ -575,6 +575,9 @@
   "loginWithDeviceEnabledInfo": {
     "message": "Mit Gerät anmelden muss in den Einstellungen der Bitwarden Mobile App aktiviert sein. Brauchst du eine andere Möglichkeit?"
   },
+  "loginWithMasterPassword": {
+    "message": "Mit Master-Passwort anmelden"
+  },
   "createAccount": {
     "message": "Konto erstellen"
   },
@@ -621,7 +624,7 @@
     "message": "Master-Passwort-Hinweis (optional)"
   },
   "masterPassHintLabel": {
-    "message": "Master-Passwort-Hinweis"
+    "message": "Master Passwort Hinweis"
   },
   "settings": {
     "message": "Einstellungen"
@@ -897,7 +900,7 @@
     "message": "Dieser Export verschlüsselt Ihre Daten mit dem Verschlüsselungscode Ihres Kontos. Falls Sie Ihren Verschlüsselungscode erneuern, sollten Sie den Export erneut durchführen, da Sie die zuvor erstellte Datei ansonsten nicht mehr entschlüsseln können."
   },
   "encExportAccountWarningDesc": {
-    "message": "Die Verschlüsselungscodes eines Kontos sind für jedes Bitwarden Benutzerkonto einzigartig, deshalb können Sie keinen verschlüsselten Export in ein anderes Konto importieren."
+    "message": "Die Verschlüsselungscodes eines Kontos sind für jedes Bitwarden-Benutzerkonto einzigartig, deshalb kannst du keinen verschlüsselten Export in ein anderes Konto importieren."
   },
   "export": {
     "message": "Export"
@@ -926,17 +929,17 @@
   "confirmFilePassword": {
     "message": "Dateipasswort bestätigen"
   },
-  "accountBackupOptionDescription": {
-    "message": "Nutze den Verschlüsselungscode deines Kontos, um den Export zu verschlüsseln und den Import allein auf das aktuelle Bitwarden-Konto zu beschränken."
+  "accountRestrictedOptionDescription": {
+    "message": "Verwende den Verschlüsselungscode deines Kontos, abgeleitet vom Benutzernamen und Master-Passwort, um den Export zu verschlüsseln und den Import auf das aktuelle Bitwarden-Konto zu beschränken."
   },
   "passwordProtectedOptionDescription": {
     "message": "Lege ein Passwort fest, um den Export zu verschlüsseln und ihn in ein beliebiges Bitwarden-Konto zu importieren, wobei das Passwort zum Entschlüsseln genutzt wird."
   },
-  "fileTypeHeading": {
-    "message": "Dateityp"
+  "exportTypeHeading": {
+    "message": "Exporttyp"
   },
-  "accountBackup": {
-    "message": "Konto-Sicherung"
+  "accountRestricted": {
+    "message": "Konto eingeschränkt"
   },
   "passwordProtected": {
     "message": "Passwortgeschützt"
@@ -964,7 +967,7 @@
   },
   "minSpecial": {
     "message": "Mindestanzahl Sonderzeichen",
-    "description": "Minimum Special Characters"
+    "description": "Minimum special characters"
   },
   "ambiguous": {
     "message": "Mehrdeutige Zeichen vermeiden"
@@ -997,7 +1000,7 @@
   },
   "capitalize": {
     "message": "Großschreiben",
-    "description": "Make the first letter of a work uppercase."
+    "description": "Make the first letter of a word uppercase."
   },
   "includeNumber": {
     "message": "Ziffer hinzufügen"
@@ -1010,7 +1013,7 @@
   },
   "clear": {
     "message": "Löschen",
-    "description": "To clear something out. example: To clear browser history."
+    "description": "To clear something out. Example: To clear browser history."
   },
   "accountUpdated": {
     "message": "Konto aktualisiert"
@@ -1192,6 +1195,12 @@
   "selectImportFile": {
     "message": "Wählen Sie die Import-Datei"
   },
+  "chooseFile": {
+    "message": "Datei auswählen"
+  },
+  "noFileChosen": {
+    "message": "Keine Datei ausgewählt"
+  },
   "orCopyPasteFileContents": {
     "message": "oder fügen Sie den Inhalt Ihrer Datei hier ein"
   },
@@ -1228,13 +1237,6 @@
   },
   "faviconDesc": {
     "message": "Ein wiedererkennbares Bild neben jeden Zugangsdaten anzeigen."
-  },
-  "enableGravatars": {
-    "message": "Gravatare aktivieren",
-    "description": "Use avatar images loaded from gravatar.com."
-  },
-  "enableGravatarsDesc": {
-    "message": "Nutze Profilbilder von gravatar.com."
   },
   "enableFullWidth": {
     "message": "Darstellung in voller Breite aktivieren",
@@ -1288,11 +1290,24 @@
   "twoStepLogin": {
     "message": "Zwei-Faktor-Authentifizierung"
   },
+  "twoStepLoginEnforcement": {
+    "message": "Erzwungene Zwei-Faktor-Authentifizierung"
+  },
   "twoStepLoginDesc": {
     "message": "Sichern Sie Ihr Konto mit Zwei-Faktor-Authentifizierung."
   },
-  "twoStepLoginOrganizationDesc": {
-    "message": "Zwei-Faktor-Authentifizierung für die Benutzer Ihrer Organisation verlangen, indem Sie Anbieter auf Organisationsebene konfigurieren."
+  "twoStepLoginOrganizationDescStart": {
+    "message": "Erzwinge Zwei-Faktor-Authentifizierung in Bitwarden für Mitglieder durch Verwendung der ",
+    "description": "This will be used as part of a larger sentence, broken up to include links. The full sentence will read 'Enforce Bitwarden Two-step Login options for members by using the Two-step Login Policy.'"
+  },
+  "twoStepLoginPolicy": {
+    "message": "Richtlinie für Zwei-Faktor-Authentifizierung"
+  },
+  "twoStepLoginOrganizationDuoDesc": {
+    "message": "Verwende die folgenden Optionen, um Zwei-Faktor-Authentifizierung über Duo zu erzwingen."
+  },
+  "twoStepLoginOrganizationSsoDesc": {
+    "message": "Wenn SSO eingerichtet oder dies geplant ist, wird die Zwei-Faktor-Authentifizierung möglicherweise bereits über den Identity Provider erzwungen."
   },
   "twoStepLoginRecoveryWarning": {
     "message": "Durch die Aktivierung der Zwei-Faktor-Authentifizierung könnten Sie sich dauerhaft aus Ihrem Bitwarden-Konto aussperren. Ein Wiederherstellungscode ermöglicht es Ihnen, auf Ihr Konto zuzugreifen, falls Sie Ihren normalen Zwei-Faktor-Anbieter nicht mehr verwenden können (z.B. wenn Sie Ihr Gerät verlieren). Der Bitwarden-Support kann Ihnen nicht helfen, wenn Sie den Zugang zu Ihrem Konto verlieren. Wir empfehlen Ihnen, den Wiederherstellungscode aufzuschreiben oder auszudrucken und an einem sicheren Ort aufzubewahren."
@@ -1315,7 +1330,7 @@
   },
   "premium": {
     "message": "Premium",
-    "description": "Premium Membership"
+    "description": "Premium membership"
   },
   "premiumMembership": {
     "message": "Premium-Mitgliedschaft"
@@ -1539,7 +1554,11 @@
   },
   "reportsDesc": {
     "message": "Identifiziere und schließe Sicherheitslücken in deinen Online-Konten, indem du auf die Berichte unten klickst.",
-    "description": "Vault Health Reports can be used to evaluate the security of your Bitwarden Personal or Organization Vault."
+    "description": "Vault health reports can be used to evaluate the security of your Bitwarden individual or organization vault."
+  },
+  "orgsReportsDesc": {
+    "message": "Identifiziere und schließe Sicherheitslücken in den Konten deiner Organisation, indem du auf die folgenden Berichte klickst.",
+    "description": "Vault health reports can be used to evaluate the security of your Bitwarden individual or organization Vault."
   },
   "unsecuredWebsitesReport": {
     "message": "Bericht über ungesicherte Websites"
@@ -1765,7 +1784,7 @@
   },
   "goPremium": {
     "message": "Zu Premium wechseln",
-    "description": "Another way of saying \"Get a premium membership\""
+    "description": "Another way of saying \"Get a Premium membership\""
   },
   "premiumUpdated": {
     "message": "Sie haben ein Premium-Abo aktiviert."
@@ -2577,6 +2596,15 @@
       }
     }
   },
+  "viewedCardNumberItemId": {
+    "message": "Kartennummer für Eintrag $ID$ angesehen.",
+    "placeholders": {
+      "id": {
+        "content": "$1",
+        "example": "Unique ID"
+      }
+    }
+  },
   "viewedSecurityCodeItemId": {
     "message": "Sicherheitscode für Eintrag $ID$ angesehen.",
     "placeholders": {
@@ -2905,7 +2933,7 @@
     "message": "Startdatum"
   },
   "endDate": {
-    "message": "Endatum"
+    "message": "Enddatum"
   },
   "verifyEmail": {
     "message": "E-Mail-Adresse bestätigen"
@@ -2957,7 +2985,7 @@
     "placeholders": {
       "description": {
         "content": "$1",
-        "example": "You must enable 2FA on your user account before you can join this organization."
+        "example": "You must set up 2FA on your user account before you can join this organization."
       }
     }
   },
@@ -2987,6 +3015,9 @@
   },
   "myOrganization": {
     "message": "Meine Organisation"
+  },
+  "organizationInfo": {
+    "message": "Organisationsinfo"
   },
   "deleteOrganization": {
     "message": "Organisation löschen"
@@ -3029,15 +3060,15 @@
   },
   "billingPlan": {
     "message": "Abo",
-    "description": "A billing plan/package. For example: families, teams, enterprise, etc."
+    "description": "A billing plan/package. For example: Families, Teams, Enterprise, etc."
   },
   "changeBillingPlan": {
     "message": "Abo ändern",
-    "description": "A billing plan/package. For example: families, teams, enterprise, etc."
+    "description": "A billing plan/package. For example: Families, Teams, Enterprise, etc."
   },
   "changeBillingPlanUpgrade": {
     "message": "Ändern sie ihr Konto zu einem anderen Tarif, indem Sie folgende Informationen bereitstellen. Bitte stellen Sie sicher, dass Sie eine aktive Zahlungsmethode zu ihren Konto hinzugefügt haben.",
-    "description": "A billing plan/package. For example: families, teams, enterprise, etc."
+    "description": "A billing plan/package. For example: Families, Teams, Enterprise, etc."
   },
   "invoiceNumber": {
     "message": "Rechnung #$NUMBER$",
@@ -3313,6 +3344,10 @@
     "message": "Aktualisiert",
     "description": "ex. Date this item was updated"
   },
+  "dateCreated": {
+    "message": "Erstellt",
+    "description": "ex. Date this item was created"
+  },
   "datePasswordUpdated": {
     "message": "Passwort aktualisiert",
     "description": "ex. Date this password was updated"
@@ -3358,7 +3393,7 @@
     "message": "Schwaches Master-Passwort"
   },
   "weakMasterPasswordDesc": {
-    "message": "Das Master-Passwort, welches Sie gewählt haben, ist schwach. Sie sollten ein starkes Master-Passwort auswählen, um Ihr Bitwarden-Konto ausreichend zu schützen. Sind Sie sicher, dass Sie dieses Master-Passwort verwenden wollen?"
+    "message": "Das Master-Passwort, das du gewählt hast, ist schwach. Du solltest ein starkes Master-Passwort (oder eine Passphrase) auswählen, um dein Bitwarden-Konto richtig zu schützen. Bist du sicher, dass du dieses Master-Passwort verwenden willst?"
   },
   "rotateAccountEncKey": {
     "message": "Auch den Verschlüsselungscode meines Kontos aktualisieren"
@@ -3367,7 +3402,7 @@
     "message": "Verschlüsselungscode aktualisieren"
   },
   "rotateEncKeyConfirmation": {
-    "message": "Sind Sie sich sicher, dass Sie ihren Verschlüsselungscode aktualisieren möchten?"
+    "message": "Bist du sicher, dass du deinen Verschlüsselungscode aktualisieren möchtest?"
   },
   "attachmentsNeedFix": {
     "message": "Dieser Eintrag hat Anhänge, die repariert werden müssen."
@@ -3380,7 +3415,7 @@
     "description": "This is a verb. ex. 'Fix The Car'"
   },
   "oldAttachmentsNeedFixDesc": {
-    "message": "Es gibt alte Dateianhänge in ihrem Tresor, die repariert werden müssen, bevor Sie Ihren Verschlüsselungscode aktualisieren können."
+    "message": "Es gibt alte Dateianhänge in deinem Tresor, die repariert werden müssen, bevor du deinen Verschlüsselungscode aktualisieren kannst."
   },
   "yourAccountsFingerprint": {
     "message": "Prüfschlüssel für Ihren Account",
@@ -3680,6 +3715,12 @@
   "ssoIdentifierRequired": {
     "message": "Unternehmenskennung ist erforderlich."
   },
+  "ssoIdentifier": {
+    "message": "SSO-Kennung"
+  },
+  "ssoIdentifierHint": {
+    "message": "Gib den Mitgliedern diese ID, um sich mit SSO anzumelden."
+  },
   "unlinkSso": {
     "message": "SSO Verknüpfung aufheben"
   },
@@ -3943,7 +3984,7 @@
     "placeholders": {
       "description": {
         "content": "$1",
-        "example": "You must enable 2FA on your user account before you can join this organization."
+        "example": "You must set up 2FA on your user account before you can join this organization."
       }
     }
   },
@@ -4078,8 +4119,26 @@
   "customDesc": {
     "message": "Feinere Kontrolle der Benutzer Berechtigungen für erweiterte Konfigurationen erlauben."
   },
+  "customDescNonEnterpriseStart": {
+    "message": "Benutzerdefinierte Rollen sind eine ",
+    "description": "This will be used as part of a larger sentence, broken up to include links. The full sentence will read 'Custom roles is an enterprise feature. Contact our support team to upgrade your subscription'"
+  },
+  "customDescNonEnterpriseLink": {
+    "message": "Funktion für Unternehmen",
+    "description": "This will be used as part of a larger sentence, broken up to include links. The full sentence will read 'Custom roles is an enterprise feature. Contact our support team to upgrade your subscription'"
+  },
+  "customDescNonEnterpriseEnd": {
+    "message": ". Kontaktiere unser Kundenserviceteam, um dein Abo hochzustufen",
+    "description": "This will be used as part of a larger sentence, broken up to include links. The full sentence will read 'Custom roles is an enterprise feature. Contact our support team to upgrade your subscription'"
+  },
+  "customNonEnterpriseError": {
+    "message": "Um benutzerdefinierte Berechtigungen zu ermöglichen, muss sich die Organisation auf einem 2020er Unternehmensabo befinden."
+  },
   "permissions": {
     "message": "Berechtigungen"
+  },
+  "permission": {
+    "message": "Berechtigung"
   },
   "managerPermissions": {
     "message": "Manager-Berechtigungen"
@@ -4486,6 +4545,10 @@
   "clients": {
     "message": "Kunden"
   },
+  "client": {
+    "message": "Client",
+    "description": "This is used as a table header to describe which client application created an event log."
+  },
   "providerAdmin": {
     "message": "Anbieter-Administrator"
   },
@@ -4820,7 +4883,7 @@
     "placeholders": {
       "description": {
         "content": "$1",
-        "example": "You must have at least one existing Families Organization."
+        "example": "You must have at least one existing Families organization."
       }
     }
   },
@@ -5370,6 +5433,15 @@
       }
     }
   },
+  "inputMaxLength": {
+    "message": "Die Eingabe darf nicht länger als $COUNT$ Zeichen sein.",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "20"
+      }
+    }
+  },
   "fieldsNeedAttention": {
     "message": "$COUNT$ Feld(er) oben benötigt deine Aufmerksamkeit.",
     "placeholders": {
@@ -5385,10 +5457,372 @@
   "on": {
     "message": "Ein"
   },
+  "members": {
+    "message": "Mitglieder"
+  },
+  "reporting": {
+    "message": "Bericht"
+  },
   "cardBrandMir": {
     "message": "Mir"
   },
   "numberOfUsers": {
     "message": "Anzahl der Benutzer"
+  },
+  "loggingInAs": {
+    "message": "Einloggen als"
+  },
+  "notYou": {
+    "message": "Nicht du?"
+  },
+  "multiSelectPlaceholder": {
+    "message": "-- Typ zum Filtern --"
+  },
+  "multiSelectLoading": {
+    "message": "Optionen werden abgerufen..."
+  },
+  "multiSelectNotFound": {
+    "message": "Keine Einträge gefunden"
+  },
+  "multiSelectClearAll": {
+    "message": "Alles löschen"
+  },
+  "toggleCharacterCount": {
+    "message": "Zeichenzählung ein-/ausschalten",
+    "description": "'Character count' describes a feature that displays a number next to each character of the password."
+  },
+  "passwordCharacterCount": {
+    "message": "Passwort Zeichenzählung",
+    "description": "'Character count' describes a feature that displays a number next to each character of the password."
+  },
+  "hide": {
+    "message": "Ausblenden"
+  },
+  "projects": {
+    "message": "Projekte"
+  },
+  "lastEdited": {
+    "message": "Zuletzt bearbeitet"
+  },
+  "editSecret": {
+    "message": "Geheimnis bearbeiten"
+  },
+  "addSecret": {
+    "message": "Geheimnis hinzufügen"
+  },
+  "copySecretName": {
+    "message": "Geheimnamen kopieren"
+  },
+  "copySecretValue": {
+    "message": "Geheimen Wert kopieren"
+  },
+  "deleteSecret": {
+    "message": "Geheimnis löschen"
+  },
+  "deleteSecrets": {
+    "message": "Geheimnisse löschen"
+  },
+  "project": {
+    "message": "Projekt"
+  },
+  "editProject": {
+    "message": "Projekt bearbeiten"
+  },
+  "viewProject": {
+    "message": "Projekt anzeigen"
+  },
+  "deleteProject": {
+    "message": "Projekt löschen"
+  },
+  "deleteProjects": {
+    "message": "Projekte löschen"
+  },
+  "secret": {
+    "message": "Geheimnis"
+  },
+  "serviceAccount": {
+    "message": "Dienstkonto"
+  },
+  "serviceAccounts": {
+    "message": "Dienstkonten"
+  },
+  "new": {
+    "message": "Neu"
+  },
+  "secrets": {
+    "message": "Geheimnisse"
+  },
+  "nameValuePair": {
+    "message": "Name/Wert-Paar"
+  },
+  "secretEdited": {
+    "message": "Geheimnis bearbeitet"
+  },
+  "secretCreated": {
+    "message": "Geheimnis erstellt"
+  },
+  "newSecret": {
+    "message": "Neues Geheimnis"
+  },
+  "newServiceAccount": {
+    "message": "Neues Dienstkonto"
+  },
+  "secretsNoItemsTitle": {
+    "message": "Keine Geheimnisse zum Anzeigen"
+  },
+  "secretsNoItemsMessage": {
+    "message": "Um loszulegen, füge ein neues Geheimnis hinzu oder importiere Geheimnisse."
+  },
+  "serviceAccountsNoItemsTitle": {
+    "message": "Hier gibt es noch nichts"
+  },
+  "serviceAccountsNoItemsMessage": {
+    "message": "Erstelle ein neues Dienstkonto, um mit der Automation für Zugriffe auf Geheimnisse zu beginnen."
+  },
+  "searchSecrets": {
+    "message": "Geheimnisse durchsuchen"
+  },
+  "deleteServiceAccounts": {
+    "message": "Dienstkonten löschen"
+  },
+  "deleteServiceAccount": {
+    "message": "Dienstkonto löschen"
+  },
+  "viewServiceAccount": {
+    "message": "Dienstkonto anzeigen"
+  },
+  "searchServiceAccounts": {
+    "message": "Dienstkonten durchsuchen"
+  },
+  "addProject": {
+    "message": "Projekt hinzufügen"
+  },
+  "projectEdited": {
+    "message": "Projekt bearbeitet"
+  },
+  "projectSaved": {
+    "message": "Projekt gespeichert"
+  },
+  "projectCreated": {
+    "message": "Projekt erstellt"
+  },
+  "projectName": {
+    "message": "Projektname"
+  },
+  "newProject": {
+    "message": "Neues Projekt"
+  },
+  "softDeleteSecretWarning": {
+    "message": "Das Löschen von Geheimnissen kann bestehende Integrationen beeinflussen."
+  },
+  "softDeletesSuccessToast": {
+    "message": "Geheimnisse in Papierkorb verschoben"
+  },
+  "serviceAccountCreated": {
+    "message": "Dienstkonto erstellt"
+  },
+  "smAccess": {
+    "message": "Zugriff"
+  },
+  "projectCommaSecret": {
+    "message": "Projekt, Geheimnis"
+  },
+  "serviceAccountName": {
+    "message": "Name des Dienstkontos"
+  },
+  "newSaSelectAccess": {
+    "message": "Projekte oder Geheimnisse eingeben oder auswählen"
+  },
+  "newSaTypeToFilter": {
+    "message": "Schreiben, um zu filtern"
+  },
+  "deleteProjectsToast": {
+    "message": "Projekte gelöscht"
+  },
+  "deleteProjectToast": {
+    "message": "Das Projekt und alle zugehörigen Geheimnisse wurden gelöscht"
+  },
+  "deleteProjectDialogMessage": {
+    "message": "Das Löschen des Projekts $PROJECT$ ist dauerhaft und unwiderruflich.",
+    "placeholders": {
+      "project": {
+        "content": "$1",
+        "example": "project name"
+      }
+    }
+  },
+  "deleteProjectInputLabel": {
+    "message": "Gebe \"$CONFIRM$\" ein, um fortzufahren",
+    "placeholders": {
+      "confirm": {
+        "content": "$1",
+        "example": "Delete 3 Projects"
+      }
+    }
+  },
+  "deleteProjectConfirmMessage": {
+    "message": "$PROJECT$ löschen",
+    "placeholders": {
+      "project": {
+        "content": "$1",
+        "example": "project name"
+      }
+    }
+  },
+  "deleteProjectsConfirmMessage": {
+    "message": "$COUNT$ Projekte löschen",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
+  },
+  "deleteProjectsDialogMessage": {
+    "message": "Das Löschen von Projekten ist dauerhaft und unwiderruflich."
+  },
+  "projectsNoItemsTitle": {
+    "message": "Keine Projekte zum Anzeigen"
+  },
+  "projectsNoItemsMessage": {
+    "message": "Füge ein neues Projekt hinzu, um mit der Organisation von Geheimnissen zu beginnen."
+  },
+  "smConfirmationRequired": {
+    "message": "Bestätigung erforderlich"
+  },
+  "bulkDeleteProjectsErrorMessage": {
+    "message": "Die folgenden Projekte konnten nicht gelöscht werden:"
+  },
+  "softDeleteSuccessToast": {
+    "message": "Geheimnis in Papierkorb verschoben"
+  },
+  "searchProjects": {
+    "message": "Projekte durchsuchen"
+  },
+  "accessTokens": {
+    "message": "Zugriffstokens"
+  },
+  "createAccessToken": {
+    "message": "Zugriffstoken erstellen"
+  },
+  "expires": {
+    "message": "Läuft ab"
+  },
+  "canRead": {
+    "message": "Kann lesen"
+  },
+  "accessTokensNoItemsTitle": {
+    "message": "Keine Zugriffstoken zum Anzeigen"
+  },
+  "accessTokensNoItemsDesc": {
+    "message": "Um loszulegen, erstelle ein Zugriffstoken"
+  },
+  "downloadAccessToken": {
+    "message": "Vor dem Schließen herunterladen oder kopieren."
+  },
+  "expiresOnAccessToken": {
+    "message": "Läuft ab am:"
+  },
+  "accessTokenCallOutTitle": {
+    "message": "Zugriffstoken sind nicht gespeichert und können nicht abgerufen werden"
+  },
+  "copyToken": {
+    "message": "Token kopieren"
+  },
+  "accessToken": {
+    "message": "Zugriffstoken"
+  },
+  "accessTokenExpirationRequired": {
+    "message": "Ablaufdatum erforderlich"
+  },
+  "accessTokenCreatedAndCopied": {
+    "message": "Zugriffstoken erstellt und in Zwischenablage kopiert"
+  },
+  "accessTokenPermissionsBetaNotification": {
+    "message": "Die Berechtigungsverwaltung ist in der Beta nicht verfügbar."
+  },
+  "revokeAccessToken": {
+    "message": "Zugriffstoken widerrufen"
+  },
+  "submenu": {
+    "message": "Untermenü"
+  },
+  "from": {
+    "message": "Von"
+  },
+  "to": {
+    "message": "Bis"
+  },
+  "member": {
+    "message": "Mitglied"
+  },
+  "update": {
+    "message": "Aktualisierung"
+  },
+  "role": {
+    "message": "Rolle"
+  },
+  "canView": {
+    "message": "Darf anzeigen"
+  },
+  "canViewExceptPass": {
+    "message": "Darf anzeigen, Passwörter ausgenommen"
+  },
+  "canEdit": {
+    "message": "Darf bearbeiten"
+  },
+  "canEditExceptPass": {
+    "message": "Darf bearbeiten, Passwörter ausgenommen"
+  },
+  "group": {
+    "message": "Gruppe"
+  },
+  "groupAccessAll": {
+    "message": "Diese Gruppe darf auf alle Einträge zugreifen und diese ändern."
+  },
+  "memberAccessAll": {
+    "message": "Dieses Mitglied darf auf alle Elemente zugreifen und diese ändern."
+  },
+  "moreFromBitwarden": {
+    "message": "Mehr von Bitwarden"
+  },
+  "switchProducts": {
+    "message": "Produkte wechseln"
+  },
+  "freeOrgInvLimitReachedManageBilling": {
+    "message": "Kostenlose Organisationen können bis zu $SEATCOUNT$ Mitglieder haben. Wechsle auf ein kostenpflichtiges Abo, um mehr Mitglieder einzuladen.",
+    "placeholders": {
+      "seatcount": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
+  },
+  "freeOrgInvLimitReachedNoManageBilling": {
+    "message": "Kostenlose Organisationen können bis zu $SEATCOUNT$ Mitglieder haben. Kontaktiere deinen Organisationseigentümer zum Hochstufen.",
+    "placeholders": {
+      "seatcount": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
+  },
+  "freeOrgMaxCollectionReachedManageBilling": {
+    "message": "Kostenlose Organisationen können bis zu $COLLECTIONCOUNT$ Sammlungen haben. Wechsle auf ein kostenpflichtiges Abo, um mehr Sammlungen hinzuzufügen.",
+    "placeholders": {
+      "COLLECTIONCOUNT": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
+  },
+  "freeOrgMaxCollectionReachedNoManageBilling": {
+    "message": "Kostenlose Organisationen können bis zu $COLLECTIONCOUNT$ Sammlungen haben. Kontaktiere deinen Organisationseigentümer zum Hochstufen.",
+    "placeholders": {
+      "COLLECTIONCOUNT": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
   }
 }

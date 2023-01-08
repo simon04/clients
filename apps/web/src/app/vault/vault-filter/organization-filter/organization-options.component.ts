@@ -1,9 +1,12 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input, OnDestroy, OnInit } from "@angular/core";
+import { map, Subject, takeUntil } from "rxjs";
 
 import { ModalService } from "@bitwarden/angular/services/modal.service";
 import { ApiService } from "@bitwarden/common/abstractions/api.service";
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 import { LogService } from "@bitwarden/common/abstractions/log.service";
+import { OrganizationUserService } from "@bitwarden/common/abstractions/organization-user/organization-user.service";
+import { OrganizationUserResetPasswordEnrollmentRequest } from "@bitwarden/common/abstractions/organization-user/requests";
 import { OrganizationApiServiceAbstraction } from "@bitwarden/common/abstractions/organization/organization-api.service.abstraction";
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 import { PolicyService } from "@bitwarden/common/abstractions/policy/policy.service.abstraction";
@@ -11,7 +14,6 @@ import { SyncService } from "@bitwarden/common/abstractions/sync/sync.service.ab
 import { PolicyType } from "@bitwarden/common/enums/policyType";
 import { Organization } from "@bitwarden/common/models/domain/organization";
 import { Policy } from "@bitwarden/common/models/domain/policy";
-import { OrganizationUserResetPasswordEnrollmentRequest } from "@bitwarden/common/models/request/organizationUserResetPasswordEnrollmentRequest";
 
 import { EnrollMasterPasswordReset } from "../../../organizations/users/enroll-master-password-reset.component";
 
@@ -19,12 +21,14 @@ import { EnrollMasterPasswordReset } from "../../../organizations/users/enroll-m
   selector: "app-organization-options",
   templateUrl: "organization-options.component.html",
 })
-export class OrganizationOptionsComponent {
+export class OrganizationOptionsComponent implements OnInit, OnDestroy {
   actionPromise: Promise<void | boolean>;
   policies: Policy[];
   loaded = false;
 
   @Input() organization: Organization;
+
+  private destroy$ = new Subject<void>();
 
   constructor(
     private platformUtilsService: PlatformUtilsService,
@@ -34,16 +38,25 @@ export class OrganizationOptionsComponent {
     private policyService: PolicyService,
     private modalService: ModalService,
     private logService: LogService,
-    private organizationApiService: OrganizationApiServiceAbstraction
+    private organizationApiService: OrganizationApiServiceAbstraction,
+    private organizationUserService: OrganizationUserService
   ) {}
 
   async ngOnInit() {
-    await this.load();
+    this.policyService.policies$
+      .pipe(
+        map((policies) => policies.filter((policy) => policy.type === PolicyType.ResetPassword)),
+        takeUntil(this.destroy$)
+      )
+      .subscribe((policies) => {
+        this.policies = policies;
+        this.loaded = true;
+      });
   }
 
-  async load() {
-    this.policies = await this.policyService.getAll(PolicyType.ResetPassword);
-    this.loaded = true;
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   allowEnrollmentChanges(org: Organization): boolean {
@@ -83,7 +96,6 @@ export class OrganizationOptionsComponent {
       });
       await this.actionPromise;
       this.platformUtilsService.showToast("success", null, "Unlinked SSO");
-      await this.load();
     } catch (e) {
       this.logService.error(e);
     }
@@ -105,7 +117,6 @@ export class OrganizationOptionsComponent {
       this.actionPromise = this.organizationApiService.leave(org.id);
       await this.actionPromise;
       this.platformUtilsService.showToast("success", null, this.i18nService.t("leftOrganization"));
-      await this.load();
     } catch (e) {
       this.logService.error(e);
     }
@@ -124,7 +135,7 @@ export class OrganizationOptionsComponent {
       const request = new OrganizationUserResetPasswordEnrollmentRequest();
       request.masterPasswordHash = "ignored";
       request.resetPasswordKey = null;
-      this.actionPromise = this.apiService.putOrganizationUserResetPasswordEnrollment(
+      this.actionPromise = this.organizationUserService.putOrganizationUserResetPasswordEnrollment(
         this.organization.id,
         this.organization.userId,
         request

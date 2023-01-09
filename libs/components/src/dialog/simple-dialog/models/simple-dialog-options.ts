@@ -6,15 +6,12 @@ import { Translation } from "./translation";
  *
  * @typedef {Object} SimpleDialogOptions - A configuration type for the Simple Dialog component
  */
-// TODO: update all passed in string content
 export type SimpleDialogOptions = {
   /**
-   * Dialog title. If not localized, set `isLocalized` to false and pass in a translation key
-   * and any required placeholders (see `titleI18nPlaceholderValues`). */
+   * Dialog title. If not localized, set `isLocalized` to false and pass in a `Translation`. */
   title: string | Translation;
 
-  /** Dialog content. If not localized, set `isLocalized` to false and pass in a translation key
-   * and any required placeholders (see `contentI18nPlaceholderValues`). */
+  /** Dialog content. If not localized, set `isLocalized` to false and pass a `Translation`. */
   content: string | Translation;
 
   /** Dialog type. It controls default icons and icon colors. */
@@ -34,8 +31,7 @@ export type SimpleDialogOptions = {
   isLocalized?: boolean;
 
   /** Dialog custom accept button text. If not provided, ("yes" | i18n) will be used.
-   * If not localized, set `isLocalized` to false and pass in a translation key
-   * and any required placeholders (see `acceptButtonTextI18nPlaceholderValues`)  */
+   * If not localized, set `isLocalized` to false and pass in a `Translation`  */
   acceptButtonText?: string | Translation;
 
   /**
@@ -43,8 +39,7 @@ export type SimpleDialogOptions = {
    * If not provided, ("no" | i18n) will be used.
    * If custom acceptButtonText is passed in, ("cancel" | i18n) will be used.
    * If null is provided, the cancel button will be removed.
-   * If not localized, set `isLocalized` to false and pass in a translation key
-   * and any required placeholders (see `cancelButtonTextI18nPlaceholderValues`) */
+   * If not localized, set `isLocalized` to false and pass in a `Translation` */
   cancelButtonText?: string | Translation;
 
   /** Whether or not the user can use escape or clicking the backdrop to close the dialog */

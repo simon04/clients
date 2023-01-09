@@ -3,10 +3,10 @@ import { Component, Inject } from "@angular/core";
 
 import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
 
-import { SimpleDialogCloseType } from "../simple-dialog/models/simple-dialog-close-type.enum";
-import { SimpleDialogOptions } from "../simple-dialog/models/simple-dialog-options";
-import { SimpleDialogType } from "../simple-dialog/models/simple-dialog-type.enum";
-import { isTranslation } from "../simple-dialog/models/translation";
+import { SimpleDialogCloseType } from "./models/simple-dialog-close-type.enum";
+import { SimpleDialogOptions } from "./models/simple-dialog-options";
+import { SimpleDialogType } from "./models/simple-dialog-type.enum";
+import { isTranslation } from "./models/translation";
 
 @Component({
   selector: "bit-simple-configurable-dialog",

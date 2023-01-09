@@ -21,8 +21,8 @@ import { filter, Subject, switchMap, takeUntil } from "rxjs";
 import { AuthService } from "@bitwarden/common/abstractions/auth.service";
 import { AuthenticationStatus } from "@bitwarden/common/enums/authenticationStatus";
 
+import { SimpleDialogOptions } from "./simple-configurable-dialog/models/simple-dialog-options";
 import { SimpleConfigurableDialogComponent } from "./simple-configurable-dialog/simple-configurable-dialog.component";
-import { SimpleDialogOptions } from "./simple-dialog/models/simple-dialog-options";
 
 @Injectable()
 export class DialogService extends Dialog implements OnDestroy {

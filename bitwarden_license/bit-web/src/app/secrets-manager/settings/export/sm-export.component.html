@@ -3,14 +3,14 @@
 <form [formGroup]="formGroup" [bitSubmit]="submit">
   <bit-form-field>
     <bit-label>{{ "fileFormat" | i18n }}</bit-label>
-    <select bitInput disabled required>
-      <option selected value="json">json</option>
+    <select bitInput required formControlName="format">
+      <option *ngFor="let format of exportFormats" [ngValue]="format">{{ format }}</option>
     </select>
   </bit-form-field>
 
   <bit-form-field class="tw-mb-0">
     <bit-label>{{ "masterPassword" | i18n }}</bit-label>
-    <input bitInput required type="password" name="masterPassword" />
+    <input bitInput required type="password" formControlName="masterPassword" />
   </bit-form-field>
 
   <div>

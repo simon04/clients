@@ -36,9 +36,9 @@ export class OrganizationSubscriptionSelfhostComponent implements OnInit, OnDest
   userOrg: Organization;
   showUpdateLicense = false;
 
-  licenseOptionsControl = new FormControl<LicenseOptions>(LicenseOptions.SYNC);
+  licenseOptionsControl = new FormControl(LicenseOptions.SYNC);
   licenseOptions = LicenseOptions;
-  disableLicenseSyncControl = true;
+  disableLicenseSyncControl = false;
 
   firstLoaded = false;
   loading = false;

@@ -126,16 +126,6 @@ export class SecretService {
     return request;
   }
 
-  private async getProjectIds(projects: SecretProjectView[]): Promise<string[]> {
-    const projectIds: string[] = [];
-
-    projects?.forEach((p) => {
-      projectIds.push(p.id);
-    });
-
-    return projectIds;
-  }
-
   private async createSecretView(secretResponse: SecretResponse): Promise<SecretView> {
     const orgKey = await this.getOrganizationKey(secretResponse.organizationId);
 

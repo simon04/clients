@@ -8,16 +8,22 @@ import { Translation } from "./translation";
  */
 export type SimpleDialogOptions = {
   /**
-   * Dialog title. If not localized, set `isLocalized` to false and pass in a `Translation`. */
+   * Dialog title.
+   *
+   * If not localized, set `isLocalized` to false and pass in a `Translation`. */
   title: string | Translation;
 
-  /** Dialog content. If not localized, set `isLocalized` to false and pass a `Translation`. */
+  /** Dialog content.
+   *
+   * If not localized, set `isLocalized` to false and pass a `Translation`. */
   content: string | Translation;
 
   /** Dialog type. It controls default icons and icon colors. */
   type: SimpleDialogType;
 
-  /** Dialog custom icon class. If not provided, a standard icon will be inferred from type.
+  /** Dialog custom icon class.
+   *
+   * If not provided, a standard icon will be inferred from type.
    * Note: icon color is enforced based on dialog type.  */
   icon?: string;
 
@@ -30,15 +36,22 @@ export type SimpleDialogOptions = {
    * (with placeholders interpolated if they are also passed in).   */
   isLocalized?: boolean;
 
-  /** Dialog custom accept button text. If not provided, ("yes" | i18n) will be used.
+  /** Dialog custom accept button text.
+   *
+   * If not provided, ("yes" | i18n) will be used.
+   *
    * If not localized, set `isLocalized` to false and pass in a `Translation`  */
   acceptButtonText?: string | Translation;
 
   /**
    * Dialog custom cancel button text.
+   *
    * If not provided, ("no" | i18n) will be used.
+   *
    * If custom acceptButtonText is passed in, ("cancel" | i18n) will be used.
+   *
    * If null is provided, the cancel button will be removed.
+   *
    * If not localized, set `isLocalized` to false and pass in a `Translation` */
   cancelButtonText?: string | Translation;
 

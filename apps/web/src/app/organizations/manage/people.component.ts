@@ -36,7 +36,6 @@ import {
   SimpleDialogOptions,
   SimpleDialogType,
 } from "@bitwarden/components";
-// import { SimpleDialogOptions } from "@bitwarden/components";
 
 import { BasePeopleComponent } from "../../common/base.people.component";
 
@@ -45,7 +44,6 @@ import { BulkRemoveComponent } from "./bulk/bulk-remove.component";
 import { BulkRestoreRevokeComponent } from "./bulk/bulk-restore-revoke.component";
 import { BulkStatusComponent } from "./bulk/bulk-status.component";
 import { EntityEventsComponent } from "./entity-events.component";
-// import { OrgUpgradeDialogComponent } from "./org-upgrade-dialog/org-upgrade-dialog.component";
 import { ResetPasswordComponent } from "./reset-password.component";
 import { UserAddEditComponent } from "./user-add-edit.component";
 import { UserGroupsComponent } from "./user-groups.component";

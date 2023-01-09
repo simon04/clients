@@ -62,13 +62,21 @@
       <h2 class="mt-5">
         {{ "licenseAndBillingManagement" | i18n }}
       </h2>
-      <bit-radio-button
-        id="automatic-sync"
-        [value]="licenseOptions.SYNC"
-        [disabled]="disableLicenseSyncControl"
-        class="tw-block"
-        >{{ "automaticSync" | i18n }}</bit-radio-button
-      >
+      <div class="tw-flex">
+        <bit-radio-button
+          id="automatic-sync"
+          [value]="licenseOptions.SYNC"
+          [disabled]="disableLicenseSyncControl"
+          class="tw-block"
+          >{{ "automaticSync" | i18n }}</bit-radio-button
+        >
+        <a
+          href="https://bitwarden.com/help/families-for-enterprise-self-hosted/"
+          target="_blank"
+          rel="noopener"
+          ><i class="bwi bwi-question-circle" aria-hidden="true"></i
+        ></a>
+      </div>
       <p>
         {{ "billingSyncDesc" | i18n }}
       </p>

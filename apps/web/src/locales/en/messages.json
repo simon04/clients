@@ -5901,8 +5901,11 @@
   "syncLicense": {
     "message": "Sync license"
   },
-  "licenseUpdatedSuccess": {
-    "message": "Successfully updated license"
+  "licenseSyncSuccess": {
+    "message": "Successfully synced license"
+  },
+  "licenseUploadSuccess": {
+    "message": "Successfully uploaded license"
   },
   "lastLicenseSync": {
     "message": "Last license sync"

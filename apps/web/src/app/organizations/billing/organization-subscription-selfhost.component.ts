@@ -104,13 +104,13 @@ export class OrganizationSubscriptionSelfhostComponent implements OnInit, OnDest
     this.loading = false;
   }
 
-  licenseUpdated() {
+  licenseUploaded() {
     this.load();
     this.messagingService.send("updatedOrgLicense");
     this.platformUtilsService.showToast(
       "success",
       null,
-      this.i18nService.t("licenseUpdatedSuccess")
+      this.i18nService.t("licenseUploadSuccess")
     );
   }
 
@@ -132,7 +132,10 @@ export class OrganizationSubscriptionSelfhostComponent implements OnInit, OnDest
   syncLicense = async () => {
     this.licenseOptionsControl.setValue(LicenseOptions.SYNC);
     await this.organizationApiService.selfHostedSyncLicense(this.organizationId);
-    this.licenseUpdated();
+
+    this.load();
+    this.messagingService.send("updatedOrgLicense");
+    this.platformUtilsService.showToast("success", null, this.i18nService.t("licenseSyncSuccess"));
   };
 
   get billingSyncSetUp() {

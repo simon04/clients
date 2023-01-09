@@ -135,10 +135,11 @@ export class OrganizationSubscriptionSelfhostComponent implements OnInit, OnDest
     this.modalService.open(BillingSyncKeyComponent, modalConfig);
   }
 
-  async syncLicense() {
+  syncLicense = async () => {
+    this.licenseOptionsControl.setValue(LicenseOptions.SYNC);
     await this.organizationApiService.selfHostedSyncLicense(this.organizationId);
     this.platformUtilsService.showToast("success", null, this.i18nService.t("syncLicenseSuccess"));
-  }
+  };
 
   get billingSyncSetUp() {
     return this.existingBillingSyncConnection?.id != null;

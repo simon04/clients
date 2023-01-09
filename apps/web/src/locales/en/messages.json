@@ -5906,5 +5906,11 @@
   },
   "lastLicenseSync": {
     "message": "Last license sync"
+  },
+  "billingSyncHelp": {
+    "message": "Billing Sync help"
+  },
+  "uploadLicense": {
+    "message": "Upload license"
   }
 }

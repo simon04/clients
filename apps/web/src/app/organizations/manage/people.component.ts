@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild, ViewContainerRef } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
-import { combineLatest, concatMap, Subject, takeUntil } from "rxjs";
+import { ActivatedRoute, Router } from "@angular/router";
+import { combineLatest, concatMap, Subject, take, takeUntil } from "rxjs";
 
 import { SearchPipe } from "@bitwarden/angular/pipes/search.pipe";
 import { UserNamePipe } from "@bitwarden/angular/pipes/user-name.pipe";
@@ -45,7 +45,7 @@ import { BulkRemoveComponent } from "./bulk/bulk-remove.component";
 import { BulkRestoreRevokeComponent } from "./bulk/bulk-restore-revoke.component";
 import { BulkStatusComponent } from "./bulk/bulk-status.component";
 import { EntityEventsComponent } from "./entity-events.component";
-import { OrgUpgradeDialogComponent } from "./org-upgrade-dialog/org-upgrade-dialog.component";
+// import { OrgUpgradeDialogComponent } from "./org-upgrade-dialog/org-upgrade-dialog.component";
 import { ResetPasswordComponent } from "./reset-password.component";
 import { UserAddEditComponent } from "./user-add-edit.component";
 import { UserGroupsComponent } from "./user-groups.component";
@@ -101,7 +101,8 @@ export class PeopleComponent
     private organizationService: OrganizationService,
     private organizationApiService: OrganizationApiServiceAbstraction,
     private organizationUserService: OrganizationUserService,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private router: Router
   ) {
     super(
       apiService,
@@ -259,7 +260,6 @@ export class PeopleComponent
       this.allUsers.length === this.organization.seats
     ) {
       // Show org upgrade modal
-
       const dialogBodyText = this.organization.canManageBilling
         ? this.i18nService.t(
             "freeOrgInvLimitReachedManageBilling",
@@ -270,17 +270,37 @@ export class PeopleComponent
             this.organization.seats.toString()
           );
 
-      const dialog = this.dialogService.open(OrgUpgradeDialogComponent, {
-        data: {
-          orgId: this.organization.id,
-          orgCanManageBilling: this.organization.canManageBilling,
-          dialogBodyText: dialogBodyText,
-        },
-      });
+      const orgUpgradeSimpleDialogOpts: SimpleDialogOptions = {
+        title: this.i18nService.t("upgradeOrganization"),
+        content: dialogBodyText,
+        type: SimpleDialogType.PRIMARY,
+        isLocalized: true,
+      };
 
-      dialog.closed.pipe(takeUntil(this.destroy$)).subscribe((result) => {
-        // console.log("result: ", result);
-      });
+      if (this.organization.canManageBilling) {
+        orgUpgradeSimpleDialogOpts.acceptButtonText = this.i18nService.t("upgrade");
+      } else {
+        orgUpgradeSimpleDialogOpts.acceptButtonText = this.i18nService.t("ok");
+        orgUpgradeSimpleDialogOpts.cancelButtonText = null; // hide secondary btn
+      }
+
+      const simpleDialog = this.dialogService.openSimpleDialog(orgUpgradeSimpleDialogOpts);
+
+      simpleDialog.closed
+        .pipe(take(1))
+        // eslint-disable-next-line rxjs-angular/prefer-takeuntil
+        .subscribe((result: SimpleDialogCloseType | undefined) => {
+          if (!result) {
+            return;
+          }
+
+          if (result == SimpleDialogCloseType.ACCEPT && this.organization.canManageBilling) {
+            this.router.navigate(
+              ["/organizations", this.organization.id, "billing", "subscription"],
+              { queryParams: { upgrade: true } }
+            );
+          }
+        });
 
       return;
     }
@@ -534,8 +554,12 @@ export class PeopleComponent
     icon: undefined,
     isLocalized: true,
     acceptButtonText: "Test",
-    cancelButtonText: "Special Cancel",
-    disableClose: undefined,
+    // cancelButtonText: "yee haw",
+    // disableClose: false,
+    // titleI18nPlaceholderValues: [55, 65],
+    // contentI18nPlaceholderValues: [55, 65],
+    // acceptButtonTextI18nPlaceholderValues: [55, 65],
+    // cancelButtonTextI18nPlaceholderValues: [55, 65],
   };
 
   simpleDialogSuccessOpts: SimpleDialogOptions = {
@@ -589,6 +613,7 @@ export class PeopleComponent
     },
     content: {
       key: "premiumPrice",
+      placeholderValues: [55],
     },
     type: SimpleDialogType.PRIMARY,
     icon: undefined,

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ViewContainerRef } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
-import { first } from "rxjs/operators";
+import { ActivatedRoute, Router } from "@angular/router";
+import { first, take } from "rxjs/operators";
 
 import { ModalService } from "@bitwarden/angular/services/modal.service";
 import { ApiService } from "@bitwarden/common/abstractions/api.service";
@@ -20,11 +20,15 @@ import {
 } from "@bitwarden/common/models/response/collection.response";
 import { ListResponse } from "@bitwarden/common/models/response/list.response";
 import { CollectionView } from "@bitwarden/common/models/view/collection.view";
-import { DialogService } from "@bitwarden/components";
+import {
+  DialogService,
+  SimpleDialogCloseType,
+  SimpleDialogOptions,
+  SimpleDialogType,
+} from "@bitwarden/components";
 
 import { CollectionAddEditComponent } from "./collection-add-edit.component";
 import { EntityUsersComponent } from "./entity-users.component";
-import { OrgUpgradeDialogComponent } from "./org-upgrade-dialog/org-upgrade-dialog.component";
 
 @Component({
   selector: "app-org-manage-collections",
@@ -60,7 +64,8 @@ export class CollectionsComponent implements OnInit {
     private searchService: SearchService,
     private logService: LogService,
     private organizationService: OrganizationService,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private router: Router
   ) {}
 
   async ngOnInit() {
@@ -146,13 +151,41 @@ export class CollectionsComponent implements OnInit {
             this.organization.maxCollections.toString()
           );
 
-      this.dialogService.open(OrgUpgradeDialogComponent, {
-        data: {
-          orgId: this.organization.id,
-          dialogBodyText: dialogBodyText,
-          orgCanManageBilling: this.organization.canManageBilling,
-        },
-      });
+      // It might be worth creating a simple
+      // org upgrade dialog service to launch the dialog here and in the people.comp
+      // once the enterprise pod is done w/ their organization module refactor.
+      const orgUpgradeSimpleDialogOpts: SimpleDialogOptions = {
+        title: this.i18nService.t("upgradeOrganization"),
+        content: dialogBodyText,
+        type: SimpleDialogType.PRIMARY,
+        isLocalized: true,
+      };
+
+      if (this.organization.canManageBilling) {
+        orgUpgradeSimpleDialogOpts.acceptButtonText = this.i18nService.t("upgrade");
+      } else {
+        orgUpgradeSimpleDialogOpts.acceptButtonText = this.i18nService.t("ok");
+        orgUpgradeSimpleDialogOpts.cancelButtonText = null; // hide secondary btn
+      }
+
+      const simpleDialog = this.dialogService.openSimpleDialog(orgUpgradeSimpleDialogOpts);
+
+      simpleDialog.closed
+        .pipe(take(1))
+        // eslint-disable-next-line rxjs-angular/prefer-takeuntil
+        .subscribe((result: SimpleDialogCloseType | undefined) => {
+          if (!result) {
+            return;
+          }
+
+          if (result == SimpleDialogCloseType.ACCEPT && this.organization.canManageBilling) {
+            this.router.navigate(
+              ["/organizations", this.organization.id, "billing", "subscription"],
+              { queryParams: { upgrade: true } }
+            );
+          }
+        });
+
       return;
     }
 

@@ -9,10 +9,10 @@ import { SimpleDialogType } from "../simple-dialog/models/simple-dialog-type.enu
 import { isTranslation } from "../simple-dialog/models/translation";
 
 @Component({
-  selector: "bit-configurable-simple-dialog",
-  templateUrl: "./configurable-simple-dialog.component.html",
+  selector: "bit-simple-configurable-dialog",
+  templateUrl: "./simple-configurable-dialog.component.html",
 })
-export class ConfigurableSimpleDialogComponent {
+export class SimpleConfigurableDialogComponent {
   SimpleDialogType = SimpleDialogType;
   SimpleDialogCloseType = SimpleDialogCloseType;
 

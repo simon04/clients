@@ -16,6 +16,7 @@
       </ng-container>
     </button>
     <button
+      *ngIf="simpleDialogOpts.cancelButtonText !== null"
       bitButton
       buttonType="secondary"
       (click)="dialogRef.close(SimpleDialogCloseType.CANCEL)"

@@ -21,7 +21,7 @@ import { filter, Subject, switchMap, takeUntil } from "rxjs";
 import { AuthService } from "@bitwarden/common/abstractions/auth.service";
 import { AuthenticationStatus } from "@bitwarden/common/enums/authenticationStatus";
 
-import { ConfigurableSimpleDialogComponent } from "./configurable-simple-dialog/configurable-simple-dialog.component";
+import { SimpleConfigurableDialogComponent } from "./simple-configurable-dialog/simple-configurable-dialog.component";
 import { SimpleDialogOptions } from "./simple-dialog/models/simple-dialog-options";
 
 @Injectable()
@@ -92,7 +92,7 @@ export class DialogService extends Dialog implements OnDestroy {
    */
   openSimpleDialog(simpleDialogOptions: SimpleDialogOptions): DialogRef {
     // Method needs to return dialog reference so devs can sub to closed and get results.
-    return this.open(ConfigurableSimpleDialogComponent, {
+    return this.open(SimpleConfigurableDialogComponent, {
       data: simpleDialogOptions,
       disableClose: simpleDialogOptions.disableClose,
       backdropClass: this.backDropClasses,

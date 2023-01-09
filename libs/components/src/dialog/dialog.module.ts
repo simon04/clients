@@ -5,11 +5,11 @@ import { ButtonModule } from "../button";
 import { IconButtonModule } from "../icon-button";
 import { SharedModule } from "../shared";
 
-import { ConfigurableSimpleDialogComponent } from "./configurable-simple-dialog/configurable-simple-dialog.component";
 import { DialogService } from "./dialog.service";
 import { DialogComponent } from "./dialog/dialog.component";
 import { DialogCloseDirective } from "./directives/dialog-close.directive";
 import { DialogTitleContainerDirective } from "./directives/dialog-title-container.directive";
+import { SimpleConfigurableDialogComponent } from "./simple-configurable-dialog/simple-configurable-dialog.component";
 import { IconDirective, SimpleDialogComponent } from "./simple-dialog/simple-dialog.component";
 
 @NgModule({
@@ -19,7 +19,7 @@ import { IconDirective, SimpleDialogComponent } from "./simple-dialog/simple-dia
     DialogTitleContainerDirective,
     DialogComponent,
     SimpleDialogComponent,
-    ConfigurableSimpleDialogComponent,
+    SimpleConfigurableDialogComponent,
     IconDirective,
   ],
   exports: [

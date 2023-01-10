@@ -286,7 +286,7 @@ export class OrganizationApiService implements OrganizationApiServiceAbstraction
   async selfHostedSyncLicense(id: string) {
     await this.apiService.send(
       "POST",
-      "/organization/license/self-hosted/sync/" + id,
+      "/organizations/licenses/self-hosted/" + id + "/sync/",
       null,
       true,
       false
